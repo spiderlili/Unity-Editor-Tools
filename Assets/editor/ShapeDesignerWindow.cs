@@ -34,7 +34,7 @@ public class ShapeDesignerWindow : EditorWindow
         ShapeDesignerWindow window = (ShapeDesignerWindow)GetWindow(typeof(ShapeDesignerWindow));
 
         //Establish minimum size of window
-        window.minSize = new Vector2(200f, 500f);
+        window.minSize = new Vector2(200f, 540f);
         window.Show();
     }
 
@@ -105,7 +105,7 @@ public class ShapeDesignerWindow : EditorWindow
     private void DrawLayouts() //coordinate where the icons will be
     {
         shapeIconSection.x = Screen.width / 4f;
-        shapeIconSection.y = Screen.height / 2.2f;
+        shapeIconSection.y = Screen.height / 2f;
         shapeIconSection.width = 256;
         shapeIconSection.height = 256;
         GUI.DrawTexture(shapeIconSection, currentShape);
