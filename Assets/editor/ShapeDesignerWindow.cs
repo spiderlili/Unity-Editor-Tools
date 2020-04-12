@@ -34,7 +34,7 @@ public class ShapeDesignerWindow : EditorWindow
         ShapeDesignerWindow window = (ShapeDesignerWindow)GetWindow(typeof(ShapeDesignerWindow));
 
         //Establish minimum size of window
-        window.minSize = new Vector2(200f, 300f);
+        window.minSize = new Vector2(200f, 500f);
         window.Show();
     }
 
@@ -48,6 +48,7 @@ public class ShapeDesignerWindow : EditorWindow
         shapeIconTexture = new Texture2D(1, 1); //a blank canvas of a white square to be filled
         shapeIconTexture.SetPixel(0, 0, Color.black);
         shapeIconTexture.Apply();
+        shapeName = "Test Shape";
 
         cubeIcon = Resources.Load<Texture2D>("icons/icon_cube"); //shortcut to resources folder
         sphereIcon = Resources.Load<Texture2D>("icons/icon_sphere"); //shortcut to resources folder
@@ -166,10 +167,23 @@ public class ShapeDesignerWindow : EditorWindow
             CreateShape();
         }
         EditorGUILayout.EndHorizontal();
+
+        if(shapeName.Length == 0)
+        {
+            EditorGUILayout.HelpBox("Object Name cannot be blank", MessageType.Error);
+        }
+        else
+        {
+            if(shapeName.StartsWith(" "))
+            {
+                EditorGUILayout.HelpBox("Object Name cannot start with a space", MessageType.Error);
+            }
+        }
     }
 
     private void CreateShape()
     {
+        if (shapeName.Length == 0 || shapeName.StartsWith("")) return; //prevents error
         switch(shapeType)
         {
             case ShapeTypes.Cube:
