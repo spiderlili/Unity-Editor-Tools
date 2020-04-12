@@ -51,10 +51,10 @@ public class ShapeDesignerWindow : EditorWindow
 
         cubeIcon = Resources.Load<Texture2D>("icons/icon_cube"); //shortcut to resources folder
         sphereIcon = Resources.Load<Texture2D>("icons/icon_sphere"); //shortcut to resources folder
-        capsuleIcon = Resources.Load<Texture2D>("icons/icon_cube"); //shortcut to resources folder
-        cylinderIcon = Resources.Load<Texture2D>("icons/icon_cube"); //shortcut to resources folder
-        quadIcon = Resources.Load<Texture2D>("icons/icon_cube"); //shortcut to resources folder
-        planeIcon = Resources.Load<Texture2D>("icons/icon_cube"); //shortcut to resources folder
+        capsuleIcon = Resources.Load<Texture2D>("icons/icon_capsule"); //shortcut to resources folder
+        cylinderIcon = Resources.Load<Texture2D>("icons/icon_cylinder"); //shortcut to resources folder
+        quadIcon = Resources.Load<Texture2D>("icons/icon_quad"); //shortcut to resources folder
+        planeIcon = Resources.Load<Texture2D>("icons/icon_plane"); //shortcut to resources folder
     }
 
     private void OnGUI() //function order matters here
