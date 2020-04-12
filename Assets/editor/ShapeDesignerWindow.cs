@@ -6,6 +6,16 @@ using Shapes;
 
 public class ShapeDesignerWindow : EditorWindow
 {
+    private Rect shapeIconSection;
+    private Texture2D shapeIconTexture;
+    private Texture2D currentShape;
+    private Texture2D cubeIcon;
+    private Texture2D sphereIcon;
+    private Texture2D capsuleIcon;
+    private Texture2D cylinderIcon;
+    private Texture2D quadIcon;
+    private Texture2D planeIcon;
+
     private ShapeTypes shapeType;
     private Vector3 shapePosition;
     private Vector3 shapeRotation;
@@ -28,11 +38,78 @@ public class ShapeDesignerWindow : EditorWindow
         window.Show();
     }
 
-    private void OnGUI()
+    private void OnEnable() //called everytime the window is opened
     {
+        InitTextures();
+    }
+
+    private void InitTextures()
+    {
+        shapeIconTexture = new Texture2D(1, 1); //a blank canvas of a white square to be filled
+        shapeIconTexture.SetPixel(0, 0, Color.black);
+        shapeIconTexture.Apply();
+
+        cubeIcon = Resources.Load<Texture2D>("icons/icon_cube"); //shortcut to resources folder
+        sphereIcon = Resources.Load<Texture2D>("icons/icon_sphere"); //shortcut to resources folder
+        capsuleIcon = Resources.Load<Texture2D>("icons/icon_cube"); //shortcut to resources folder
+        cylinderIcon = Resources.Load<Texture2D>("icons/icon_cube"); //shortcut to resources folder
+        quadIcon = Resources.Load<Texture2D>("icons/icon_cube"); //shortcut to resources folder
+        planeIcon = Resources.Load<Texture2D>("icons/icon_cube"); //shortcut to resources folder
+    }
+
+    private void OnGUI() //function order matters here
+    {
+        ChangeShape();
+        DrawLayouts();
         DrawShapeSettings();
     }
 
+    private void ChangeShape()
+    {
+        switch (shapeType)
+        {
+            case ShapeTypes.Cube:
+                {
+                    currentShape = cubeIcon;
+                    break;
+                }
+            case ShapeTypes.Sphere:
+                {
+                    currentShape = sphereIcon;
+                    break;
+                }
+            case ShapeTypes.Cylinder:
+                {
+                    currentShape = cylinderIcon;
+                    break;
+                }
+            case ShapeTypes.Capsule:
+                {
+                    currentShape = capsuleIcon;
+                    break;
+                }
+            case ShapeTypes.Quad:
+                {
+                    currentShape = quadIcon;
+                    break;
+                }
+            case ShapeTypes.Plane:
+                {
+                    currentShape = planeIcon;
+                    break;
+                }
+        }
+    }
+
+    private void DrawLayouts() //coordinate where the icons will be
+    {
+        shapeIconSection.x = Screen.width / 4f;
+        shapeIconSection.y = Screen.height / 2.2f;
+        shapeIconSection.width = 256;
+        shapeIconSection.height = 256;
+        GUI.DrawTexture(shapeIconSection, currentShape);
+
+    }
     private void DrawShapeSettings()
     {
         GUILayout.Label("Spawn Unity Primitive Shape"); //header
