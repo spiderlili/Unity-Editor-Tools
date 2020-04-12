@@ -6,7 +6,12 @@ namespace Shapes
 {
     public enum ShapeTypes
     {
-        Cube
-    }
+        Cube,
+        Cylinder,
+        Capsule,
+        Sphere,
+        Plane,
+        Quad
+    };
 }
 
