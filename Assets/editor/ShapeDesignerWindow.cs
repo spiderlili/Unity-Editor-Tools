@@ -28,12 +28,9 @@ public class ShapeDesignerWindow : EditorWindow
     private bool isSpawnAtRandomRotation = false;
     private int numberOfObjectsToSpawn;
 
-
-    //randomly place one shape in the world
-    private bool ShowRandomOptions; //collapsible options
+    private bool ShowRandomOptions; //serve as a collapsible option to not clutter too much
     private float minPos;
     private float maxPos;
-    private float minRot;
     private float maxRot;
     private float maxScale;
 
@@ -43,7 +40,7 @@ public class ShapeDesignerWindow : EditorWindow
         ShapeDesignerWindow window = (ShapeDesignerWindow)GetWindow(typeof(ShapeDesignerWindow));
 
         //Establish minimum size of window
-        window.minSize = new Vector2(200f, 540f);
+        window.minSize = new Vector2(200f, 500f);
         window.Show();
     }
 
@@ -114,7 +111,7 @@ public class ShapeDesignerWindow : EditorWindow
     private void DrawLayouts() //coordinate where the icons will be
     {
         shapeIconSection.x = Screen.width / 4f;
-        shapeIconSection.y = Screen.height / 2f;
+        shapeIconSection.y = Screen.height / 2.2f;
         shapeIconSection.width = 256;
         shapeIconSection.height = 256;
         GUI.DrawTexture(shapeIconSection, currentShape);
@@ -171,11 +168,10 @@ public class ShapeDesignerWindow : EditorWindow
         }
 
         ShowRandomOptions = EditorGUILayout.Foldout(ShowRandomOptions, "Show Variable Options");
-        if(ShowRandomOptions)
+        if (ShowRandomOptions)
         {
             minPos = EditorGUILayout.FloatField("Minimum Position", minPos);
             maxPos = EditorGUILayout.FloatField("Maximum Position", maxPos);
-            minRot = EditorGUILayout.FloatField("Minimum Rotation", minRot);
             maxRot = EditorGUILayout.FloatField("Maximum Rotation", maxRot);
             maxScale = EditorGUILayout.FloatField("Maximum Scale", maxScale);
         }
@@ -183,14 +179,14 @@ public class ShapeDesignerWindow : EditorWindow
         EditorGUILayout.BeginHorizontal();
         if (GUILayout.Button("Randomise Variables")) //create button
         {
-            CreateShape();
+            CreateShape(true);
         }
         EditorGUILayout.EndHorizontal();
 
         EditorGUILayout.BeginHorizontal();
         if(GUILayout.Button("Spawn Shape")) //create button
         {
-            CreateShape();
+            CreateShape(false);
         }
         EditorGUILayout.EndHorizontal();
 
@@ -207,48 +203,105 @@ public class ShapeDesignerWindow : EditorWindow
         }
     }
 
-    private void CreateShape()
+    private void CreateShape(bool RandomPlacement)
     {
-        if (shapeName.Length == 0 || shapeName.StartsWith("")) return; //prevents error
-        switch(shapeType)
+        if(shapeName.Length > 0 && !(shapeName.StartsWith(" "))) //error handling
         {
-            case ShapeTypes.Cube:
-                {
-                    GameObject shape = GameObject.CreatePrimitive(PrimitiveType.Cube);
-                    SetTransform(shape);
-                    break;
-                }
-            case ShapeTypes.Sphere:
-                {
-                    GameObject shape = GameObject.CreatePrimitive(PrimitiveType.Sphere);
-                    SetTransform(shape);
-                    break;
-                }
-            case ShapeTypes.Cylinder:
-                {
-                    GameObject shape = GameObject.CreatePrimitive(PrimitiveType.Cylinder);
-                    SetTransform(shape);
-                    break;
-                }
-            case ShapeTypes.Capsule:
-                {
-                    GameObject shape = GameObject.CreatePrimitive(PrimitiveType.Capsule);
-                    SetTransform(shape);
-                    break;
-                }
-            case ShapeTypes.Quad:
-                {
-                    GameObject shape = GameObject.CreatePrimitive(PrimitiveType.Quad);
-                    SetTransform(shape);
-                    break;
-                }
-            case ShapeTypes.Plane:
-                {
-                    GameObject shape = GameObject.CreatePrimitive(PrimitiveType.Plane);
-                    SetTransform(shape);
-                    break;
-                }
+            switch (shapeType)
+            {
+                case ShapeTypes.Cube:
+                    {
+                        GameObject shape = GameObject.CreatePrimitive(PrimitiveType.Cube);
+                        if (!RandomPlacement)
+                        {
+                            SetTransform(shape);
+                        }
+                        else
+                        {
+                            RandomizeTransform(shape);
+                        }
+                        break;
+                    }
+                case ShapeTypes.Sphere:
+                    {
+                        GameObject shape = GameObject.CreatePrimitive(PrimitiveType.Sphere);
+                        if (!RandomPlacement)
+                        {
+                            SetTransform(shape);
+                        }
+                        else
+                        {
+                            RandomizeTransform(shape);
+                        }
+                        break;
+                    }
+                case ShapeTypes.Cylinder:
+                    {
+                        GameObject shape = GameObject.CreatePrimitive(PrimitiveType.Cylinder);
+                        if (!RandomPlacement)
+                        {
+                            SetTransform(shape);
+                        }
+                        else
+                        {
+                            RandomizeTransform(shape);
+                        }
+                        break;
+                    }
+                case ShapeTypes.Capsule:
+                    {
+                        GameObject shape = GameObject.CreatePrimitive(PrimitiveType.Capsule);
+                        if (!RandomPlacement)
+                        {
+                            SetTransform(shape);
+                        }
+                        else
+                        {
+                            RandomizeTransform(shape);
+                        }
+                        break;
+                    }
+                case ShapeTypes.Quad:
+                    {
+                        GameObject shape = GameObject.CreatePrimitive(PrimitiveType.Quad);
+                        if (!RandomPlacement)
+                        {
+                            SetTransform(shape);
+                        }
+                        else
+                        {
+                            RandomizeTransform(shape);
+                        }
+                        break;
+                    }
+                case ShapeTypes.Plane:
+                    {
+                        GameObject shape = GameObject.CreatePrimitive(PrimitiveType.Plane);
+                        if (!RandomPlacement)
+                        {
+                            SetTransform(shape);
+                        }
+                        else
+                        {
+                            RandomizeTransform(shape);
+                        }
+                        break;
+                    }
+            }
         }
+
+    }
+
+    private void RandomizeTransform(GameObject NewShape)
+    {
+        float newPos = Random.Range(minPos, maxPos);
+        float newRot = Random.Range(0, maxRot);
+        float newScale = Random.Range(0, maxScale);
+
+        NewShape.transform.position = new Vector3(newPos, newPos, newPos);
+        NewShape.transform.eulerAngles = new Vector3(newRot, newRot, newRot);
+        NewShape.transform.localScale = new Vector3(newScale, newScale, newScale);
+        NewShape.name = shapeName;
     }
 
     private void SetTransform(GameObject NewShape)
