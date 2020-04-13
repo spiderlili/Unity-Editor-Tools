@@ -16,6 +16,7 @@ public class ShapeDesignerWindow : EditorWindow
     private Texture2D quadIcon;
     private Texture2D planeIcon;
 
+    private Color shapeColor = Color.white;
     private ShapeTypes shapeType;
     private Vector3 shapePosition;
     private Vector3 shapeRotation;
@@ -33,6 +34,10 @@ public class ShapeDesignerWindow : EditorWindow
     private float maxPos;
     private float maxRot;
     private float maxScale;
+
+    private bool ShowRandomSpawnManyOptions;
+    private int numOfShapes;
+    private Vector3 spacing;
 
     [MenuItem("Tools/Shape Designer")]
     static void OpenWindow()
@@ -126,6 +131,10 @@ public class ShapeDesignerWindow : EditorWindow
         EditorGUILayout.EndHorizontal();
 
         EditorGUILayout.BeginHorizontal();
+        shapeColor = EditorGUILayout.ColorField("Shape Color", shapeColor);
+        EditorGUILayout.EndHorizontal();
+
+        EditorGUILayout.BeginHorizontal();
         shapePosition = EditorGUILayout.Vector3Field("Shape Position", shapePosition);
         EditorGUILayout.EndHorizontal();
 
@@ -176,6 +185,19 @@ public class ShapeDesignerWindow : EditorWindow
             maxScale = EditorGUILayout.FloatField("Maximum Scale", maxScale);
         }
 
+        ShowRandomSpawnManyOptions = EditorGUILayout.Foldout(ShowRandomSpawnManyOptions, "Show Multiple Spacing Spawn Options");
+        if(ShowRandomSpawnManyOptions)
+        {
+            EditorGUILayout.BeginHorizontal();
+            numOfShapes = EditorGUILayout.IntField("Number of Shapes", numOfShapes);
+            EditorGUILayout.EndHorizontal();
+
+            EditorGUILayout.BeginHorizontal();
+            spacing = EditorGUILayout.Vector3Field("Spacing", spacing);
+            EditorGUILayout.EndHorizontal();
+
+        }
+
         EditorGUILayout.BeginHorizontal();
         if (GUILayout.Button("Randomise Variables")) //create button
         {
@@ -211,13 +233,29 @@ public class ShapeDesignerWindow : EditorWindow
             {
                 case ShapeTypes.Cube:
                     {
-                        GameObject shape = GameObject.CreatePrimitive(PrimitiveType.Cube);
                         if (!RandomPlacement)
                         {
-                            SetTransform(shape);
+                            if(numOfShapes > 0)
+                            {
+                                for(int i = 0; i < numOfShapes; i++)
+                                {
+                                    GameObject shape = GameObject.CreatePrimitive(PrimitiveType.Cube);
+                                    shape.transform.position = spacing * i;
+                                    var newMaterial = new Material(shape.GetComponent<Renderer>().sharedMaterial);
+                                    newMaterial.color = shapeColor;
+                                    shape.GetComponent<Renderer>().sharedMaterial = newMaterial;
+                                    shape.name = shapeName + " " + i.ToString();
+                                }
+                            }
+                            else
+                            {
+                                GameObject shape = GameObject.CreatePrimitive(PrimitiveType.Cube);
+                                SetTransform(shape);
+                            }                            
                         }
                         else
                         {
+                            GameObject shape = GameObject.CreatePrimitive(PrimitiveType.Cube);
                             RandomizeTransform(shape);
                         }
                         break;
@@ -298,6 +336,10 @@ public class ShapeDesignerWindow : EditorWindow
         float newRot = Random.Range(0, maxRot);
         float newScale = Random.Range(0, maxScale);
 
+        var newMaterial = new Material(NewShape.GetComponent<Renderer>().sharedMaterial);
+        newMaterial.color = shapeColor;
+        NewShape.GetComponent<Renderer>().sharedMaterial = newMaterial;
+
         NewShape.transform.position = new Vector3(newPos, newPos, newPos);
         NewShape.transform.eulerAngles = new Vector3(newRot, newRot, newRot);
         NewShape.transform.localScale = new Vector3(newScale, newScale, newScale);
@@ -308,6 +350,11 @@ public class ShapeDesignerWindow : EditorWindow
     {
         NewShape.transform.position = shapePosition;
         NewShape.transform.eulerAngles = shapeRotation;
+
+        var newMaterial = new Material(NewShape.GetComponent<Renderer>().sharedMaterial);
+        newMaterial.color = shapeColor;
+        NewShape.GetComponent<Renderer>().sharedMaterial = newMaterial;
+
         if (isScaleNonUniform == false)
         {
             NewShape.transform.localScale = new Vector3(shapeScaleUniform, shapeScaleUniform, shapeScaleUniform);
