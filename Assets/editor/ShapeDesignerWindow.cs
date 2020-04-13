@@ -28,6 +28,15 @@ public class ShapeDesignerWindow : EditorWindow
     private bool isSpawnAtRandomRotation = false;
     private int numberOfObjectsToSpawn;
 
+
+    //randomly place one shape in the world
+    private bool ShowRandomOptions; //collapsible options
+    private float minPos;
+    private float maxPos;
+    private float minRot;
+    private float maxRot;
+    private float maxScale;
+
     [MenuItem("Tools/Shape Designer")]
     static void OpenWindow()
     {
@@ -160,6 +169,23 @@ public class ShapeDesignerWindow : EditorWindow
             isSpawnAtRandomRotation = EditorGUILayout.Toggle("Spawn Objects at Random Rotation", isSpawnAtRandomRotation);
             isSpawnAtRandomScale = EditorGUILayout.Toggle("Spawn Objects at Random Scale", isSpawnAtRandomScale);
         }
+
+        ShowRandomOptions = EditorGUILayout.Foldout(ShowRandomOptions, "Show Variable Options");
+        if(ShowRandomOptions)
+        {
+            minPos = EditorGUILayout.FloatField("Minimum Position", minPos);
+            maxPos = EditorGUILayout.FloatField("Maximum Position", maxPos);
+            minRot = EditorGUILayout.FloatField("Minimum Rotation", minRot);
+            maxRot = EditorGUILayout.FloatField("Maximum Rotation", maxRot);
+            maxScale = EditorGUILayout.FloatField("Maximum Scale", maxScale);
+        }
+
+        EditorGUILayout.BeginHorizontal();
+        if (GUILayout.Button("Randomise Variables")) //create button
+        {
+            CreateShape();
+        }
+        EditorGUILayout.EndHorizontal();
 
         EditorGUILayout.BeginHorizontal();
         if(GUILayout.Button("Spawn Shape")) //create button
