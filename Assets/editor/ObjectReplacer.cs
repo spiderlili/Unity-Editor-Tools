@@ -11,7 +11,7 @@ public class ObjectReplacer : ScriptableWizard
     static void CreateWizard()
     {
         //type of wizard = ObjectReplacer class, when Ynity instantiates a new ScriptableWizard it should be of this type
-        ScriptableWizard.DisplayWizard("Object Replacer", typeof(ObjectReplacer), "Replace and close");
+        ScriptableWizard.DisplayWizard("Object Replacer", typeof(ObjectReplacer), "Replace and close", "Replace");
     }
 
     private void OnWizardCreate() //check if the error string contains any errors before it continues. 
@@ -44,6 +44,16 @@ public class ObjectReplacer : ScriptableWizard
 
         Undo.RegisterCreatedObjectUndo(newCopy, "Replaced Object"); //registers undo action for the newly created object & label
         Undo.DestroyObjectImmediate(transform.gameObject); //need to pass in gameobject - can't delete based on transform
+    }
+
+    private void OnWizardOtherButton()
+    {
+        if (errorString != "")
+        {
+            return;
+        }
+        ReplaceAll();
+
     }
 
     private void OnWizardUpdate()
