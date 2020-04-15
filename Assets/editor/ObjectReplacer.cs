@@ -14,8 +14,12 @@ public class ObjectReplacer : ScriptableWizard
         ScriptableWizard.DisplayWizard("Object Replacer", typeof(ObjectReplacer), "Replace and close");
     }
 
-    private void OnWizardCreate()
+    private void OnWizardCreate() //check if the error string contains any errors before it continues. 
     {
+        if(errorString != "")
+        {
+            return;
+        }
         ReplaceAll();
     }
 
@@ -40,5 +44,14 @@ public class ObjectReplacer : ScriptableWizard
 
         Undo.RegisterCreatedObjectUndo(newCopy, "Replaced Object"); //registers undo action for the newly created object & label
         Undo.DestroyObjectImmediate(transform.gameObject); //need to pass in gameobject - can't delete based on transform
+    }
+
+    private void OnWizardUpdate()
+    {
+        errorString = "";
+        if(replacementPrefab == null)
+        {
+            errorString += "No replacement object is selected\n"; //add a new error msg on the next line
+        }
     }
 }
