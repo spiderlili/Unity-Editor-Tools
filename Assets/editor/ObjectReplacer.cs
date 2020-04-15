@@ -48,10 +48,25 @@ public class ObjectReplacer : ScriptableWizard
 
     private void OnWizardUpdate()
     {
+        Transform[] transforms = Selection.GetTransforms(SelectionMode.TopLevel | SelectionMode.ExcludePrefab);
         errorString = "";
+        helpString = transforms.Length + " objects selected for replacement";
+        isValid = true;
+
         if(replacementPrefab == null)
         {
             errorString += "No replacement object is selected\n"; //add a new error msg on the next line
+            isValid = false;
         }
+        if (transforms.Length < 1)
+        {
+            errorString += "No object is selected for replacement\n";
+            isValid = false;
+        }
+    }
+
+    private void OnSelectionChange()
+    {
+        OnWizardUpdate();
     }
 }
