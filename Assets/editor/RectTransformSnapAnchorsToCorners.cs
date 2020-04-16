@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace EditorTools
 {
-    public class RectTransformAnchorTools
+    public class RectTransformSnapAnchorsToCorners
     {
         private static Rect _anchorRect = new Rect();
         private static RectTransform _currentRectTransform;
