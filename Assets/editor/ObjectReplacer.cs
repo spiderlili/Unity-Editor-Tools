@@ -6,6 +6,7 @@ using UnityEngine;
 public class ObjectReplacer : ScriptableWizard
 {
     public GameObject replacementPrefab;
+    public bool ShowDialogs = true;
     // priority to separate from other utilities under Tools
     [MenuItem("Tools/Replace Selected Objects", false, 1000)]
     static void CreateWizard()
@@ -31,12 +32,22 @@ public class ObjectReplacer : ScriptableWizard
         }          
         //iterate all objects selected. prevent selection from project / assets
         Transform[] transforms = Selection.GetTransforms(SelectionMode.TopLevel | SelectionMode.ExcludePrefab);
+
+        int countReplacedObjects = 0;
         foreach(Transform t in transforms)
         {
+           if(EditorUtility.DisplayCancelableProgressBar("working..", "replacing " + t.name, countReplacedObjects / (float)transforms.Length))
+            {
+                break;
+            }
+
             ReplaceObject(t);
+            countReplacedObjects++;
         }
+
+        EditorUtility.ClearProgressBar();
         ShowNotification(new GUIContent("Done"));
-        EditorUtility.DisplayDialog("Finished replacing", transforms.Length + " objects were successfully replaced!", "OK");
+        EditorUtility.DisplayDialog("Finished replacing", countReplacedObjects + " objects were successfully replaced!", "OK");
     }
 
     private void ReplaceObject(Transform transform)
