@@ -25,12 +25,18 @@ public class ObjectReplacer : ScriptableWizard
 
     private void ReplaceAll()
     {
+        if (!EditorUtility.DisplayDialog("Are you sure?", "Are you sure you wish to replace all the selected objects with \"" + replacementPrefab.name + "\"?", "Yes", "Cancel")) 
+        {
+            return;
+        }          
         //iterate all objects selected. prevent selection from project / assets
         Transform[] transforms = Selection.GetTransforms(SelectionMode.TopLevel | SelectionMode.ExcludePrefab);
         foreach(Transform t in transforms)
         {
             ReplaceObject(t);
         }
+        ShowNotification(new GUIContent("Done"));
+        EditorUtility.DisplayDialog("Finished replacing", transforms.Length + " objects were successfully replaced!", "OK");
     }
 
     private void ReplaceObject(Transform transform)
