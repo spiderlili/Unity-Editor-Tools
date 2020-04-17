@@ -6,13 +6,20 @@ using UnityEngine;
 public class ObjectReplacer : ScriptableWizard
 {
     public GameObject replacementPrefab;
-    public bool ShowDialogs = true;
+    public bool ShowHelperDialogs = true;
+    public static string strShowDialogsKey = "ObjectReplacer.showDialogs";
+
     // priority to separate from other utilities under Tools
     [MenuItem("Tools/Replace Selected Objects", false, 1000)]
     static void CreateWizard()
     {
         //type of wizard = ObjectReplacer class, when Ynity instantiates a new ScriptableWizard it should be of this type
         ScriptableWizard.DisplayWizard("Object Replacer", typeof(ObjectReplacer), "Replace and close", "Replace");
+    }
+
+    private void OnEnable()
+    {
+        EditorPrefs.GetBool(strShowDialogsKey, ShowHelperDialogs);
     }
 
     private void OnWizardCreate() //check if the error string contains any errors before it continues. 
@@ -26,10 +33,14 @@ public class ObjectReplacer : ScriptableWizard
 
     private void ReplaceAll()
     {
-        if (!EditorUtility.DisplayDialog("Are you sure?", "Are you sure you wish to replace all the selected objects with \"" + replacementPrefab.name + "\"?", "Yes", "Cancel")) 
+        if (ShowHelperDialogs)
         {
-            return;
-        }          
+            if (!EditorUtility.DisplayDialog("Are you sure?", "Are you sure you wish to replace all the selected objects with \"" + replacementPrefab.name + "\"?", "Yes", "Cancel"))
+            {
+                return;
+            }
+        }
+          
         //iterate all objects selected. prevent selection from project / assets
         Transform[] transforms = Selection.GetTransforms(SelectionMode.TopLevel | SelectionMode.ExcludePrefab);
 
@@ -47,7 +58,11 @@ public class ObjectReplacer : ScriptableWizard
 
         EditorUtility.ClearProgressBar();
         ShowNotification(new GUIContent("Done"));
-        EditorUtility.DisplayDialog("Finished replacing", countReplacedObjects + " objects were successfully replaced!", "OK");
+
+        if (ShowHelperDialogs)
+        {
+            EditorUtility.DisplayDialog("Finished replacing", countReplacedObjects + " objects were successfully replaced!", "OK");
+        }
     }
 
     private void ReplaceObject(Transform transform)
@@ -90,6 +105,8 @@ public class ObjectReplacer : ScriptableWizard
             errorString += "No object is selected for replacement\n";
             isValid = false;
         }
+
+        EditorPrefs.SetBool(strShowDialogsKey, ShowHelperDialogs);
     }
 
     private void OnSelectionChange()
