@@ -9,7 +9,7 @@ namespace EditorTools
         private static RectTransform _currentRectTransform;
         private static RectTransform _parentRectTransform;
 
-        [MenuItem("Tools/UI/Snap Anchors To Corners %&t")]
+        [MenuItem("Tools/UI/Snap Anchors To Corners %&t")] //ctrl + alt + t
         public static void SnapAnchors()
         {
             TryToGetRectTransform();

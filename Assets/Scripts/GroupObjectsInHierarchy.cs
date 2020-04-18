@@ -7,11 +7,12 @@ using System.Collections.Generic;
 //group objects in the hierarchy using ctrl+g
 public static class GroupObjectsInHierarchy
 {
-	[MenuItem("Edit/Group %g", true)]
+	[MenuItem("Edit/Group %g", true)] //ctrl + g
 	public static bool GroupTest()
 	{
 		return Selection.activeTransform != null;
 	}
+
 	[MenuItem("Edit/Group %g")]
 	public static void Group()
 	{
