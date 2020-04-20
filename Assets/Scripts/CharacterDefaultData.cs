@@ -35,10 +35,7 @@ public class CharacterDefaultData : ScriptableObject
     public RangerSpecialMove1 _rangerSpecialMove1;
     public RogueSpecialMove1 _rogueSpecialMove1;
 
-    public Texture2D _currentCharacterImage;
-    public Rect _characterImageSection; //size of canvas for portrait
-    public Texture2D _characterImageTexture;
-
-    [Multiline]
+    [Multiline(10)]
+    [TextArea(10, 100)]
     public string _characterBio;
 }

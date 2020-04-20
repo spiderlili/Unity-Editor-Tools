@@ -12,6 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 087fe75de586cec459548c3c4b8e950f, type: 3}
   m_Name: DnD Character Settings Data
   m_EditorClassIdentifier: 
-  HighValueColor: {r: 0, g: 1, b: 0, a: 1}
+  HighValueColor: {r: 0.119199276, g: 1, b: 0, a: 1}
   MidValueColor: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
   LowValueColor: {r: 1, g: 0, b: 0, a: 1}

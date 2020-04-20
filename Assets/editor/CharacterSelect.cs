@@ -31,9 +31,13 @@ public class CharacterSelect : EditorWindow
     private Texture2D _currentCharacterImage;
     private Rect _characterImageSection; //size of canvas for portrait
     private Texture2D _characterImageTexture;
+    private Vector2 _scroll;
 
     [Multiline]
     private string _characterBio;
+
+    private CharacterDefaultData _characterDefaultData;
+    private CharacterClass _currentClass;
 
     private Color _highValueColor = Color.green;
     private Color _midValueColor = Color.yellow;
@@ -49,10 +53,11 @@ public class CharacterSelect : EditorWindow
 
     private void OnEnable()
     {
-        _characterWindowSettings = Resources.Load<CharacterWindowDefaultSettings>("DnD Character Settings Data");
+        _characterWindowSettings = Resources.Load<CharacterWindowDefaultSettings>("DnDCharacterTemplates/DnD Character Settings Data");
         _highValueColor = _characterWindowSettings.HighValueColor;
         _midValueColor = _characterWindowSettings.MidValueColor;
         _lowValueColor = _characterWindowSettings.LowValueColor;
+        CheckData();
     }
 
     private void CheckClass()
@@ -67,7 +72,7 @@ public class CharacterSelect : EditorWindow
             }
                 break;
             case CharacterClass.BARD:
-                _currentCharacterImage = Resources.Load<Texture2D>("icons/DnDCharacters/icon_fighter");
+                _currentCharacterImage = Resources.Load<Texture2D>("icons/DnDCharacters/icon_bard");
                 break;
 
             case CharacterClass.ROGUE:
@@ -87,6 +92,52 @@ public class CharacterSelect : EditorWindow
                 break;
         }
 
+    }
+
+    private void CheckData()
+    {
+        switch (_characterClass)
+        {
+            case CharacterClass.FIGHTER:
+                _characterDefaultData = Resources.Load<CharacterDefaultData>("DnDCharacterTemplates/Character_Fighter_Default");
+                _fighterSpecialMove1 = _characterDefaultData._fighterSpecialMove1;
+                break;
+            case CharacterClass.BARD:
+                _characterDefaultData = Resources.Load<CharacterDefaultData>("DnDCharacterTemplates/Character_Bard_Default");
+                _bardSpecialMove1 = _characterDefaultData._bardSpecialMove1;
+                break;
+
+            case CharacterClass.ROGUE:
+                _characterDefaultData = Resources.Load<CharacterDefaultData>("DnDCharacterTemplates/Character_Rogue_Default");
+                _rogueSpecialMove1 = _characterDefaultData._rogueSpecialMove1;
+                break;
+
+            case CharacterClass.CLERIC:
+                _characterDefaultData = Resources.Load<CharacterDefaultData>("DnDCharacterTemplates/Character_Cleric_Default");
+                _clericSpecialMove1 = _characterDefaultData._clericSpecialMove1;
+                break;
+
+            case CharacterClass.RANGER:
+                _characterDefaultData = Resources.Load<CharacterDefaultData>("DnDCharacterTemplates/Character_Ranger_Default");
+                _rangerSpecialMove1 = _characterDefaultData._rangerSpecialMove1;
+                break;
+
+            case CharacterClass.WIZARD:
+                _characterDefaultData = Resources.Load<CharacterDefaultData>("DnDCharacterTemplates/Character_Wizard_Default");
+                _wizardSpecialMove1 = _characterDefaultData._wizardSpecialMove1;
+                break;
+        }
+        _characterName = _characterDefaultData._characterName;
+        _gender = _characterDefaultData._gender;
+        _healthPoints = _characterDefaultData._healthPoints;
+        _magicPoints = _characterDefaultData._magicPoints;
+        _strength = _characterDefaultData._strength;
+        _dexterity = _characterDefaultData._dexterity;
+        _constitution = _characterDefaultData._constitution;
+        _intelligence = _characterDefaultData._intelligence;
+        _wisdom = _characterDefaultData._wisdom;
+        _charisma = _characterDefaultData._charisma;
+        _characterBio = _characterDefaultData._characterBio;
     }
 
     private void DrawLayouts()
@@ -121,6 +172,13 @@ public class CharacterSelect : EditorWindow
         CheckClass();
         DrawLayouts();
         GUILayout.Space(200);
+
+        //make sure it's only called once
+        if (_currentClass != _characterClass)
+        {
+            _currentClass = _characterClass;
+            CheckData();
+        }
 
         EditorGUILayout.BeginHorizontal();
         GUILayout.Label("Class");
@@ -185,17 +243,58 @@ public class CharacterSelect : EditorWindow
         EditorGUILayout.EndHorizontal();
 
         EditorGUILayout.BeginHorizontal();
+        GUI.color = Color.white;
         GUILayout.Label("Character Bio");
         EditorGUILayout.EndHorizontal();
 
-        EditorGUILayout.BeginHorizontal();
-        _characterBio = EditorGUILayout.TextArea(_characterBio, GUILayout.Width(position.width-10), GUILayout.Height(60));
-        EditorGUILayout.EndHorizontal();
+        _scroll = EditorGUILayout.BeginScrollView(_scroll);
+        EditorStyles.textField.wordWrap = true;
+        _characterBio = EditorGUILayout.TextArea(_characterBio, GUILayout.Height(60));
+        EditorGUILayout.EndScrollView();
 
-        EditorGUILayout.BeginHorizontal();
-        GUILayout.Label("Special Move 1");
-        _fighterSpecialMove1 = (FighterSpecialMove1)EditorGUILayout.EnumPopup(_fighterSpecialMove1);
-        EditorGUILayout.EndHorizontal();
+        switch (_characterClass)
+        {
+            case CharacterClass.FIGHTER:
+                EditorGUILayout.BeginHorizontal();
+                GUILayout.Label("Special Move 1");
+                _fighterSpecialMove1 = (FighterSpecialMove1)EditorGUILayout.EnumPopup(_fighterSpecialMove1);
+                EditorGUILayout.EndHorizontal();
+                break;
+            case CharacterClass.BARD:
+                EditorGUILayout.BeginHorizontal();
+                GUILayout.Label("Special Move 1");
+                _fighterSpecialMove1 = (FighterSpecialMove1)EditorGUILayout.EnumPopup(_bardSpecialMove1);
+                EditorGUILayout.EndHorizontal();
+                break;
+
+            case CharacterClass.ROGUE:
+                EditorGUILayout.BeginHorizontal();
+                GUILayout.Label("Special Move 1");
+                _fighterSpecialMove1 = (FighterSpecialMove1)EditorGUILayout.EnumPopup(_rogueSpecialMove1);
+                EditorGUILayout.EndHorizontal();
+                break;
+
+            case CharacterClass.CLERIC:
+                EditorGUILayout.BeginHorizontal();
+                GUILayout.Label("Special Move 1");
+                _fighterSpecialMove1 = (FighterSpecialMove1)EditorGUILayout.EnumPopup(_clericSpecialMove1);
+                EditorGUILayout.EndHorizontal();
+                break;
+
+            case CharacterClass.RANGER:
+                EditorGUILayout.BeginHorizontal();
+                GUILayout.Label("Special Move 1");
+                _fighterSpecialMove1 = (FighterSpecialMove1)EditorGUILayout.EnumPopup(_rangerSpecialMove1);
+                EditorGUILayout.EndHorizontal();
+                break;
+
+            case CharacterClass.WIZARD:
+                EditorGUILayout.BeginHorizontal();
+                GUILayout.Label("Special Move 1");
+                _fighterSpecialMove1 = (FighterSpecialMove1)EditorGUILayout.EnumPopup(_wizardSpecialMove1);
+                EditorGUILayout.EndHorizontal();
+                break;
+        }
 
         EditorGUILayout.BeginHorizontal();
         _highValueColor = EditorGUILayout.ColorField("High Value Color", _highValueColor);

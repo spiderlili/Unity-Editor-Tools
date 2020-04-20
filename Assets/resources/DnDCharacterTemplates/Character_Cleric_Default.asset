@@ -10,9 +10,9 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: b2dc11881d8dd174d9cbb42739f0c152, type: 3}
-  m_Name: Default_Fighter
+  m_Name: Character_Cleric_Default
   m_EditorClassIdentifier: 
-  _characterClass: 0
+  _characterClass: 2
   _characterName: 
   _gender: 0
   _healthPoints: 0
@@ -29,12 +29,4 @@ MonoBehaviour:
   _wizardSpecialMove1: 0
   _rangerSpecialMove1: 0
   _rogueSpecialMove1: 0
-  _currentCharacterImage: {fileID: 0}
-  _characterImageSection:
-    serializedVersion: 2
-    x: 0
-    y: 0
-    width: 0
-    height: 0
-  _characterImageTexture: {fileID: 0}
   _characterBio: 

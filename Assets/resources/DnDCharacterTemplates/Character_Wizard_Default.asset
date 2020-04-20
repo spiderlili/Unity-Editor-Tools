@@ -1,0 +1,32 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b2dc11881d8dd174d9cbb42739f0c152, type: 3}
+  m_Name: Character_Wizard_Default
+  m_EditorClassIdentifier: 
+  _characterClass: 5
+  _characterName: 
+  _gender: 0
+  _healthPoints: 0
+  _magicPoints: 0
+  _strength: 0
+  _dexterity: 0
+  _constitution: 0
+  _intelligence: 0
+  _wisdom: 0
+  _charisma: 0
+  _fighterSpecialMove1: 0
+  _bardSpecialMove1: 0
+  _clericSpecialMove1: 0
+  _wizardSpecialMove1: 0
+  _rangerSpecialMove1: 0
+  _rogueSpecialMove1: 0
+  _characterBio: 
