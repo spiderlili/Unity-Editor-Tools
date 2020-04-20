@@ -60,6 +60,35 @@ public class CharacterSelect : EditorWindow
         CheckData();
     }
 
+    private void CheckHeaderFont()
+    {
+        switch (_characterClass)
+        {
+            case CharacterClass.FIGHTER:
+                //TODO: GUILAYOUT LABEL
+                break;
+            case CharacterClass.BARD:
+
+                break;
+
+            case CharacterClass.ROGUE:
+
+                break;
+
+            case CharacterClass.CLERIC:
+
+                break;
+
+            case CharacterClass.RANGER:
+
+                break;
+
+            case CharacterClass.WIZARD:
+
+                break;
+        }
+    }
+
     private void CheckClass()
     {
         switch (_characterClass)
