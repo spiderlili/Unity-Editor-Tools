@@ -13,20 +13,23 @@ MonoBehaviour:
   m_Name: Character_Cleric_Default
   m_EditorClassIdentifier: 
   _characterClass: 2
-  _characterName: 
-  _gender: 0
-  _healthPoints: 0
-  _magicPoints: 0
-  _strength: 0
-  _dexterity: 0
-  _constitution: 0
-  _intelligence: 0
-  _wisdom: 0
-  _charisma: 0
+  _characterName: Hel
+  _gender: 1
+  _healthPoints: 52
+  _magicPoints: 33
+  _strength: 81
+  _dexterity: 59
+  _constitution: 78
+  _intelligence: 42
+  _wisdom: 87
+  _charisma: 66
   _fighterSpecialMove1: 0
   _bardSpecialMove1: 0
   _clericSpecialMove1: 0
   _wizardSpecialMove1: 0
   _rangerSpecialMove1: 0
   _rogueSpecialMove1: 0
-  _characterBio: 
+  _characterBio: The daughter of Loki and the witch-giant Angrboda, she rules the
+    underworld of the dead of Midgard. Hel appears as a thin woman, beautiful on
+    one side but like a rotting zombie on the other. For this horrid visage she is
+    outcast among the gods, but admired by the dead.

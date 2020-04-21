@@ -13,20 +13,23 @@ MonoBehaviour:
   m_Name: Character_Fighter_Default
   m_EditorClassIdentifier: 
   _characterClass: 0
-  _characterName: 
-  _gender: 0
-  _healthPoints: 0
-  _magicPoints: 0
-  _strength: 0
-  _dexterity: 0
-  _constitution: 0
-  _intelligence: 0
-  _wisdom: 0
-  _charisma: 0
+  _characterName: Sif
+  _gender: 1
+  _healthPoints: 80
+  _magicPoints: 81
+  _strength: 73
+  _dexterity: 83
+  _constitution: 79
+  _intelligence: 78
+  _wisdom: 65
+  _charisma: 79
   _fighterSpecialMove1: 0
   _bardSpecialMove1: 0
   _clericSpecialMove1: 0
   _wizardSpecialMove1: 0
   _rangerSpecialMove1: 0
   _rogueSpecialMove1: 0
-  _characterBio: 
+  _characterBio: The Goddess of Excellence and Skill in Battle. Sif enjoys battle,
+    and occasionally sends forays into the Blood War out of boredom. Her hair is
+    made of pure gold, crafted by the dwarves and enchanted to grow in place of her
+    real hair, after the trickster god Loki cut off her original hair as a prank.

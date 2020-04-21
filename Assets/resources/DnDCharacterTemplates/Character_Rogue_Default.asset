@@ -10,23 +10,26 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: b2dc11881d8dd174d9cbb42739f0c152, type: 3}
-  m_Name: Character_Bard_Default
+  m_Name: Character_Rogue_Default
   m_EditorClassIdentifier: 
-  _characterClass: 1
-  _characterName: 
-  _gender: 1
-  _healthPoints: 0
-  _magicPoints: 0
-  _strength: 0
-  _dexterity: 0
-  _constitution: 0
-  _intelligence: 0
-  _wisdom: 0
-  _charisma: 0
+  _characterClass: 4
+  _characterName: Mirt
+  _gender: 0
+  _healthPoints: 85
+  _magicPoints: 77
+  _strength: 54
+  _dexterity: 64
+  _constitution: 75
+  _intelligence: 66
+  _wisdom: 57
+  _charisma: 74
   _fighterSpecialMove1: 0
   _bardSpecialMove1: 0
   _clericSpecialMove1: 0
   _wizardSpecialMove1: 0
   _rangerSpecialMove1: 0
   _rogueSpecialMove1: 0
-  _characterBio: 
+  _characterBio: 'Mirt "the Moneylender" made his fortune as an adventurer in Undermountain
+    after a colorful career as a mercenary general. Outwardly Mirt appeared to be
+    a loud, tipsy braggart, but only a foreigner to Waterdeep would underestimate
+    his agility and cunning. '

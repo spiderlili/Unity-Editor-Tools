@@ -60,31 +60,31 @@ public class CharacterSelect : EditorWindow
         CheckData();
     }
 
-    private void CheckHeaderFont()
+    private void CheckHeaderStyle()
     {
         switch (_characterClass)
         {
             case CharacterClass.FIGHTER:
-                //TODO: GUILAYOUT LABEL
+                GUILayout.Label("Fighter", _characterWindowSettings.ClassFonts.GetStyle("Fighter Style"));
                 break;
             case CharacterClass.BARD:
-
+                GUILayout.Label("Bard", _characterWindowSettings.ClassFonts.GetStyle("Bard Style"));
                 break;
 
             case CharacterClass.ROGUE:
-
+                GUILayout.Label("Rogue", _characterWindowSettings.ClassFonts.GetStyle("Rogue Style"));
                 break;
 
             case CharacterClass.CLERIC:
-
+                GUILayout.Label("Cleric", _characterWindowSettings.ClassFonts.GetStyle("Cleric Style"));
                 break;
 
             case CharacterClass.RANGER:
-
+                GUILayout.Label("Ranger", _characterWindowSettings.ClassFonts.GetStyle("Ranger Style"));
                 break;
 
             case CharacterClass.WIZARD:
-
+                GUILayout.Label("Wizard", _characterWindowSettings.ClassFonts.GetStyle("Wizard Style"));
                 break;
         }
     }
@@ -171,10 +171,10 @@ public class CharacterSelect : EditorWindow
 
     private void DrawLayouts()
     {
-        _characterImageSection.x = Screen.width / 2.4f;
+        _characterImageSection.x = Screen.width / 2.5f;
         _characterImageSection.y = 50;
-        _characterImageSection.width = 100;
-        _characterImageSection.height = 100;
+        _characterImageSection.width = 128;
+        _characterImageSection.height = 128;
         GUI.DrawTexture(_characterImageSection, _currentCharacterImage);
     }
 
@@ -200,6 +200,7 @@ public class CharacterSelect : EditorWindow
     {
         CheckClass();
         DrawLayouts();
+        CheckHeaderStyle();
         GUILayout.Space(200);
 
         //make sure it's only called once
