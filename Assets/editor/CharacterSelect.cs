@@ -210,8 +210,14 @@ public class CharacterSelect : EditorWindow
         scrpitableObjectAsset._wisdom = _wisdom;
         scrpitableObjectAsset._charisma = _charisma;
         scrpitableObjectAsset._characterBio = _characterBio;
+        scrpitableObjectAsset._fighterSpecialMove1 = _characterDefaultData._fighterSpecialMove1;
+        scrpitableObjectAsset._rangerSpecialMove1 = _characterDefaultData._rangerSpecialMove1;
+        scrpitableObjectAsset._bardSpecialMove1 = _characterDefaultData._bardSpecialMove1;
+        scrpitableObjectAsset._rogueSpecialMove1 = _characterDefaultData._rogueSpecialMove1;
+        scrpitableObjectAsset._wizardSpecialMove1 = _characterDefaultData._wizardSpecialMove1;
+        scrpitableObjectAsset._clericSpecialMove1 = _characterDefaultData._clericSpecialMove1;
 
-        AssetDatabase.CreateAsset(scrpitableObjectAsset, "Assets/NewCharacterScriptableObjectC.asset");
+        AssetDatabase.CreateAsset(scrpitableObjectAsset, "Assets/ScriptableObjects/" + _characterName + ".asset");
         AssetDatabase.SaveAssets();
     }
     private void OnGUI()
@@ -347,13 +353,6 @@ public class CharacterSelect : EditorWindow
         EditorGUILayout.EndHorizontal();
 
         EditorGUILayout.BeginHorizontal();
-        if(GUILayout.Button("Create Character Template"))
-        {
-            CreateCharacterScriptableObject();
-        }
-        EditorGUILayout.EndHorizontal();
-
-        EditorGUILayout.BeginHorizontal();
         _highValueColor = EditorGUILayout.ColorField("High Value Color", _highValueColor);
         EditorGUILayout.EndHorizontal();
         EditorGUILayout.BeginHorizontal();
@@ -363,5 +362,11 @@ public class CharacterSelect : EditorWindow
         _lowValueColor = EditorGUILayout.ColorField("Low Value Color", _lowValueColor);
         EditorGUILayout.EndHorizontal();
 
+        EditorGUILayout.BeginHorizontal();
+        if (GUILayout.Button("Create Character Template"))
+        {
+            CreateCharacterScriptableObject();
+        }
+        EditorGUILayout.EndHorizontal();
     }
 }
