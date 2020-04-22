@@ -363,7 +363,7 @@ public class CharacterSelect : EditorWindow
         EditorGUILayout.EndHorizontal();
 
         EditorGUILayout.BeginHorizontal();
-        if (GUILayout.Button("Create Character Template"))
+        if (GUILayout.Button("Create Character Template ScriptableObject"))
         {
             CreateCharacterScriptableObject();
         }
