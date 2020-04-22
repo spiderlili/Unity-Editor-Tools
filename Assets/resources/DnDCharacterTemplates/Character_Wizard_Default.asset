@@ -15,14 +15,14 @@ MonoBehaviour:
   _characterClass: 5
   _characterName: Asgorath
   _gender: 2
-  _healthPoints: 67
-  _magicPoints: 88
-  _strength: 85
-  _dexterity: 59
-  _constitution: 72
-  _intelligence: 85
-  _wisdom: 93
-  _charisma: 81
+  _healthPoints: 100
+  _magicPoints: 100
+  _strength: 32
+  _dexterity: 51
+  _constitution: 55
+  _intelligence: 80
+  _wisdom: 70
+  _charisma: 50
   _fighterSpecialMove1: 0
   _bardSpecialMove1: 0
   _clericSpecialMove1: 0

@@ -15,14 +15,14 @@ MonoBehaviour:
   _characterClass: 4
   _characterName: Mirt
   _gender: 0
-  _healthPoints: 85
-  _magicPoints: 77
-  _strength: 54
-  _dexterity: 64
-  _constitution: 75
-  _intelligence: 66
-  _wisdom: 57
-  _charisma: 74
+  _healthPoints: 100
+  _magicPoints: 100
+  _strength: 32
+  _dexterity: 70
+  _constitution: 55
+  _intelligence: 56
+  _wisdom: 58
+  _charisma: 40
   _fighterSpecialMove1: 0
   _bardSpecialMove1: 0
   _clericSpecialMove1: 0

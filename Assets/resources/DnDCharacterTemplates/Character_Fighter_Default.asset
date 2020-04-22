@@ -15,14 +15,14 @@ MonoBehaviour:
   _characterClass: 0
   _characterName: Sif
   _gender: 1
-  _healthPoints: 80
-  _magicPoints: 81
-  _strength: 73
-  _dexterity: 83
-  _constitution: 79
-  _intelligence: 78
-  _wisdom: 65
-  _charisma: 79
+  _healthPoints: 100
+  _magicPoints: 100
+  _strength: 75
+  _dexterity: 32
+  _constitution: 56
+  _intelligence: 52
+  _wisdom: 50
+  _charisma: 55
   _fighterSpecialMove1: 0
   _bardSpecialMove1: 0
   _clericSpecialMove1: 0

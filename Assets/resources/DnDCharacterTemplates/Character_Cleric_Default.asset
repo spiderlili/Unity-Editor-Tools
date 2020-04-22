@@ -15,14 +15,14 @@ MonoBehaviour:
   _characterClass: 2
   _characterName: Hel
   _gender: 1
-  _healthPoints: 52
-  _magicPoints: 33
-  _strength: 81
-  _dexterity: 59
-  _constitution: 78
-  _intelligence: 42
-  _wisdom: 87
-  _charisma: 66
+  _healthPoints: 100
+  _magicPoints: 100
+  _strength: 40
+  _dexterity: 32
+  _constitution: 50
+  _intelligence: 34
+  _wisdom: 66
+  _charisma: 48
   _fighterSpecialMove1: 0
   _bardSpecialMove1: 0
   _clericSpecialMove1: 0

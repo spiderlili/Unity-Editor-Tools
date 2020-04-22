@@ -15,14 +15,14 @@ MonoBehaviour:
   _characterClass: 1
   _characterName: Gunnhild
   _gender: 1
-  _healthPoints: 85
-  _magicPoints: 62
-  _strength: 72
-  _dexterity: 63
-  _constitution: 49
-  _intelligence: 72
-  _wisdom: 73
-  _charisma: 62
+  _healthPoints: 100
+  _magicPoints: 100
+  _strength: 32
+  _dexterity: 56
+  _constitution: 52
+  _intelligence: 49
+  _wisdom: 40
+  _charisma: 75
   _fighterSpecialMove1: 0
   _bardSpecialMove1: 0
   _clericSpecialMove1: 0

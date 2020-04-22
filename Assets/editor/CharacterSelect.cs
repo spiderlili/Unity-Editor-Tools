@@ -196,6 +196,24 @@ public class CharacterSelect : EditorWindow
         return currentColor;
     }
 
+    private void CreateCharacterScriptableObject()
+    {
+        CharacterDefaultData scrpitableObjectAsset = ScriptableObject.CreateInstance<CharacterDefaultData>();
+        scrpitableObjectAsset._characterName = _characterName;
+        scrpitableObjectAsset._gender = _gender;
+        scrpitableObjectAsset._healthPoints = _healthPoints;
+        scrpitableObjectAsset._magicPoints = _magicPoints;
+        scrpitableObjectAsset._strength = _strength;
+        scrpitableObjectAsset._dexterity = _dexterity;
+        scrpitableObjectAsset._constitution = _constitution;
+        scrpitableObjectAsset._intelligence = _intelligence;
+        scrpitableObjectAsset._wisdom = _wisdom;
+        scrpitableObjectAsset._charisma = _charisma;
+        scrpitableObjectAsset._characterBio = _characterBio;
+
+        AssetDatabase.CreateAsset(scrpitableObjectAsset, "Assets/NewCharacterScriptableObjectC.asset");
+        AssetDatabase.SaveAssets();
+    }
     private void OnGUI()
     {
         CheckClass();
@@ -282,6 +300,7 @@ public class CharacterSelect : EditorWindow
         _characterBio = EditorGUILayout.TextArea(_characterBio, GUILayout.Height(60));
         EditorGUILayout.EndScrollView();
 
+        EditorGUILayout.BeginHorizontal();
         switch (_characterClass)
         {
             case CharacterClass.FIGHTER:
@@ -325,6 +344,14 @@ public class CharacterSelect : EditorWindow
                 EditorGUILayout.EndHorizontal();
                 break;
         }
+        EditorGUILayout.EndHorizontal();
+
+        EditorGUILayout.BeginHorizontal();
+        if(GUILayout.Button("Create Character Template"))
+        {
+            CreateCharacterScriptableObject();
+        }
+        EditorGUILayout.EndHorizontal();
 
         EditorGUILayout.BeginHorizontal();
         _highValueColor = EditorGUILayout.ColorField("High Value Color", _highValueColor);

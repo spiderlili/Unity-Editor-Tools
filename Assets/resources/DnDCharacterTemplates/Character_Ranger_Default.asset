@@ -15,14 +15,14 @@ MonoBehaviour:
   _characterClass: 3
   _characterName: Skadi
   _gender: 1
-  _healthPoints: 86
-  _magicPoints: 85
-  _strength: 72
-  _dexterity: 71
-  _constitution: 55
-  _intelligence: 80
-  _wisdom: 69
-  _charisma: 95
+  _healthPoints: 100
+  _magicPoints: 100
+  _strength: 40
+  _dexterity: 75
+  _constitution: 56
+  _intelligence: 49
+  _wisdom: 60
+  _charisma: 32
   _fighterSpecialMove1: 0
   _bardSpecialMove1: 0
   _clericSpecialMove1: 0
