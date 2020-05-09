@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using UnityEditor;
 using UnityEngine;
 
 [ExecuteInEditMode]
@@ -10,7 +11,7 @@ public class ExplosiveObjectVisualizer : MonoBehaviour
     public float damage = 10;
     public Color meshColor = Color.white;
     static readonly int shaderPropertyColor = Shader.PropertyToID("_Color");
-    MaterialPropertyBlock mpb;
+    MaterialPropertyBlock mpb; //not serialized
 
     public MaterialPropertyBlock materialPropertyblock
     {
@@ -50,6 +51,8 @@ public class ExplosiveObjectVisualizer : MonoBehaviour
 
     private void OnDrawGizmosSelected()
     {
+        //display radius circle horizontally
+        //Handles.DrawWireDisc(transform.position, transform.up, radiusOfExplosion);
         //display a radius wireframe
         Gizmos.DrawWireSphere(transform.position, radiusOfExplosion);        
     }
