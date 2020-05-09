@@ -12,24 +12,6 @@ public class ExplosiveObjectsManager : MonoBehaviour
 {
     public static List<ExplosiveObjectVisualizer> allTheExplosives = new List<ExplosiveObjectVisualizer>();
     public Color visualizerLineColor = Color.white;
-    MaterialPropertyBlock mpb;
-
-    public MaterialPropertyBlock materialPropertyblock
-    {
-        get 
-        {
-            if (mpb == null)
-            {
-                mpb = new MaterialPropertyBlock();
-            }
-            return mpb;
-        }
-    }
-
-    void ApplyColor()
-    {
-        MeshRenderer rend = GetComponent<MeshRenderer>();
-    }
 
 #if UNITY_EDITOR
     private void OnDrawGizmos()
