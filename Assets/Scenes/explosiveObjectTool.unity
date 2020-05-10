@@ -150,7 +150,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 255e4f3fc340dee46a5dfa459ce78f68, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  visualizerLineColor: {r: 1, g: 0.023584902, b: 0.023584902, a: 1}
 --- !u!4 &444813812
 Transform:
   m_ObjectHideFlags: 0

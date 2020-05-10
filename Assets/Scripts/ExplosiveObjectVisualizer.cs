@@ -51,9 +51,11 @@ public class ExplosiveObjectVisualizer : MonoBehaviour
 
     private void OnDrawGizmosSelected()
     {
+        Gizmos.color = meshColor;
         //display radius circle horizontally
         //Handles.DrawWireDisc(transform.position, transform.up, radiusOfExplosion);
         //display a radius wireframe
-        Gizmos.DrawWireSphere(transform.position, radiusOfExplosion);        
+        Gizmos.DrawWireSphere(transform.position, radiusOfExplosion);
+        Gizmos.color = Color.white; //reset to default to avoid coloring next objects to be drawn
     }
 }
