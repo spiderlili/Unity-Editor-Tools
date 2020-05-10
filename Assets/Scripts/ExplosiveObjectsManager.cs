@@ -21,6 +21,10 @@ public class ExplosiveObjectsManager : MonoBehaviour
 
         foreach (ExplosiveObjectVisualizer explosive in allTheExplosives)
         {
+            if (explosive.explosiveType == null)
+            {
+                continue;
+            }
             //vectors needed to set up the tangents - vertically and halfway between objects for a s-shaped bezier
             Vector3 managerPos = transform.position;
             Vector3 explosivePos = explosive.transform.position;
@@ -28,11 +32,11 @@ public class ExplosiveObjectsManager : MonoBehaviour
             Vector3 tangentOffset = Vector3.up * halfHeight;
 
             //replace visualizerLineColor with explosive.meshColor to color the lines the same color as the object
-            Handles.color = explosive.meshColor;
+            Handles.color = explosive.explosiveType.meshColor;
 
             //Gizmos.DrawLine(transform.position, explosive.transform.position);
             //Handles.DrawAAPolyLine(transform.position, explosive.transform.position); //antialised line
-            Handles.DrawBezier(transform.position, explosive.transform.position, managerPos - tangentOffset, explosivePos + tangentOffset, explosive.meshColor, EditorGUIUtility.whiteTexture, 1f);
+            Handles.DrawBezier(transform.position, explosive.transform.position, managerPos - tangentOffset, explosivePos + tangentOffset, explosive.explosiveType.meshColor, EditorGUIUtility.whiteTexture, 1f);
         }
         //reset to default to avoid the next objects being colored
         Handles.color = Color.white; 

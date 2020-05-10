@@ -2,14 +2,12 @@
 using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
+using UnityEngine.Rendering;
 
 [ExecuteInEditMode]
 public class ExplosiveObjectVisualizer : MonoBehaviour
 {
-    [Range(1f, 8f)]
-    public float radiusOfExplosion = 1;
-    public float damage = 10;
-    public Color meshColor = Color.white;
+    public ExplosiveType explosiveType;
     static readonly int shaderPropertyColor = Shader.PropertyToID("_Color");
     MaterialPropertyBlock mpb; //not serialized
 
@@ -27,8 +25,12 @@ public class ExplosiveObjectVisualizer : MonoBehaviour
 
     private void ApplyColor()
     {
+        if (explosiveType == null)
+        {
+            return;
+        }
         MeshRenderer rend = GetComponent<MeshRenderer>();
-        materialPropertyblock.SetColor(shaderPropertyColor, meshColor);
+        materialPropertyblock.SetColor(shaderPropertyColor, explosiveType.meshColor);
         rend.SetPropertyBlock(materialPropertyblock);
     }
 
@@ -51,11 +53,15 @@ public class ExplosiveObjectVisualizer : MonoBehaviour
 
     private void OnDrawGizmosSelected()
     {
-        Gizmos.color = meshColor;
+        if(explosiveType == null)
+        {
+            return;
+        }
+        Gizmos.color = explosiveType.meshColor;
         //display radius circle horizontally
         //Handles.DrawWireDisc(transform.position, transform.up, radiusOfExplosion);
         //display a radius wireframe
-        Gizmos.DrawWireSphere(transform.position, radiusOfExplosion);
+        Gizmos.DrawWireSphere(transform.position, explosiveType.radiusOfExplosion);
         Gizmos.color = Color.white; //reset to default to avoid coloring next objects to be drawn
     }
 }

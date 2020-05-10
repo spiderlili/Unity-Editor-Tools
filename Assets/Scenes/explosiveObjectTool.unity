@@ -268,6 +268,7 @@ GameObject:
   - component: {fileID: 736141296}
   - component: {fileID: 736141295}
   - component: {fileID: 736141294}
+  - component: {fileID: 736141298}
   m_Layer: 0
   m_Name: ExplosiveBarrel Normal
   m_TagString: Untagged
@@ -344,12 +345,25 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 736141293}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 1, z: -7.13}
+  m_LocalPosition: {x: 3.54, y: 1, z: -7.13}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &736141298
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 736141293}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0192bc41fbdaef04fb73e95e49c57b3c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  explosiveType: {fileID: 11400000, guid: fa798f2a027e2ab4cb9f4435cc628cd3, type: 2}
 --- !u!1 &883334398
 GameObject:
   m_ObjectHideFlags: 0
@@ -364,7 +378,7 @@ GameObject:
   - component: {fileID: 883334400}
   - component: {fileID: 883334399}
   m_Layer: 0
-  m_Name: ExplosiveBarrel Visualize
+  m_Name: ExplosiveBarrel Dangerous
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -382,9 +396,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0192bc41fbdaef04fb73e95e49c57b3c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  radiusOfExplosion: 1
-  damage: 10
-  meshColor: {r: 1, g: 1, b: 1, a: 1}
+  explosiveType: {fileID: 11400000, guid: f7c23bc6415b4e546a1fd8204b86df74, type: 2}
 --- !u!136 &883334400
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -557,7 +569,7 @@ GameObject:
   - component: {fileID: 1965989890}
   - component: {fileID: 1965989889}
   m_Layer: 0
-  m_Name: ExplosiveBarrel Visualize (1)
+  m_Name: ExplosiveBarrel Dangerous
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -575,9 +587,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0192bc41fbdaef04fb73e95e49c57b3c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  radiusOfExplosion: 1
-  damage: 10
-  meshColor: {r: 1, g: 0.6839622, b: 0.6839622, a: 1}
+  explosiveType: {fileID: 11400000, guid: f7c23bc6415b4e546a1fd8204b86df74, type: 2}
 --- !u!136 &1965989890
 CapsuleCollider:
   m_ObjectHideFlags: 0
