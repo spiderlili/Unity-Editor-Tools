@@ -99,9 +99,14 @@ public class AssetFinder : EditorWindow
                     //Add a remove button for each prefab
                     if (GUILayout.Button("Remove " + componentName, GUILayout.Width(150)))
                     {
-                        Selection.activeObject = AssetDatabase.LoadMainAssetAtPath(str);
-                        GameObject activeGameObj = (GameObject)Selection.activeObject;
-                        DestroyImmediate(activeGameObj.GetComponent<ParticleSystem>(), true);
+                        //display warning for dangerous operation
+                        bool confirmRemove = EditorUtility.DisplayDialog("Are you sure?", "This is an undoable remove operation.", "Remove Component", "Cancel");
+                        if (confirmRemove)
+                        {
+                            Selection.activeObject = AssetDatabase.LoadMainAssetAtPath(str);
+                            GameObject activeGameObj = (GameObject)Selection.activeObject;
+                            DestroyImmediate(activeGameObj.GetComponent<ParticleSystem>(), true);
+                        }
                     }
 
                     GUILayout.EndHorizontal();
