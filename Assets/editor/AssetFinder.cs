@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEditor;
 using System.Linq;
 
-//TODO: Search for more components
+//TODO: Search for more expensive components for optimisation potential - VFX, masks, canvases
 public class AssetFinder : EditorWindow
 {
     [MenuItem("Tools/Asset Finder/Search Project For Prefabs with Particle Systems")]
