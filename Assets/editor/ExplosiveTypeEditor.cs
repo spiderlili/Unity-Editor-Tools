@@ -3,18 +3,27 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEditor;
 
+//extend the inspector on scriptable object templates
 [CustomEditor(typeof(ExplosiveType))]
-public class ExplosiveTypeEditor : MonoBehaviour
+public class ExplosiveTypeEditor : Editor
 {
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
+    public enum ExplosiveObject 
+    { 
+        barrel,
+        doll
+    };
 
-    // Update is called once per frame
-    void Update()
+    ExplosiveObject explosiveObjects;
+    public override void OnInspectorGUI()
     {
-        
+        DrawDefaultInspector();
+
+        using(new GUILayout.HorizontalScope())
+        {
+            GUILayout.Label("Explosive Object");
+            explosiveObjects = (ExplosiveObject)EditorGUILayout.EnumPopup(explosiveObjects);
+        }
+
+        EditorGUILayout.ObjectField("Assign transform: ", null, typeof(Transform), true);
     }
 }
