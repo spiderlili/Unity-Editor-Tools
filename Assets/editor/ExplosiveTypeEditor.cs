@@ -29,13 +29,16 @@ public class ExplosiveTypeEditor : Editor
         propColor = so.FindProperty("meshColor");
     }
 
-    ExplosiveObject explosiveObjects;
     public override void OnInspectorGUI()
     {
         so.Update();
         EditorGUILayout.PropertyField(propRadius);
         EditorGUILayout.PropertyField(propDamage);
         EditorGUILayout.PropertyField(propColor);
-        so.ApplyModifiedProperties();
+
+        if (so.ApplyModifiedProperties()) //if something changed
+        {
+            ExplosiveObjectsManager.UpdateAllExplosivesColors();
+        }
     }
 }

@@ -23,7 +23,7 @@ public class ExplosiveObjectVisualizer : MonoBehaviour
         }
     }
 
-    private void ApplyColor()
+    public void ApplyColor()
     {
         if (explosiveType == null)
         {

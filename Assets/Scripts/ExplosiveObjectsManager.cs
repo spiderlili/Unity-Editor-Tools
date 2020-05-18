@@ -14,6 +14,14 @@ public class ExplosiveObjectsManager : MonoBehaviour
     public static List<ExplosiveObjectVisualizer> allTheExplosives = new List<ExplosiveObjectVisualizer>();
     //public Color visualizerLineColor = Color.white;
 
+    public static void UpdateAllExplosivesColors()
+    {
+        foreach(ExplosiveObjectVisualizer explosiveObj in allTheExplosives)
+        {
+            explosiveObj.ApplyColor();
+        }
+    }
+
 #if UNITY_EDITOR
     private void OnDrawGizmos()
     {

@@ -12,3 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5b3778548ff0d2e418c4dc3b14f50c09, type: 3}
   m_Name: ExplosiveNormal
   m_EditorClassIdentifier: 
+  radiusOfExplosion: 1
+  damage: 10
+  meshColor: {r: 1, g: 1, b: 1, a: 1}
