@@ -18,13 +18,13 @@ public static class SnapToGrid
     {
         foreach(GameObject selectedObj in Selection.gameObjects)
         {
-            selectedObj.transform.position = selectedObj.transform.position.Round();
+            selectedObj.transform.position = selectedObj.transform.position.RoundToInt();
             Undo.RecordObject(selectedObj.transform, UNDO_STR_SNAP);
             //Debug.Log("snapped");
         }
     }
 
-    public static Vector3 Round(this Vector3 v)
+    public static Vector3 RoundToInt(this Vector3 v)
     {
         v.x = Mathf.Round(v.x);
         v.y = Mathf.Round(v.y);

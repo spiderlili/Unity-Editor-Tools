@@ -3,25 +3,49 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEditor;
 
-public class SnapperEditorTool : EditorWindow
+public class SnapperAdvancedEditorTool : EditorWindow
 {
+    public float gridSize = 1.0f; //meters per grid unit
+
     [MenuItem("Tools/Advanced Snapper")]
-    public static void OpenTool() => GetWindow<SnapperEditorTool>("Advanced Snapper");
+    public static void OpenTool() => GetWindow<SnapperAdvancedEditorTool>("Advanced Snapper");
+    SerializedObject so;
+    SerializedProperty gridSizeProperty; 
     private void OnEnable()
     {
+        so = new SerializedObject(this);
+        gridSizeProperty = so.FindProperty("gridSize"); 
         Selection.selectionChanged += Repaint;
+        SceneView.duringSceneGui += DuringSceneGUI;
     }
 
     private void OnDisable()
     {
         Selection.selectionChanged -= Repaint;
+        SceneView.duringSceneGui -= DuringSceneGUI;
+    }
+
+    void DuringSceneGUI(SceneView sceneview)
+    {
+        const float gridDrawExtent = 16;
+        int lineCount = Mathf.RoundToInt((gridDrawExtent * 2) / gridSize);
+        int halfLineCount = lineCount / 2;
+        
+        for(int i = 0; i < lineCount; i++)
+        {
+            int intOffset = halfLineCount;
+        }
     }
 
     private void OnGUI()
     {
+        so.Update();
+        EditorGUILayout.PropertyField(gridSizeProperty, GUILayout.Width(300));
+        so.ApplyModifiedProperties(); //works with auto-undo system
+
         using(new EditorGUI.DisabledScope(Selection.gameObjects.Length == 0))
         {
-            if(GUILayout.Button("Snap Selection"))
+            if(GUILayout.Button("Snap Selection", GUILayout.Width(100)))
             {
                 SnapSelection();
             }
@@ -33,7 +57,7 @@ public class SnapperEditorTool : EditorWindow
         foreach (GameObject selectedObj in Selection.gameObjects)
         {
             Undo.RecordObject(selectedObj.transform, "Snap objects");
-            selectedObj.transform.position = selectedObj.transform.position.Round();
+            selectedObj.transform.position = selectedObj.transform.position.Round(gridSize);
             //Debug.Log("snapped");
         }
     }
