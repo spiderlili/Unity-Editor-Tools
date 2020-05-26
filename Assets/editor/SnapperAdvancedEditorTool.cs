@@ -6,12 +6,22 @@ using UnityEngine.Rendering;
 
 public class SnapperAdvancedEditorTool : EditorWindow
 {
+    public enum GridType
+    {
+        Cartesian,
+        Polar
+    }
+
     public float gridSize = 1.0f; //meters per grid unit
+    public GridType gridType = GridType.Cartesian;
 
     [MenuItem("Tools/Advanced Snapper")]
     public static void OpenTool() => GetWindow<SnapperAdvancedEditorTool>("Advanced Snapper");
     SerializedObject so;
-    SerializedProperty gridSizeProperty; 
+    SerializedProperty gridSizeProperty;
+
+    //Vector3 point;
+
     private void OnEnable()
     {
         so = new SerializedObject(this);
@@ -28,6 +38,11 @@ public class SnapperAdvancedEditorTool : EditorWindow
 
     void DuringSceneGUI(SceneView sceneview)
     {
+        //enable undo/redo move selection handle
+        //so.Update();
+        //point = Handles.PositionHandle(point, Quaternion.identity);
+        //so.ApplyModifiedProperties();
+
         Handles.zTest = CompareFunction.LessEqual; //only draw if it's in front of other things but not if it's behind
         const float gridDrawExtent = 16;
         int lineCount = Mathf.RoundToInt((gridDrawExtent * 2) / gridSize);
