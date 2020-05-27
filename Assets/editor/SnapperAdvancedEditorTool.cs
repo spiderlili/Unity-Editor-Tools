@@ -19,13 +19,15 @@ public class SnapperAdvancedEditorTool : EditorWindow
     public static void OpenTool() => GetWindow<SnapperAdvancedEditorTool>("Advanced Snapper");
     SerializedObject so;
     SerializedProperty gridSizeProperty;
+    SerializedProperty gridTypeProperty;
 
     //Vector3 point;
 
     private void OnEnable()
     {
         so = new SerializedObject(this);
-        gridSizeProperty = so.FindProperty("gridSize"); 
+        gridSizeProperty = so.FindProperty("gridSize");
+        gridTypeProperty = so.FindProperty("gridType");
         Selection.selectionChanged += Repaint;
         SceneView.duringSceneGui += DuringSceneGUI;
     }
