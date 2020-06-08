@@ -122,15 +122,15 @@ public class TextToTMProConverter : ScriptableWizard
     private bool ParentHasComponent<T>(GameObject child)
     {
         bool hasAny = false;
-        var xform = child.transform;
-        while (xform != null)
+        var childTransform = child.transform;
+        while (childTransform != null)
         {
-            if (xform.GetComponent<T>() != null)
+            if (childTransform.GetComponent<T>() != null)
             {
                 hasAny = true;
                 break;
             }
-            xform = xform.parent;
+            childTransform = childTransform.parent;
         }
         return hasAny;
     }
