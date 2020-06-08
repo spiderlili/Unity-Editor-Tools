@@ -118,7 +118,7 @@ public class TextToTMProConverter : ScriptableWizard
         Debug.Log("Converted [" + origText + "]", tmPro);
     }
 
-    // Can't simply use GetComponentInParent<> because we have to handle disabled hierarchies, too
+    // Can't simply use GetComponentInParent<>: need to handle disabled hierarchies 
     private bool ParentHasComponent<T>(GameObject child)
     {
         bool hasAny = false;
