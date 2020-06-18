@@ -110,6 +110,14 @@ public class PaletteWindow : EditorWindow
             }
         }
 
+        private void Update()
+        {
+            if(_previews.Count != _items.Count)
+            {
+                GeneratePreviews();
+            }
+        }
+
         //convert the index returned by SelectionGrid GUI component to a level piece
         private void GetSelectedItem(int index)
         {
@@ -119,14 +127,35 @@ public class PaletteWindow : EditorWindow
             }
         }
 
-        private GUILayoutOption[] GetGUIStyle()
+        private GUIStyle GetGUIStyle()
         {
-            throw new NotImplementedException();
+            GUIStyle guiStyle = new GUIStyle(GUI.skin.button)
+            {
+                alignment = TextAnchor.LowerCenter,
+                imagePosition = ImagePosition.ImageAbove,
+                fixedWidth = ButtonWidth,
+                fixedHeight = buttonHeight
+            };
+            return guiStyle;
         }
 
-        private string[] GetGUIContentsFromItems()
+        private GUIContent[] GetGUIContentsFromItems()
         {
-            throw new NotImplementedException();
+            List<GUIContent> guiContents = new List<GUIContent>();
+            if(_previews.Count == _items.Count)
+            {
+                int totalItems = _categorizedItems[_categorySelected].Count;
+                for(int i = 0; i < totalItems; i++)
+                {
+                    GUIContent guiContent = new GUIContent() 
+                    { 
+                        text = _categorizedItems[_categorySelected][i].itemName,
+                        image = _previews[_categorizedItems[_categorySelected][i]]
+                    };
+                    guiContents.Add(guiContent);
+                }
+            }
+            return guiContents.ToArray();
         }
 
         private void OnDisable() //called when the behaviour becomes disabled / the object is destroyed
