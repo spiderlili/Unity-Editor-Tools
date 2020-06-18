@@ -8,12 +8,12 @@ using LevelCreator;
 public class MenuItems 
 {
     [MenuItem("Tools/Level Creator/New Level Scene")]
-    [MenuItem("Tools/Level Creator/Show Palette")]
     private static void NewLevel()
     {
         EditorUtilsSceneAutomation.NewLevel();
     }
 
+    [MenuItem("Tools/Level Creator/Show Palette _p")]
     private static void ShowPalette()
     {
         PaletteWindow.ShowPalette();
