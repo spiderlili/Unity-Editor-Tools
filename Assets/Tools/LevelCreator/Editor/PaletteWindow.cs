@@ -12,6 +12,14 @@ public class PaletteWindow : EditorWindow
         private List<string> _categoryLabels;
         private PaletteItem.Category _categorySelected;
 
+        private string _searchPfPath = "Assets/Prefabs/LevelPieces"; //where the window will search the prefabs
+        private List<PaletteItem> _items;
+        private Dictionary<PaletteItem.Category, List<PaletteItem>> _categorizedItems; //lists of PaletteItem instances
+        private Dictionary<PaletteItem, Texture2D> _previews;  //previews of the item
+        private Vector2 _scrollPosition;
+        private const float ButtonWidth = 80;
+        private const float buttonHeight = 90;
+
         public static void ShowPalette()
         {
             //GetWindow: responsible for getting an instance of the specified type of window (PaletteWindow type)
@@ -25,6 +33,30 @@ public class PaletteWindow : EditorWindow
             if (_categories == null)
             {
                 InitCategories();
+            }
+            if(_categorizedItems == null)
+            {
+                InitContent();
+            }
+        }
+
+        private void InitContent()
+        {
+            //set the scrollList
+            _items = EditorUtilsSceneAutomation.GetAssetsWithScript<PaletteItem>(_searchPfPath);
+            _categorizedItems = new Dictionary<PaletteItem.Category, List<PaletteItem>>();
+            _previews = new Dictionary<PaletteItem, Texture2D>();
+
+            //init dictionary
+            foreach(PaletteItem.Category category in _categories)
+            {
+                _categorizedItems.Add(category, new List<PaletteItem>());
+            }
+
+            //assign items to each category
+            foreach(PaletteItem item in _items)
+            {
+                _categorizedItems[item.category].Add(item);
             }
         }
 
@@ -47,6 +79,56 @@ public class PaletteWindow : EditorWindow
             _categorySelected = _categories[index]; //each time tab pressed: save category to categorySelected 
         }
 
+        private void DrawScroll()
+        {
+            if (_categorizedItems[_categorySelected].Count == 0)
+            {
+                EditorGUILayout.HelpBox("This category is empty!", MessageType.Info);
+                return;
+            }
+            int rowCapacity = Mathf.FloorToInt(position.width / (ButtonWidth));
+            _scrollPosition = GUILayout.BeginScrollView(_scrollPosition);
+//avoid SelectionGrid's toggle behaviour: always clean the index returned, set result to -1 before passing it again to the method
+            int selectionGridIndex = -1; 
+            selectionGridIndex = GUILayout.SelectionGrid(selectionGridIndex, GetGUIContentsFromItems(), rowCapacity, GetGUIStyle());
+            GetSelectedItem(selectionGridIndex);
+            GUILayout.EndScrollView();
+        }
+
+        private void GeneratePreviews()
+        {
+            foreach(PaletteItem item in _items)
+            {
+                if (!_previews.ContainsKey(item))
+                {
+                    Texture2D preview = AssetPreview.GetAssetPreview(item.gameObject);
+                    if(preview != null)
+                    {
+                        _previews.Add(item, preview);
+                    }
+                }
+            }
+        }
+
+        //convert the index returned by SelectionGrid GUI component to a level piece
+        private void GetSelectedItem(int index)
+        {
+            if(index != -1)
+            {
+                PaletteItem paletteItem = _categorizedItems[_categorySelected][index];
+            }
+        }
+
+        private GUILayoutOption[] GetGUIStyle()
+        {
+            throw new NotImplementedException();
+        }
+
+        private string[] GetGUIContentsFromItems()
+        {
+            throw new NotImplementedException();
+        }
+
         private void OnDisable() //called when the behaviour becomes disabled / the object is destroyed
         {
             
@@ -60,6 +142,7 @@ public class PaletteWindow : EditorWindow
         private void OnGUI() //for rendering and handling GUI events.
         {
             DrawTabs();
+            DrawScroll();
         }
 
     }
