@@ -5,6 +5,7 @@ using UnityEngine;
 public class Level : MonoBehaviour
 {
     // Start is called before the first frame update
+    public Sprite Background;
     void Start()
     {
         
