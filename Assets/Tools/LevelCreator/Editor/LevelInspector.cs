@@ -43,7 +43,9 @@ namespace LevelCreator
         private void DrawLevelDataGUI()
         {
             EditorGUILayout.LabelField("Data", EditorStyles.boldLabel);
+            EditorGUILayout.BeginVertical("box");
             _TargetLevel.Background = (Sprite)EditorGUILayout.ObjectField("Background", _TargetLevel.Background, typeof(Sprite), false);
+            EditorGUILayout.EndVertical();
         }
     }
 }
