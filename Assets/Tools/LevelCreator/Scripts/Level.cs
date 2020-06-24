@@ -6,6 +6,9 @@ public class Level : MonoBehaviour
 {
     // Start is called before the first frame update
     public Sprite Background;
+    public AudioClip BGM;
+    public float Gravity;
+    public int TotalTime;
     void Start()
     {
         

@@ -44,7 +44,13 @@ namespace LevelCreator
         {
             EditorGUILayout.LabelField("Data", EditorStyles.boldLabel);
             EditorGUILayout.BeginVertical("box");
+
+            //Ensure the allowSceneObjects parameter is false if the object reference is stored as part of an asset
+            //since assets can't store references to objects in a Scene.
+            _TargetLevel.BGM = (AudioClip)EditorGUILayout.ObjectField("BGM", _TargetLevel.BGM, typeof(AudioClip), false);
             _TargetLevel.Background = (Sprite)EditorGUILayout.ObjectField("Background", _TargetLevel.Background, typeof(Sprite), false);
+            _TargetLevel.Gravity = EditorGUILayout.FloatField("Gravity", _TargetLevel.Gravity);
+            _TargetLevel.TotalTime = EditorGUILayout.IntField("Total Time", Mathf.Max(0, _TargetLevel.TotalTime));
             EditorGUILayout.EndVertical();
         }
     }
