@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -9,6 +10,10 @@ public class Level : MonoBehaviour
     public AudioClip BGM;
     public float Gravity;
     public int TotalTime;
+    public Array[] Pieces;
+    public int TotalColumns;
+    public int TotalRows;
+
     void Start()
     {
         
@@ -18,5 +23,10 @@ public class Level : MonoBehaviour
     void Update()
     {
         
+    }
+
+    void LevelPiece()
+    {
+
     }
 }
