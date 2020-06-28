@@ -37,8 +37,40 @@ namespace LevelCreator
             if(_TargetLevel.Pieces == null || _TargetLevel.Pieces.Length == 0)
             {
                 Debug.Log("Initializing the Pieces array...");
-                //_TargetLevel.Pieces = new LevelPiece[];
+                //_TargetLevel.Pieces = new LevelPiece[_TargetLevel.TotalColumns * _TargetLevel.TotalRows];
             }
+        }
+
+        //change the length of Pieces array 
+        //remove all the LevelPiece instances out of level bounds, destroy the prefab associated to the instances
+        
+        private void ResizeLevel()
+        {
+            Debug.Log("Level Resized");
+            /*LevelPiece[] newPieces = new LevelPiece[_newTotalColumns * _newTotalRows];
+            for(int col = 0; col < _TargetLevel.TotalColumns; col++)
+            {
+                for(int row = 0; row < _TargetLevel.TotalRows; row++)
+                {
+                    if(col < _newTotalColumns && row < _newTotalRows)
+                    {
+                        newPieces[col + row * _newTotalColumns] = _TargetLevel.Pieces[col + row * _TargetLevel.TotalColumns];
+                    }
+                    else
+                    {
+                        LevelPiece piece = _TargetLevel.Pieces[col + row * _TargetLevel.TotalColumns];
+                        if (newPieces! = null)
+                        {
+                            //must use DestroyImmediate in a Editor context
+                            Object.DestroyImmediate(newPieces.gameobject);
+                        }
+                    }
+                }
+            }
+            _TargetLevel.Pieces = newPieces;
+            _TargetLevel.TotalColumns = _newTotalColumns;
+            _TargetLevel.TotalRows = _newTotalRows;
+            */
         }
 
         //called when the inspected object goes out of scope & when the object is destroyed, all the cleanup code goes here
@@ -55,16 +87,55 @@ namespace LevelCreator
 
         public override void OnInspectorGUI()
         {
-            base.OnInspectorGUI();
+            //base.OnInspectorGUI();
             EditorGUILayout.LabelField("The GUI of this inspector was modified.");
             //DrawDefaultInspector();
             DrawLevelDataGUI();
             DrawLevelSizeGUI();
+
+            if (GUI.changed) //true if there is any change to the inspector GUI
+            {
+                EditorUtility.SetDirty(_TargetLevel); //marks the target object as dirty and force Level class to redraw
+            }
         }
 
         private void DrawLevelSizeGUI() //modify OnInspectorGUI: use buttons to trigger actions
         {
             EditorGUILayout.LabelField("Size", EditorStyles.boldLabel);
+            _newTotalColumns = EditorGUILayout.IntField("Columns", Mathf.Max(1, _newTotalColumns));
+            _newTotalRows = EditorGUILayout.IntField("Rows", Mathf.Max(1, _newTotalRows));
+
+            //disable / enable GUI
+            bool oldGUIEnabled = GUI.enabled;
+            GUI.enabled = (_newTotalColumns != _TargetLevel.TotalColumns || _newTotalRows != _TargetLevel.TotalRows);
+
+            //resize button will display a popup if clicked on
+            bool buttonResize = GUILayout.Button("Resize", GUILayout.Height(2 * EditorGUIUtility.singleLineHeight));
+            if (buttonResize)
+            {
+                if (
+                    EditorUtility.DisplayDialog
+                    (
+                    "Level Creator",
+                    "Are you sure you want to resize the level? \n This action cannot be undone.",
+                    "Yes",
+                    "No"
+                    )
+                   )
+                {
+                    ResizeLevel(); //if yes is clicked
+                }
+            }
+
+            //restores the variables: _newTotalColumns and _newTotalRows to match the TotalColumns and TotalRows values
+            bool buttonReset = GUILayout.Button("Reset");
+            if (buttonReset)
+            {
+                ResetResizeValues();
+            }
+
+            //it makes no sense to press Resize / Reset if the values for the columns / rows don't differ: disable these buttons
+            GUI.enabled = oldGUIEnabled; //all the interactive GUI components like buttons will be disabled if GUI.enabled = false
         }
 
         private void DrawLevelDataGUI()
