@@ -9,6 +9,7 @@ public class Level : MonoBehaviour
     public Sprite Background;
     public AudioClip BGM;
     public float Gravity;
+    //[LevelCreator.Time]
     public int TotalTime;
     public Array[] Pieces;
     public int TotalColumns;

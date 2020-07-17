@@ -17,6 +17,9 @@ namespace LevelCreator
         private int _newTotalColumns; 
         private int _newTotalRows;
 
+        private SerializedObject _serializedObj;
+        private SerializedProperty _serializedTotalTime;
+
         //called every time the inspected object is selected & after script is loaded: all the init code goes here
         private void OnEnable() 
         {
@@ -34,6 +37,9 @@ namespace LevelCreator
 
         private void InitLevel()
         {
+            _serializedObj = new SerializedObject(_TargetLevel);
+            _serializedTotalTime = serializedObject.FindProperty("_totalTime");
+
             if(_TargetLevel.Pieces == null || _TargetLevel.Pieces.Length == 0)
             {
                 Debug.Log("Initializing the Pieces array...");
