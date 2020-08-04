@@ -14,12 +14,14 @@ public class SnapperAdvancedEditorTool : EditorWindow
 
     public float gridSize = 1.0f; //meters per grid unit
     public GridType gridType = GridType.Cartesian;
+    public int angularDivisions = 24; //unity's default unit for rotation snapping
 
     [MenuItem("Tools/Advanced Snapper")]
     public static void OpenTool() => GetWindow<SnapperAdvancedEditorTool>("Advanced Snapper");
     SerializedObject so;
     SerializedProperty gridSizeProperty;
     SerializedProperty gridTypeProperty;
+    SerializedProperty angularDivisionsProperty;
 
     //Vector3 point;
 
@@ -28,6 +30,7 @@ public class SnapperAdvancedEditorTool : EditorWindow
         so = new SerializedObject(this);
         gridSizeProperty = so.FindProperty("gridSize");
         gridTypeProperty = so.FindProperty("gridType");
+        angularDivisionsProperty = so.FindProperty("angularDivisions");
         Selection.selectionChanged += Repaint;
         SceneView.duringSceneGui += DuringSceneGUI;
     }
@@ -73,7 +76,15 @@ public class SnapperAdvancedEditorTool : EditorWindow
     private void OnGUI()
     {
         so.Update();
+        EditorGUILayout.PropertyField(gridTypeProperty);
         EditorGUILayout.PropertyField(gridSizeProperty, GUILayout.Width(300));
+
+        //for polar grids: draw angular divisions
+        if(gridType == GridType.Polar)
+        {
+            EditorGUILayout.PropertyField(angularDivisionsProperty);
+        }
+
         so.ApplyModifiedProperties(); //works with auto-undo system
 
         using(new EditorGUI.DisabledScope(Selection.gameObjects.Length == 0))
