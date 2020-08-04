@@ -50,15 +50,46 @@ public class SnapperAdvancedEditorTool : EditorWindow
 
         Handles.zTest = CompareFunction.LessEqual; //only draw if it's in front of other things but not if it's behind
         const float gridDrawExtent = 16;
+
+        if(gridType == GridType.Cartesian)
+        {
+            DrawGridCartesian(gridDrawExtent);
+        }
+        else
+        {
+            DrawGridPolar(gridDrawExtent);
+        }
+    }
+
+    //draw ring radial segments around the centre: only need this on 1 side as it wraps around the other side
+    void DrawGridPolar(float gridDrawExtent)
+    {
+        int ringCount = Mathf.RoundToInt((gridDrawExtent) / gridSize);
+
+        //draw rings radial grid: skip the 1st one as it has 0 radius, change radius per iteration
+        for (int i = 0; i < ringCount; i++) 
+        {
+            Handles.DrawWireDisc(Vector3.zero, Vector3.up, i * gridSize); //set normal to vector3.forward for y plane orientation
+        }
+
+        //draw angular grid (lines) with trigonometry
+        for(int i = 0; i < angularDivisions; i++)
+        {
+            
+        }
+    }
+
+    void DrawGridCartesian(float gridDrawExtent)
+    {
         int lineCount = Mathf.RoundToInt((gridDrawExtent * 2) / gridSize);
         int halfLineCount = lineCount / 2;
 
-        if(lineCount %2 == 0)
+        if (lineCount % 2 == 0)
         {
             lineCount++;         //make sure line numbers are odd to have a centre line of symmetry on both sides
         }
-        
-        for(int i = 0; i < lineCount; i++)
+
+        for (int i = 0; i < lineCount; i++)
         {
             int intOffset = i - halfLineCount;
             float xCoord = intOffset * gridSize;
@@ -83,6 +114,12 @@ public class SnapperAdvancedEditorTool : EditorWindow
         if(gridType == GridType.Polar)
         {
             EditorGUILayout.PropertyField(angularDivisionsProperty);
+
+            //prevent angular divisions from being set to a negative value - clamp to at least 4
+            if (angularDivisionsProperty.intValue < 4)
+            {
+                angularDivisionsProperty.intValue = 4;
+            }
         }
 
         so.ApplyModifiedProperties(); //works with auto-undo system
