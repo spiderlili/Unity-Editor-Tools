@@ -72,10 +72,20 @@ public class SnapperAdvancedEditorTool : EditorWindow
             Handles.DrawWireDisc(Vector3.zero, Vector3.up, i * gridSize); //set normal to vector3.forward for y plane orientation
         }
 
+        const float TAU = 6.28318530718f; 
+
         //draw angular grid (lines) with trigonometry
         for(int i = 0; i < angularDivisions; i++)
         {
-            
+            //need to make sure this is a float, don't do angularDivisions/1 to skip drawing the last line in circle twice
+            float interpolator = i / ((float)angularDivisions);
+            float angleRadians = interpolator * TAU; //percentage to radians
+
+            //use trigonometry to get normalized vector from the centre point pointing towards target point in outer ring
+            float x = Mathf.Cos(angleRadians);
+            float y = Mathf.Sin(angleRadians);
+            Vector2 direction = new Vector2(x,y);
+            Handles.DrawAAPolyLine(Vector3.zero, direction); //doesn't draw on the correct plane nor towards the outer edge
         }
     }
 
