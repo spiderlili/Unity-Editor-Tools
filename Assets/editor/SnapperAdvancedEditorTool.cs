@@ -76,7 +76,7 @@ public class SnapperAdvancedEditorTool : EditorWindow
 
         const float TAU = 6.28318530718f; 
 
-        //draw angular grid (lines) with trigonometry
+        //draw angular grid lines with trigonometry
         for(int i = 0; i < angularDivisions; i++)
         {
             //need to make sure this is a float, don't do angularDivisions/1 to skip drawing the last line in circle twice
@@ -150,8 +150,26 @@ public class SnapperAdvancedEditorTool : EditorWindow
         foreach (GameObject selectedObj in Selection.gameObjects)
         {
             Undo.RecordObject(selectedObj.transform, "Snap objects");
-            selectedObj.transform.position = selectedObj.transform.position.Round(gridSize);
-            //Debug.Log("snapped");
+            selectedObj.transform.position = GetSnappedPosition(selectedObj.transform.position);
+            //selectedObj.transform.position = selectedObj.transform.position.Round(gridSize);
+        }
+    }
+
+    Vector3 GetSnappedPosition(Vector3 originalPosition) //branch based off which type of selection you have
+    {
+        if(gridType == GridType.Cartesian)
+        {
+            return originalPosition.Round(gridSize);
+        }
+
+        else if(gridType == GridType.Polar)
+        {
+            return originalPosition.Round(gridSize);
+        }
+
+        else
+        {
+            return originalPosition.Round(gridSize);
         }
     }
 
