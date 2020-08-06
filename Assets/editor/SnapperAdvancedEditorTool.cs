@@ -66,6 +66,8 @@ public class SnapperAdvancedEditorTool : EditorWindow
     {
         int ringCount = Mathf.RoundToInt((gridDrawExtent) / gridSize);
 
+        float maxOuterRadius = (ringCount - 1) * gridSize; //removes the extra extended line out of edge by -1
+
         //draw rings radial grid: skip the 1st one as it has 0 radius, change radius per iteration
         for (int i = 0; i < ringCount; i++) 
         {
@@ -84,8 +86,8 @@ public class SnapperAdvancedEditorTool : EditorWindow
             //use trigonometry to get normalized vector from the centre point pointing towards target point in outer ring
             float x = Mathf.Cos(angleRadians);
             float y = Mathf.Sin(angleRadians);
-            Vector2 direction = new Vector2(x,y);
-            Handles.DrawAAPolyLine(Vector3.zero, direction); //doesn't draw on the correct plane nor towards the outer edge
+            Vector3 direction = new Vector3(x, 0f, y); //set to z component to be on the correct plane
+            Handles.DrawAAPolyLine(Vector3.zero, direction * maxOuterRadius); //extend radius from unit circle towards the outer ring edge
         }
     }
 
