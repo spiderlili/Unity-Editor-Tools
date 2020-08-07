@@ -163,7 +163,14 @@ public class SnapperAdvancedEditorTool : EditorWindow
         }
 
         else if(gridType == GridType.Polar)
-        {
+        {   //polar coordinates are on the xz plane, ignore height - swizzle original position into vector2
+            Vector2 positionVector = new Vector2(originalPosition.x, originalPosition.z); 
+            float distance = positionVector.magnitude;
+            float distanceSnapped = distance.Round(gridSize);
+
+            //calculate theta angle for snapping, snap the angle
+            float angleRadians = Mathf.Atan2(positionVector.y, positionVector.x);
+
             return originalPosition.Round(gridSize);
         }
 
