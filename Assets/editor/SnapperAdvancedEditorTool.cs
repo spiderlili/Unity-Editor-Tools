@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEditor;
 using UnityEngine.Rendering;
+using TMPro;
 
 public class SnapperAdvancedEditorTool : EditorWindow
 {
@@ -15,6 +16,7 @@ public class SnapperAdvancedEditorTool : EditorWindow
     public float gridSize = 1.0f; //meters per grid unit
     public GridType gridType = GridType.Cartesian;
     public int angularDivisions = 24; //unity's default unit for rotation snapping
+    const float TAU = 6.28318530718f;
 
     [MenuItem("Tools/Advanced Snapper")]
     public static void OpenTool() => GetWindow<SnapperAdvancedEditorTool>("Advanced Snapper");
@@ -73,8 +75,6 @@ public class SnapperAdvancedEditorTool : EditorWindow
         {
             Handles.DrawWireDisc(Vector3.zero, Vector3.up, i * gridSize); //set normal to vector3.forward for y plane orientation
         }
-
-        const float TAU = 6.28318530718f; 
 
         //draw angular grid lines with trigonometry
         for(int i = 0; i < angularDivisions; i++)
@@ -162,21 +162,27 @@ public class SnapperAdvancedEditorTool : EditorWindow
             return originalPosition.Round(gridSize);
         }
 
-        else if(gridType == GridType.Polar)
+        if(gridType == GridType.Polar)
         {   //polar coordinates are on the xz plane, ignore height - swizzle original position into vector2
             Vector2 positionVector = new Vector2(originalPosition.x, originalPosition.z); 
             float distance = positionVector.magnitude;
             float distanceSnapped = distance.Round(gridSize);
 
             //calculate theta angle for snapping, snap the angle
-            float angleRadians = Mathf.Atan2(positionVector.y, positionVector.x);
+            float angleRadians = Mathf.Atan2(positionVector.y, positionVector.x); //0 to TAU
+            float angleTurns = angleRadians / TAU; //convert from radians to turns: = 0 - 1
+            float angleTurnsSnapped = angleTurns.Round(1f / angularDivisions);
+            float angleRadiansSnapped = angleTurnsSnapped * TAU;
 
-            return originalPosition.Round(gridSize);
+            //go back to Cartesian space, reconstruct the 3D position by remapping - don't want to change the height
+            Vector2 directionSnapped = new Vector2(Mathf.Cos(angleRadiansSnapped), Mathf.Sin(angleRadiansSnapped));
+            Vector2 vectorSnapped = directionSnapped * distanceSnapped;
+            return new Vector3(vectorSnapped.x, originalPosition.y, vectorSnapped.y);
         }
 
         else
         {
-            return originalPosition.Round(gridSize);
+            return default;
         }
     }
 

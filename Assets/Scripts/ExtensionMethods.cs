@@ -20,6 +20,6 @@ public static class ExtensionMethods
 
     public static float Round(this float v, float size)
     {
-        return Mathf.Round((v / size)* size); //can't round to any odd numbers
+        return Mathf.Round(v / size) * size; 
     }
 }
