@@ -187,7 +187,7 @@ public class SnapperAdvancedEditorTool : EditorWindow
     }
 
     //TODO
-    //add a property to change the granularity of the snapping - set grid size / scale button
+    //add different type of grid pattern: angled criss cross grid
     //show the grid in the scene view to visualise the grid snapping, ideally around the objects snapped and where the objects will move to
     //add support for a polar grid: instead of only having support for cartesian coordinates, have a polar grid with angular and radial units to snap to - in this case the grid size scale would also need an angular scale: radial size, angular size
     //ability to place grids in the scene and snap objects to those grids, rather than just having one grid in that editor window.have localised grids in various places in the scene view to snap to.
