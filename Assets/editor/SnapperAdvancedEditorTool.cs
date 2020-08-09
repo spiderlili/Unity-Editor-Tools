@@ -18,6 +18,11 @@ public class SnapperAdvancedEditorTool : EditorWindow
     public int angularDivisions = 24; //unity's default unit for rotation snapping
     const float TAU = 6.28318530718f;
 
+    //store saved data across sessions so the tool remembers the last settings
+    const string savedGridSize = "SNAPPER_TOOL_gridSize";
+    const string savedGridType = "SNAPPER_TOOL_gridSize";
+    const string savedAngularDivisions = "SNAPPER_TOOL_gridSize";
+
     [MenuItem("Tools/Advanced Snapper")]
     public static void OpenTool() => GetWindow<SnapperAdvancedEditorTool>("Advanced Snapper");
     SerializedObject so;
@@ -35,10 +40,20 @@ public class SnapperAdvancedEditorTool : EditorWindow
         angularDivisionsProperty = so.FindProperty("angularDivisions");
         Selection.selectionChanged += Repaint;
         SceneView.duringSceneGui += DuringSceneGUI;
+
+        //load saved configuration data when open the window, use default values if data does not exist
+        gridSize = EditorPrefs.GetFloat(savedGridSize, 1f);
+        gridType = (GridType) EditorPrefs.GetInt(savedGridType, 0);
+        angularDivisions = EditorPrefs.GetInt(savedAngularDivisions, 24); 
     }
 
     private void OnDisable()
     {
+        //save configuration
+        EditorPrefs.SetFloat("SNAPPER_TOOL_gridSize", gridSize);
+        EditorPrefs.SetInt("SNAPPER_TOOL_gridSize", (int)gridType);
+        EditorPrefs.SetInt("SNAPPER_TOOL_gridSize", angularDivisions);
+
         Selection.selectionChanged -= Repaint;
         SceneView.duringSceneGui -= DuringSceneGUI;
     }
@@ -187,7 +202,7 @@ public class SnapperAdvancedEditorTool : EditorWindow
     }
 
     //TODO
-    //add different type of grid pattern: angled criss cross grid
+    //add different type of grid pattern: angled criss cross grid, isometric grid, triangular grid
     //show the grid in the scene view to visualise the grid snapping, ideally around the objects snapped and where the objects will move to
     //add support for a polar grid: instead of only having support for cartesian coordinates, have a polar grid with angular and radial units to snap to - in this case the grid size scale would also need an angular scale: radial size, angular size
     //ability to place grids in the scene and snap objects to those grids, rather than just having one grid in that editor window.have localised grids in various places in the scene view to snap to.
