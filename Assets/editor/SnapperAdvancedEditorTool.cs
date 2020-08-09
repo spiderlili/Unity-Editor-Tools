@@ -20,8 +20,8 @@ public class SnapperAdvancedEditorTool : EditorWindow
 
     //store saved data across sessions so the tool remembers the last settings
     const string savedGridSize = "SNAPPER_TOOL_gridSize";
-    const string savedGridType = "SNAPPER_TOOL_gridSize";
-    const string savedAngularDivisions = "SNAPPER_TOOL_gridSize";
+    const string savedGridType = "SNAPPER_TOOL_gridType";
+    const string savedAngularDivisions = "SNAPPER_TOOL_angularDivisions";
 
     [MenuItem("Tools/Advanced Snapper")]
     public static void OpenTool() => GetWindow<SnapperAdvancedEditorTool>("Advanced Snapper");
@@ -50,9 +50,9 @@ public class SnapperAdvancedEditorTool : EditorWindow
     private void OnDisable()
     {
         //save configuration
-        EditorPrefs.SetFloat("SNAPPER_TOOL_gridSize", gridSize);
-        EditorPrefs.SetInt("SNAPPER_TOOL_gridSize", (int)gridType);
-        EditorPrefs.SetInt("SNAPPER_TOOL_gridSize", angularDivisions);
+        EditorPrefs.SetFloat(savedGridSize, gridSize);
+        EditorPrefs.SetInt(savedGridType, (int)gridType);
+        EditorPrefs.SetInt(savedAngularDivisions, angularDivisions);
 
         Selection.selectionChanged -= Repaint;
         SceneView.duringSceneGui -= DuringSceneGUI;
