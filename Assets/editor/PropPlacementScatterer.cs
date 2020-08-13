@@ -18,13 +18,23 @@ public class PropPlacementScatterer : EditorWindow
         
     }
 
-    private void DuringSceneGUI(SceneView) //called per scene view you have open: can have multiple scenes open
-    {
-        //scene view raycasting: assumes camera centre = where to place things
-    }
-
     private void OnDisable()
     {
         SceneView.duringSceneGui -= DuringSceneGUI; //unsubscribe from event
     }
+
+    private void DuringSceneGUI(SceneView sceneView) //called per scene view you have open: can have multiple scenes open
+    {
+        //scene view raycasting: assumes camera centre = where to place things, cache camera: place objects to where the camera is pointing
+        Transform cameraTransform = sceneView.camera.transform;
+        Ray ray = new Ray(cameraTransform.position, cameraTransform.forward); //help visualise where to scatter all the items
+        if(Physics.Raycast(ray, out RaycastHit hit))
+        {
+            //mark the area hit
+            Handles.color = Color.green;
+            Handles.DrawAAPolyLine(5, hit.point, hit.point+ hit.normal);
+        }
+        Handles.DrawAAPolyLine(Vector3.zero, Vector3.one);
+    }
+
 }
