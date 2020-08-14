@@ -11,8 +11,17 @@ public class PropPlacementScatterer : EditorWindow
     public float radius = 2f;
     public int spawnCount = 8;
 
+//boilerplate for undo/redo system
+    SerializedProperty propRadius;
+    SerializedProperty propSpawnCount;
+    SerializedObject serializedObject;
+
     private void OnEnable() 
     {
+        serializedObject = new SerializedObject(this);
+        propRadius = serializedObject.FindProperty("radius");
+        propSpawnCount = serializedObject.FindProperty("spawnCount"); 
+
         //sign up to an event called in every scene's onGUI event when the window is opened
         SceneView.duringSceneGui += DuringSceneGUI;
         
@@ -23,7 +32,7 @@ public class PropPlacementScatterer : EditorWindow
         SceneView.duringSceneGui -= DuringSceneGUI; //unsubscribe from event
     }
 
-    private void DuringSceneGUI(SceneView sceneView) //called per scene view you have open: can have multiple scenes open
+    private void DuringSceneGUI(SceneView sceneView) //gui for sceneview window: called per scene view you have open: can have multiple scenes open
     {
         //scene view raycasting: assumes camera centre = where to place things, cache camera: place objects to where the camera is pointing
         Transform cameraTransform = sceneView.camera.transform;
@@ -38,5 +47,13 @@ public class PropPlacementScatterer : EditorWindow
             Handles.DrawWireDisc(hit.point, hit.normal, radius);
         }
         Handles.DrawAAPolyLine(Vector3.zero, Vector3.one);
+    }
+
+    void OnGUI() //gui loop for editor window
+    {
+        serializedObject.Update();
+        EditorGUILayout.PropertyField(propRadius);
+        EditorGUILayout.PropertyField(propSpawnCount);
+        serializedObject.ApplyModifiedProperties();
     }
 }
