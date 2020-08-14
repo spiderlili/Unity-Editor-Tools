@@ -33,8 +33,10 @@ public class PropPlacementScatterer : EditorWindow
             //mark the area hit
             Handles.color = Color.green;
             Handles.DrawAAPolyLine(5, hit.point, hit.point+ hit.normal);
+
+            //visualise the radius to scatter objects in
+            Handles.DrawWireDisc(hit.point, hit.normal, radius);
         }
         Handles.DrawAAPolyLine(Vector3.zero, Vector3.one);
     }
-
 }
