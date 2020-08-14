@@ -51,9 +51,13 @@ public class PropPlacementScatterer : EditorWindow
 
     void OnGUI() //gui loop for editor window
     {
-        serializedObject.Update();
+        serializedObject.Update(); //make serialized property update when parameters changed
         EditorGUILayout.PropertyField(propRadius);
         EditorGUILayout.PropertyField(propSpawnCount);
-        serializedObject.ApplyModifiedProperties();
+        //serializedObject.ApplyModifiedProperties();
+        if(serializedObject.ApplyModifiedProperties()) //force repaint of the sceneview to make framerate smoother
+        {
+           SceneView.RepaintAll();
+        }
     }
 }
