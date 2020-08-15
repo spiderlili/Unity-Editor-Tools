@@ -17,7 +17,7 @@ public class PropPlacementScatterer : EditorWindow
     SerializedObject serializedObject;
 
     //generate random points in disc
-    Vector2[] randomPoints;
+    Vector2[] randomPoints; //just want 2D coordinates within the disk's coordinate system
 
     private void OnEnable ()
     {
