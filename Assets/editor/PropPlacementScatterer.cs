@@ -63,4 +63,9 @@ public class PropPlacementScatterer : EditorWindow
             SceneView.RepaintAll ();
         }
     }
+
+    void GenerateRandomPoints ()
+    {
+
+    }
 }
