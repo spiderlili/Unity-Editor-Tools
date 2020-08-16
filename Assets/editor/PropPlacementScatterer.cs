@@ -33,6 +33,7 @@ public class PropPlacementScatterer : EditorWindow
     private void OnDisable ()
     {
         SceneView.duringSceneGui -= DuringSceneGUI; //unsubscribe from event
+        GenerateRandomPoints ();
     }
 
     private void DuringSceneGUI (SceneView sceneView) //gui for sceneview window: called per scene view you have open: can have multiple scenes open
@@ -66,6 +67,10 @@ public class PropPlacementScatterer : EditorWindow
 
     void GenerateRandomPoints ()
     {
-
+        randomPoints = new Vector2[spawnCount];
+        for (int i = 0; i < spawnCount; i++)
+        {
+            randomPoints[i] = Random.insideUnitCircle; //random points of spawnCount inside a unit circle
+        }
     }
 }
