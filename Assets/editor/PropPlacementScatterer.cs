@@ -48,11 +48,16 @@ public class PropPlacementScatterer : EditorWindow
             Vector3 hitTangentVectorY = Vector3.Cross(hitNormalVectorZ, cameraTransform.forward).normalized; //not normalised unless both inputs are normalised & orthogonal
             Vector3 hitBitangentVectorX = Vector3.Cross(hitNormalVectorZ, hitTangentVectorY);
 
-            //mark the area hit 
+            //mark the area hit: draw normal, tangent, bitangent according to their colour convention
+            Handles.color = Color.red;
+            Handles.DrawAAPolyLine(5, hit.point, hit.point + hitTangentVectorY);
+            Handles.color = Color.blue;
+            Handles.DrawAAPolyLine(5, hit.point, hit.point + hitNormalVectorZ);
             Handles.color = Color.green;
-            Handles.DrawAAPolyLine(5, hit.point, hit.point + hit.normal);
+            Handles.DrawAAPolyLine(5, hit.point, hit.point + hitBitangentVectorX);
 
             //visualise the radius to scatter objects in
+            Handles.color = Color.white;
             Handles.DrawWireDisc(hit.point, hit.normal, radius);
         }
         Handles.DrawAAPolyLine(Vector3.zero, Vector3.one);
