@@ -36,6 +36,11 @@ public class PropPlacementScatterer : EditorWindow
         GenerateRandomPoints();
     }
 
+    private void DrawSphere(Vector3 pos) //requries a world space position but
+    {
+        Handles.SphereHandleCap(-1, pos, Quaternion.identity, 0.1f, EventType.Repaint); //1 repaint event is sent every frame
+    }
+
     private void DuringSceneGUI(SceneView sceneView) //gui for sceneview window: called per scene view you have open: can have multiple scenes open
     {
         //scene view raycasting: assumes camera centre = where to place things, cache camera: place objects to where the camera is pointing
@@ -43,10 +48,18 @@ public class PropPlacementScatterer : EditorWindow
         Ray ray = new Ray(cameraTransform.position, cameraTransform.forward); //help visualise where to scatter all the items
         if (Physics.Raycast(ray, out RaycastHit hit))
         {
-            //need to set up a full coordinate system for the point you hit to get full orientation, use cross product between forward vector & normal
+            //set up a full tangent space coordinate system for the point you hit to get full orientation
+            //use cross product between up vector & normal rather than forward for predicatable rotation as it's aligned with the camera
             Vector3 hitNormalVectorZ = hit.normal;
-            Vector3 hitTangentVectorY = Vector3.Cross(hitNormalVectorZ, cameraTransform.forward).normalized; //not normalised unless both inputs are normalised & orthogonal
+            Vector3 hitTangentVectorY = Vector3.Cross(hitNormalVectorZ, cameraTransform.up).normalized; //not normalised unless both inputs are normalised & orthogonal
             Vector3 hitBitangentVectorX = Vector3.Cross(hitNormalVectorZ, hitTangentVectorY);
+
+            foreach (Vector2 pt in randomPoints) //needs to be transformed into a world space position for DrawSphere() as it's in its own tangent space coordinate system
+            {
+                //Vector3 ptWorldPos = hit.point;
+                Vector3 ptWorldPos = hit.point + (hitTangentVectorY * pt.x + hitBitangentVectorX * pt.y) * radius; //scale the position to the radius
+                DrawSphere(ptWorldPos); //disc is around the blue vector on the xy plane
+            }
 
             //mark the area hit: draw normal, tangent, bitangent according to their colour convention
             Handles.color = Color.red;
