@@ -81,6 +81,9 @@ public class PropPlacementScatterer : EditorWindow
         serializedObject.Update(); //make serialized property update when parameters changed
         EditorGUILayout.PropertyField(propRadius);
 
+        propRadius.floatValue = Mathf.Max(1f, propRadius.floatValue); //limit range and prevent negative value
+        propSpawnCount.intValue = propSpawnCount.intValue.AtLeast(1);
+
         EditorGUI.BeginChangeCheck();
         EditorGUILayout.PropertyField(propSpawnCount);
         if (EditorGUI.EndChangeCheck())
