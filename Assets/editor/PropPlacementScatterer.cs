@@ -80,7 +80,13 @@ public class PropPlacementScatterer : EditorWindow
     {
         serializedObject.Update(); //make serialized property update when parameters changed
         EditorGUILayout.PropertyField(propRadius);
+
+        EditorGUI.BeginChangeCheck();
         EditorGUILayout.PropertyField(propSpawnCount);
+        if (EditorGUI.EndChangeCheck())
+        {
+            GenerateRandomPoints(); //update all points every time you change spawncount
+        }
         //serializedObject.ApplyModifiedProperties();
         if (serializedObject.ApplyModifiedProperties()) //force repaint of the sceneview to make framerate smoother
         {
