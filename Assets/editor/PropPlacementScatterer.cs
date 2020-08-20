@@ -57,8 +57,16 @@ public class PropPlacementScatterer : EditorWindow
             foreach (Vector2 pt in randomPoints) //needs to be transformed into a world space position for DrawSphere() as it's in its own tangent space coordinate system
             {
                 //Vector3 ptWorldPos = hit.point;
-                Vector3 ptWorldPos = hit.point + (hitTangentVectorY * pt.x + hitBitangentVectorX * pt.y) * radius; //scale the position to the radius
-                DrawSphere(ptWorldPos); //disc is around the blue vector on the xy plane
+                Vector3 ptWorldPosRayOrigin = hit.point + (hitTangentVectorY * pt.x + hitBitangentVectorX * pt.y) * radius; //scale the position to the radius
+                Vector3 rayDirection = -hitNormalVectorZ; //negated version of the normal: point in the opposite direction
+                Ray ptRay = new Ray(ptWorldPosRayOrigin, rayDirection);
+
+                //raycast points to surface
+                if (Physics.Raycast(ptRay, out RaycastHit ptHit))
+                {
+                    DrawSphere(ptHit.point); //disc is around the blue vector on the xy plane
+                    Handles.DrawAAPolyLine(ptHit.point, ptHit.point + ptHit.normal);
+                }
             }
 
             //mark the area hit: draw normal, tangent, bitangent according to their colour convention
