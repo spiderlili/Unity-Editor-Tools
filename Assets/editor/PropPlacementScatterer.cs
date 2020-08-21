@@ -9,7 +9,7 @@ public class PropPlacementScatterer : EditorWindow
     public static void OpenPropPlacermentTool() => GetWindow<PropPlacementScatterer>();
 
     public float radius = 2f;
-    public int spawnCount = 8;
+    public int spawnCount = 10;
 
     //boilerplate for undo/redo system
     SerializedProperty propRadius;
@@ -56,15 +56,16 @@ public class PropPlacementScatterer : EditorWindow
 
             foreach (Vector2 pt in randomPoints) //needs to be transformed into a world space position for DrawSphere() as it's in its own tangent space coordinate system
             {
-                //Vector3 ptWorldPos = hit.point;
+                //create ray for this point
                 Vector3 ptWorldPosRayOrigin = hit.point + (hitTangentVectorY * pt.x + hitBitangentVectorX * pt.y) * radius; //scale the position to the radius
+                ptWorldPosRayOrigin += hitNormalVectorZ * 2; //offset margin distance for the upper projection disc so points move up along a curved surface
                 Vector3 rayDirection = -hitNormalVectorZ; //negated version of the normal: point in the opposite direction
-                Ray ptRay = new Ray(ptWorldPosRayOrigin, rayDirection);
 
-                //raycast points to surface
+                //raycast tp find points to surface
+                Ray ptRay = new Ray(ptWorldPosRayOrigin, rayDirection);
                 if (Physics.Raycast(ptRay, out RaycastHit ptHit))
                 {
-                    DrawSphere(ptHit.point); //disc is around the blue vector on the xy plane
+                    DrawSphere(ptHit.point); //draw sphere and normal on surface, disc is around the blue vector on the xy plane
                     Handles.DrawAAPolyLine(ptHit.point, ptHit.point + ptHit.normal);
                 }
             }
