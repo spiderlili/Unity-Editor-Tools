@@ -43,9 +43,20 @@ public class PropPlacementScatterer : EditorWindow
 
     private void DuringSceneGUI(SceneView sceneView) //gui for sceneview window: called per scene view you have open: can have multiple scenes open
     {
+        Handles.zTest = UnityEngine.Rendering.CompareFunction.LessEqual;
+
         //scene view raycasting: assumes camera centre = where to place things, cache camera: place objects to where the camera is pointing
         Transform cameraTransform = sceneView.camera.transform;
-        Ray ray = new Ray(cameraTransform.position, cameraTransform.forward); //help visualise where to scatter all the items
+
+        //Ray ray = new Ray(cameraTransform.position, cameraTransform.forward); //help visualise where to scatter all the items
+
+        if (Event.current.type == EventType.MouseMove) //repaints on mouse move
+        {
+            sceneView.Repaint();
+        }
+
+        Ray ray = HandleUtility.GUIPointToWorldRay(Event.current.mousePosition); //wants the UI mouse position, NOT input.mouseposition
+
         if (Physics.Raycast(ray, out RaycastHit hit))
         {
             //set up a full tangent space coordinate system for the point you hit to get full orientation
@@ -103,6 +114,12 @@ public class PropPlacementScatterer : EditorWindow
         if (serializedObject.ApplyModifiedProperties()) //force repaint of the sceneview to make framerate smoother
         {
             SceneView.RepaintAll();
+        }
+
+        if (Event.current.type == EventType.MouseDown && Event.current.button == 0) //if left clicked in the editor window
+        {
+            GUI.FocusControl(null); //remove focus from ui
+            Repaint(); //removes delay on the editorwindow ui
         }
     }
 
