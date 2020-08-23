@@ -27,7 +27,6 @@ public class PropPlacementScatterer : EditorWindow
 
         //sign up to an event called in every scene's onGUI event when the window is opened
         SceneView.duringSceneGui += DuringSceneGUI;
-
     }
 
     private void OnDisable()
@@ -99,6 +98,9 @@ public class PropPlacementScatterer : EditorWindow
     void OnGUI() //gui loop for editor window
     {
         serializedObject.Update(); //make serialized property update when parameters changed
+
+        EditorGUILayout.HelpBox("Use scroll wheel to decrease / increase radius, hold Alt + scroll to zoom in the scene view", MessageType.Info); //helper text
+
         EditorGUILayout.PropertyField(propRadius);
 
         propRadius.floatValue = Mathf.Max(1f, propRadius.floatValue); //limit range and prevent negative value
