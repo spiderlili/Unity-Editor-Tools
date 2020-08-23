@@ -43,7 +43,7 @@ public class PropPlacementScatterer : EditorWindow
 
     private void DuringSceneGUI(SceneView sceneView) //gui for sceneview window: called per scene view you have open: can have multiple scenes open
     {
-        Handles.zTest = UnityEngine.Rendering.CompareFunction.LessEqual;
+        //Handles.zTest = UnityEngine.Rendering.CompareFunction.LessEqual;
 
         //scene view raycasting: assumes camera centre = where to place things, cache camera: place objects to where the camera is pointing
         Transform cameraTransform = sceneView.camera.transform;
@@ -120,6 +120,21 @@ public class PropPlacementScatterer : EditorWindow
         {
             GUI.FocusControl(null); //remove focus from ui
             Repaint(); //removes delay on the editorwindow ui
+        }
+
+        //only change radius when holding Alt key
+        //bool holdingAlt = Event.current.modifiers;
+
+        //change the radius with mouse scrollwheel
+        if (Event.current.type == EventType.ScrollWheel)
+        {
+            //find what direction the user scrolled in but not how much - control that separately
+            float scrollDirection = Mathf.Sign(Event.current.delta.y);
+            serializedObject.Update(); //update the serialized properties in the editor window
+            propRadius.floatValue += scrollDirection * 0.1f; //change scroll increment to be a smaller value
+            serializedObject.ApplyModifiedProperties();
+            Repaint(); //updates editor window
+            Event.current.Use(); //consume the event, don't let it fall through: any other events after this will be event.none
         }
     }
 
