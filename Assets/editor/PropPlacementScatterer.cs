@@ -9,10 +9,12 @@ public class PropPlacementScatterer : EditorWindow
     public static void OpenPropPlacermentTool() => GetWindow<PropPlacementScatterer>();
 
     public float radius = 2f;
+    public float radiusIncrementer = 0.1f;
     public int spawnCount = 10;
 
     //boilerplate for undo/redo system
     SerializedProperty propRadius;
+    SerializedProperty propRadiusIncrementer;
     SerializedProperty propSpawnCount;
     SerializedObject serializedObject;
 
@@ -23,6 +25,7 @@ public class PropPlacementScatterer : EditorWindow
     {
         serializedObject = new SerializedObject(this);
         propRadius = serializedObject.FindProperty("radius");
+        propRadiusIncrementer = serializedObject.FindProperty("radiusIncrementer");
         propSpawnCount = serializedObject.FindProperty("spawnCount");
 
         //sign up to an event called in every scene's onGUI event when the window is opened
@@ -52,6 +55,20 @@ public class PropPlacementScatterer : EditorWindow
         if (Event.current.type == EventType.MouseMove) //repaints on mouse move
         {
             sceneView.Repaint();
+        }
+        //only change radius when holding Alt key
+        bool holdingAlt = (Event.current.modifiers & EventModifiers.Alt) != 0;
+
+        //change the radius with mouse scrollwheel
+        if (Event.current.type == EventType.ScrollWheel)
+        {
+            //find what direction the user scrolled in but not how much - control that separately
+            float scrollDirection = Mathf.Sign(Event.current.delta.y);
+            serializedObject.Update(); //update the serialized properties in the editor window
+            propRadius.floatValue += scrollDirection * radiusIncrementer; //change scroll increment to be a smaller value
+            serializedObject.ApplyModifiedProperties();
+            Repaint(); //updates editor window
+            Event.current.Use(); //consume the event, don't let it fall through: any other events after this will be event.none
         }
 
         Ray ray = HandleUtility.GUIPointToWorldRay(Event.current.mousePosition); //wants the UI mouse position, NOT input.mouseposition
@@ -102,8 +119,10 @@ public class PropPlacementScatterer : EditorWindow
         EditorGUILayout.HelpBox("Use scroll wheel to decrease / increase radius, hold Alt + scroll to zoom in the scene view", MessageType.Info); //helper text
 
         EditorGUILayout.PropertyField(propRadius);
+        EditorGUILayout.PropertyField(propRadiusIncrementer);
 
         propRadius.floatValue = Mathf.Max(1f, propRadius.floatValue); //limit range and prevent negative value
+        propRadiusIncrementer.floatValue = Mathf.Max(0.1f, propRadiusIncrementer.floatValue);
         propSpawnCount.intValue = propSpawnCount.intValue.AtLeast(1);
 
         EditorGUI.BeginChangeCheck();
@@ -122,21 +141,6 @@ public class PropPlacementScatterer : EditorWindow
         {
             GUI.FocusControl(null); //remove focus from ui
             Repaint(); //removes delay on the editorwindow ui
-        }
-
-        //only change radius when holding Alt key
-        //bool holdingAlt = Event.current.modifiers;
-
-        //change the radius with mouse scrollwheel
-        if (Event.current.type == EventType.ScrollWheel)
-        {
-            //find what direction the user scrolled in but not how much - control that separately
-            float scrollDirection = Mathf.Sign(Event.current.delta.y);
-            serializedObject.Update(); //update the serialized properties in the editor window
-            propRadius.floatValue += scrollDirection * 0.1f; //change scroll increment to be a smaller value
-            serializedObject.ApplyModifiedProperties();
-            Repaint(); //updates editor window
-            Event.current.Use(); //consume the event, don't let it fall through: any other events after this will be event.none
         }
     }
 
