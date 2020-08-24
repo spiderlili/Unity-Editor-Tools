@@ -43,6 +43,14 @@ public class PropPlacementScatterer : EditorWindow
         Handles.SphereHandleCap(-1, pos, Quaternion.identity, 0.1f, EventType.Repaint); //1 repaint event is sent every frame
     }
 
+    //[Flags] 
+    public enum KeyModifiers //power of 2 series
+    {
+        Ctrl = 1,
+        Alt = 2,
+        Shift = 4
+    }
+
     private void DuringSceneGUI(SceneView sceneView) //gui for sceneview window: called per scene view you have open: can have multiple scenes open
     {
         //Handles.zTest = UnityEngine.Rendering.CompareFunction.LessEqual;
