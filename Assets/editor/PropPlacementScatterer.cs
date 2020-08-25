@@ -43,14 +43,6 @@ public class PropPlacementScatterer : EditorWindow
         Handles.SphereHandleCap(-1, pos, Quaternion.identity, 0.1f, EventType.Repaint); //1 repaint event is sent every frame
     }
 
-    //[Flags] 
-    public enum KeyModifiers //power of 2 series
-    {
-        Ctrl = 1,
-        Alt = 2,
-        Shift = 4
-    }
-
     private void DuringSceneGUI(SceneView sceneView) //gui for sceneview window: called per scene view you have open: can have multiple scenes open
     {
         //Handles.zTest = UnityEngine.Rendering.CompareFunction.LessEqual;
@@ -68,12 +60,12 @@ public class PropPlacementScatterer : EditorWindow
         bool holdingAlt = (Event.current.modifiers & EventModifiers.Alt) != 0;
 
         //change the radius with mouse scrollwheel
-        if (Event.current.type == EventType.ScrollWheel)
+        if (Event.current.type == EventType.ScrollWheel && holdingAlt == false)
         {
             //find what direction the user scrolled in but not how much - control that separately
             float scrollDirection = Mathf.Sign(Event.current.delta.y);
             serializedObject.Update(); //update the serialized properties in the editor window
-            propRadius.floatValue += scrollDirection * radiusIncrementer; //change scroll increment to be a smaller value
+            propRadius.floatValue *= 1f + scrollDirection * radiusIncrementer; //change scroll increment to be a smaller value
             serializedObject.ApplyModifiedProperties();
             Repaint(); //updates editor window
             Event.current.Use(); //consume the event, don't let it fall through: any other events after this will be event.none
