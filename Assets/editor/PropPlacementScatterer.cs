@@ -65,7 +65,7 @@ public class PropPlacementScatterer : EditorWindow
             //find what direction the user scrolled in but not how much - control that separately
             float scrollDirection = Mathf.Sign(Event.current.delta.y);
             serializedObject.Update(); //update the serialized properties in the editor window
-            propRadius.floatValue *= 1f + scrollDirection * radiusIncrementer; //change scroll increment to be a smaller value
+            propRadius.floatValue *= 1f + scrollDirection * radiusIncrementer; //change scroll increment to be a smaller value for percentual increase/decrease
             serializedObject.ApplyModifiedProperties();
             Repaint(); //updates editor window
             Event.current.Use(); //consume the event, don't let it fall through: any other events after this will be event.none
