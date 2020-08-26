@@ -81,15 +81,19 @@ public class PropPlacementScatterer : EditorWindow
             Vector3 hitTangentVectorY = Vector3.Cross(hitNormalVectorZ, cameraTransform.up).normalized; //not normalised unless both inputs are normalised & orthogonal
             Vector3 hitBitangentVectorX = Vector3.Cross(hitNormalVectorZ, hitTangentVectorY);
 
-            foreach (Vector2 pt in randomPoints) //needs to be transformed into a world space position for DrawSphere() as it's in its own tangent space coordinate system
+            //create ray for this point given its 2d position
+            Ray GetTangentRay(Vector2 tangentSpacePos)
             {
-                //create ray for this point
-                Vector3 ptWorldPosRayOrigin = hit.point + (hitTangentVectorY * pt.x + hitBitangentVectorX * pt.y) * radius; //scale the position to the radius
+                Vector3 ptWorldPosRayOrigin = hit.point + (hitTangentVectorY * tangentSpacePos.x + hitBitangentVectorX * tangentSpacePos.y) * radius; //scale the position to the radius
                 ptWorldPosRayOrigin += hitNormalVectorZ * 2; //offset margin distance for the upper projection disc so points move up along a curved surface
                 Vector3 rayDirection = -hitNormalVectorZ; //negated version of the normal: point in the opposite direction
+                return new Ray(ptWorldPosRayOrigin, rayDirection);
+            }
 
-                //raycast tp find points to surface
-                Ray ptRay = new Ray(ptWorldPosRayOrigin, rayDirection);
+            foreach (Vector2 pt in randomPoints) //needs to be transformed into a world space position for DrawSphere() as it's in its own tangent space coordinate system
+            {
+                Ray ptRay = GetTangentRay(pt);
+                //raycast to find points to surface
                 if (Physics.Raycast(ptRay, out RaycastHit ptHit))
                 {
                     DrawSphere(ptHit.point); //draw sphere and normal on surface, disc is around the blue vector on the xy plane
@@ -108,6 +112,20 @@ public class PropPlacementScatterer : EditorWindow
             //visualise the radius to scatter objects in
             Handles.color = Color.white;
             Handles.DrawWireDisc(hit.point, hit.normal, radius);
+
+            //draw circle adapted to the terrain
+            const int circleDetail = 64;
+            Vector3[] circlePoints = new Vector3[circleDetail]; //How many points around the perimeter of the circle 
+
+            for (int i = 0; i < circleDetail; i++)
+            {
+                //-1 because Handles.DrawAAPolyLine will only draw from start point to end point BUT won't conncet them, go back to 0/1 position
+                float t = i / ((float) circleDetail - 1);
+                const float TAU = 6.28318530718f;
+                float angRad = t * TAU;
+                Vector3 dir = new Vector2(Mathf.Cos(angRad), Mathf.Sin(angRad)); //radius is automatically added by GetTangentRay(Vector2 tangentSpacePos)
+                circlePoints[]
+            }
         }
         Handles.DrawAAPolyLine(Vector3.zero, Vector3.one);
     }
