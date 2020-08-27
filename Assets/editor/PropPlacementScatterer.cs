@@ -111,7 +111,7 @@ public class PropPlacementScatterer : EditorWindow
 
             //visualise the radius to scatter objects in
             Handles.color = Color.white;
-            Handles.DrawWireDisc(hit.point, hit.normal, radius);
+            //Handles.DrawWireDisc(hit.point, hit.normal, radius);
 
             //draw points on the circle adapted to the terrain
             const int circleDetail = 64;
