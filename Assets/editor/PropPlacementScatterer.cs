@@ -113,9 +113,9 @@ public class PropPlacementScatterer : EditorWindow
             Handles.color = Color.white;
             Handles.DrawWireDisc(hit.point, hit.normal, radius);
 
-            //draw circle adapted to the terrain
+            //draw points on the circle adapted to the terrain
             const int circleDetail = 64;
-            Vector3[] circlePoints = new Vector3[circleDetail]; //How many points around the perimeter of the circle 
+            Vector3[] rayCirclePoints = new Vector3[circleDetail]; //ray array - get all the rays around the perimeter of the circle 
 
             for (int i = 0; i < circleDetail; i++)
             {
@@ -124,8 +124,17 @@ public class PropPlacementScatterer : EditorWindow
                 const float TAU = 6.28318530718f;
                 float angRad = t * TAU;
                 Vector3 dir = new Vector2(Mathf.Cos(angRad), Mathf.Sin(angRad)); //radius is automatically added by GetTangentRay(Vector2 tangentSpacePos)
-                circlePoints[]
+                Ray rayCircle = GetTangentRay(dir);
+                if (Physics.Raycast(rayCircle, out RaycastHit circleHit))
+                {
+                    rayCirclePoints[i] = circleHit.point; //set to hit position
+                }
+                else //if the ray cast misses, set it to the origin of the ray rather than the previous point - as previous point could actually fail
+                {
+                    rayCirclePoints[i] = rayCircle.origin;
+                }
             }
+            Handles.DrawAAPolyLine(rayCirclePoints);
         }
         Handles.DrawAAPolyLine(Vector3.zero, Vector3.one);
     }
