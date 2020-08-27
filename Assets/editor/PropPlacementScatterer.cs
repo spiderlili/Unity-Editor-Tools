@@ -127,7 +127,7 @@ public class PropPlacementScatterer : EditorWindow
                 Ray rayCircle = GetTangentRay(dir);
                 if (Physics.Raycast(rayCircle, out RaycastHit circleHit))
                 {
-                    rayCirclePoints[i] = circleHit.point; //set to hit position
+                    rayCirclePoints[i] = circleHit.point + circleHit.normal * 0.02f; //set to hit position and add margin to avoid intersecting with objects
                 }
                 else //if the ray cast misses, set it to the origin of the ray rather than the previous point - as previous point could actually fail
                 {
