@@ -11,12 +11,14 @@ public class PropPlacementScatterer : EditorWindow
     public float radius = 2f;
     public float radiusIncrementer = 0.1f;
     public int spawnCount = 10;
+    public GameObject spawnPrefab = null;
 
     //boilerplate for undo/redo system
+    SerializedObject serializedObject;
     SerializedProperty propRadius;
     SerializedProperty propRadiusIncrementer;
     SerializedProperty propSpawnCount;
-    SerializedObject serializedObject;
+    SerializedProperty propSpawnPrefab;
 
     //generate random points in disc
     Vector2[] randomPoints; //just want 2D coordinates within the disk's coordinate system
@@ -27,6 +29,7 @@ public class PropPlacementScatterer : EditorWindow
         propRadius = serializedObject.FindProperty("radius");
         propRadiusIncrementer = serializedObject.FindProperty("radiusIncrementer");
         propSpawnCount = serializedObject.FindProperty("spawnCount");
+        propSpawnPrefab = serializedObject.FindProperty("spawnPrefab");
 
         //sign up to an event called in every scene's onGUI event when the window is opened
         SceneView.duringSceneGui += DuringSceneGUI;
@@ -146,18 +149,21 @@ public class PropPlacementScatterer : EditorWindow
         EditorGUILayout.HelpBox("Use scroll wheel to decrease / increase radius, hold Alt + scroll to zoom in the scene view", MessageType.Info); //helper text
 
         EditorGUILayout.PropertyField(propRadius);
-        EditorGUILayout.PropertyField(propRadiusIncrementer);
-
         propRadius.floatValue = Mathf.Max(1f, propRadius.floatValue); //limit range and prevent negative value
+
+        EditorGUILayout.PropertyField(propRadiusIncrementer);
         propRadiusIncrementer.floatValue = Mathf.Max(0.1f, propRadiusIncrementer.floatValue);
-        propSpawnCount.intValue = propSpawnCount.intValue.AtLeast(1);
 
         EditorGUI.BeginChangeCheck();
         EditorGUILayout.PropertyField(propSpawnCount);
+        propSpawnCount.intValue = propSpawnCount.intValue.AtLeast(1);
         if (EditorGUI.EndChangeCheck())
         {
             GenerateRandomPoints(); //update all points every time you change spawncount
         }
+
+        EditorGUILayout.PropertyField(propSpawnPrefab);
+
         //serializedObject.ApplyModifiedProperties();
         if (serializedObject.ApplyModifiedProperties()) //force repaint of the sceneview to make framerate smoother
         {
