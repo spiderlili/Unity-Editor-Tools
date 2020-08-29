@@ -173,7 +173,7 @@ public class PropPlacementScatterer : EditorWindow
     {
         serializedObject.Update(); //make serialized property update when parameters changed
 
-        EditorGUILayout.HelpBox("Use scroll wheel to decrease / increase radius, hold Alt + scroll to zoom in the scene view", MessageType.Info); //helper text
+        EditorGUILayout.HelpBox("Use scroll wheel to decrease / increase radius, hold Alt + scroll to zoom in the scene view, press Space to spawn prefab objects", MessageType.Info); //helper text
 
         EditorGUILayout.PropertyField(propRadius);
         propRadius.floatValue = Mathf.Max(1f, propRadius.floatValue); //limit range and prevent negative value
