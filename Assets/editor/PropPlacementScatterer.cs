@@ -46,6 +46,20 @@ public class PropPlacementScatterer : EditorWindow
         Handles.SphereHandleCap(-1, pos, Quaternion.identity, 0.1f, EventType.Repaint); //1 repaint event is sent every frame
     }
 
+    private void TrySpawnObjects(List<RaycastHit> hitPoints)
+    {
+        if (spawnPrefab == null)
+        {
+            return;
+        }
+
+        foreach (RaycastHit hit in hitPoints)
+        {
+            Quaternion rot = Quaternion.LookRotation(hit.normal); //use world up vector as a reference vector
+            Instantiate(spawnPrefab, hit.point, rot); //no 1 rotation that is correct
+        }
+    }
+
     private void DuringSceneGUI(SceneView sceneView) //gui for sceneview window: called per scene view you have open: can have multiple scenes open
     {
         //Handles.zTest = UnityEngine.Rendering.CompareFunction.LessEqual;
@@ -59,6 +73,7 @@ public class PropPlacementScatterer : EditorWindow
         {
             sceneView.Repaint();
         }
+
         //only change radius when holding Alt key
         bool holdingAlt = (Event.current.modifiers & EventModifiers.Alt) != 0;
 
@@ -74,6 +89,7 @@ public class PropPlacementScatterer : EditorWindow
             Event.current.Use(); //consume the event, don't let it fall through: any other events after this will be event.none
         }
 
+        //check if you have any valid position that the cursor is hitting. Shoudn't spawn anything if it's hitting outside the surface
         Ray ray = HandleUtility.GUIPointToWorldRay(Event.current.mousePosition); //wants the UI mouse position, NOT input.mouseposition
 
         if (Physics.Raycast(ray, out RaycastHit hit))
@@ -93,15 +109,26 @@ public class PropPlacementScatterer : EditorWindow
                 return new Ray(ptWorldPosRayOrigin, rayDirection);
             }
 
-            foreach (Vector2 pt in randomPoints) //needs to be transformed into a world space position for DrawSphere() as it's in its own tangent space coordinate system
+            List<RaycastHit> hitPts = new List<RaycastHit>();
+
+            //drawing random points: needs to be transformed into a world space position for DrawSphere() as it's in its own tangent space coordinate system
+            foreach (Vector2 pt in randomPoints)
             {
                 Ray ptRay = GetTangentRay(pt);
                 //raycast to find points to surface
                 if (Physics.Raycast(ptRay, out RaycastHit ptHit))
                 {
-                    DrawSphere(ptHit.point); //draw sphere and normal on surface, disc is around the blue vector on the xy plane
+                    hitPts.Add(ptHit);
+                    DrawSphere(ptHit.point); //draw sphere and normal on surface, disc is around the blue vector on the xy plane. set up the points to draw
                     Handles.DrawAAPolyLine(ptHit.point, ptHit.point + ptHit.normal);
                 }
+            }
+
+            //spawn prefabs on press
+            if (Event.current.type == EventType.KeyDown && Event.current.keyCode == KeyCode.Space)
+            {
+                TrySpawnObjects(hitPts);
+                //Debug.Log(Event.current.type);
             }
 
             //mark the area hit: draw normal, tangent, bitangent according to their colour convention
