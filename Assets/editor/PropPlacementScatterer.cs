@@ -53,10 +53,14 @@ public class PropPlacementScatterer : EditorWindow
             return;
         }
 
-        foreach (RaycastHit hit in hitPoints)
+        foreach (RaycastHit hit in hitPoints) //spawn prefab
         {
-            Quaternion rot = Quaternion.LookRotation(hit.normal); //use world up vector as a reference vector
-            Instantiate(spawnPrefab, hit.point, rot); //no 1 rotation that is correct
+            GameObject spawnedPf = (GameObject) PrefabUtility.InstantiatePrefab(spawnPrefab);
+            Undo.RegisterCreatedObjectUndo(spawnedPf, "Spawn objects");
+            spawnedPf.transform.position = hit.point;
+
+            Quaternion rot = Quaternion.LookRotation(hit.normal) * Quaternion.Euler(90f, 0f, 0f); //rotate pf +90 degree around x so it has z up - point at the right direction
+            spawnedPf.transform.rotation = rot; //use world up vector as a reference vector
         }
     }
 
