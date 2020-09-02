@@ -65,6 +65,7 @@ public class PropPlacementScatterer : EditorWindow
             Quaternion rot = Quaternion.LookRotation(hit.normal) * (randomRotation * Quaternion.Euler(90f, 0f, 0f)); //rotate pf +90 degree around x so it has z up - point at the right direction
             spawnedPf.transform.rotation = rot; //use world up vector as a reference vector
         }
+        GenerateRandomPoints(); //update points after spawning to avoid stamping the same scene pattern again
     }
 
     private void DuringSceneGUI(SceneView sceneView) //gui for sceneview window: called per scene view you have open: can have multiple scenes open
