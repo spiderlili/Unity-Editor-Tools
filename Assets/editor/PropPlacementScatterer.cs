@@ -12,6 +12,7 @@ public class PropPlacementScatterer : EditorWindow
     public float radiusIncrementer = 0.1f;
     public int spawnCount = 10;
     public GameObject spawnPrefab = null;
+    public Material previewMaterial = null;
 
     //boilerplate for undo/redo system
     SerializedObject serializedObject;
@@ -19,6 +20,7 @@ public class PropPlacementScatterer : EditorWindow
     SerializedProperty propRadiusIncrementer;
     SerializedProperty propSpawnCount;
     SerializedProperty propSpawnPrefab;
+    SerializedProperty propPreviewMaterial;
 
     //generate random points in disc
     Vector2[] randomPoints; //just want 2D coordinates within the disk's coordinate system
@@ -30,6 +32,7 @@ public class PropPlacementScatterer : EditorWindow
         propRadiusIncrementer = serializedObject.FindProperty("radiusIncrementer");
         propSpawnCount = serializedObject.FindProperty("spawnCount");
         propSpawnPrefab = serializedObject.FindProperty("spawnPrefab");
+        propPreviewMaterial = serializedObject.FindProperty("propPreviewMaterial");
 
         //sign up to an event called in every scene's onGUI event when the window is opened
         SceneView.duringSceneGui += DuringSceneGUI;
@@ -129,6 +132,12 @@ public class PropPlacementScatterer : EditorWindow
                     hitPts.Add(ptHit);
                     DrawSphere(ptHit.point); //draw sphere and normal on surface, disc is around the blue vector on the xy plane. set up the points to draw
                     Handles.DrawAAPolyLine(ptHit.point, ptHit.point + ptHit.normal);
+
+                    //mesh asset
+                    Mesh mesh = spawnPrefab.GetComponent<MeshFilter>().sharedMesh;
+                    Material mat = spawnPrefab.GetComponent<MeshRenderer>().sharedMaterial;
+                    mat.SetPass(0);
+                    Graphics.DrawMeshNow(mesh, ptHit.point, Quaternion.LookRotation(ptHit.normal));
                 }
             }
 
@@ -198,6 +207,8 @@ public class PropPlacementScatterer : EditorWindow
         }
 
         EditorGUILayout.PropertyField(propSpawnPrefab);
+
+        //EditorGUILayout.PropertyField(propPreviewMaterial);
 
         //serializedObject.ApplyModifiedProperties();
         if (serializedObject.ApplyModifiedProperties()) //force repaint of the sceneview to make framerate smoother
