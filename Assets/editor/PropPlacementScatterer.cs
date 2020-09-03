@@ -49,24 +49,19 @@ public class PropPlacementScatterer : EditorWindow
         Handles.SphereHandleCap(-1, pos, Quaternion.identity, 0.1f, EventType.Repaint); //1 repaint event is sent every frame
     }
 
-    private void TrySpawnObjects(List<RaycastHit> hitPoints)
+    private void TrySpawnObjects(List<Pose> poseHitPoints)
     {
         if (spawnPrefab == null)
         {
             return;
         }
 
-        foreach (RaycastHit hit in hitPoints) //spawn prefab
+        foreach (Pose poseHit in poseHitPoints) //spawn prefab
         {
             GameObject spawnedPf = (GameObject) PrefabUtility.InstantiatePrefab(spawnPrefab);
             Undo.RegisterCreatedObjectUndo(spawnedPf, "Spawn objects");
-            spawnedPf.transform.position = hit.point;
-
-            float randomAngleDeg = Random.value * 360;
-            Quaternion randomRotation = Quaternion.Euler(0f, 0f, randomAngleDeg); //random rotation around the z axis
-
-            Quaternion rot = Quaternion.LookRotation(hit.normal) * (randomRotation * Quaternion.Euler(90f, 0f, 0f)); //rotate pf +90 degree around x so it has z up - point at the right direction
-            spawnedPf.transform.rotation = rot; //use world up vector as a reference vector
+            spawnedPf.transform.position = poseHit.position;
+            spawnedPf.transform.rotation = poseHit.rotation; //use world up vector as a reference vector
         }
         GenerateRandomPoints(); //update points after spawning to avoid stamping the same scene pattern again
     }
@@ -100,65 +95,71 @@ public class PropPlacementScatterer : EditorWindow
             Event.current.Use(); //consume the event, don't let it fall through: any other events after this will be event.none
         }
 
-        //check if you have any valid position that the cursor is hitting. Shoudn't spawn anything if it's hitting outside the surface
+        //check if you have any valid position that the cursor is poseHitting. Shoudn't spawn anything if it's poseHitting outside the surface
         Ray ray = HandleUtility.GUIPointToWorldRay(Event.current.mousePosition); //wants the UI mouse position, NOT input.mouseposition
 
-        if (Physics.Raycast(ray, out RaycastHit hit))
+        if (Physics.Raycast(ray, out RaycastHit poseHit))
         {
-            //set up a full tangent space coordinate system for the point you hit to get full orientation
+            //set up a full tangent space coordinate system for the point you poseHit to get full orientation
             //use cross product between up vector & normal rather than forward for predicatable rotation as it's aligned with the camera
-            Vector3 hitNormalVectorZ = hit.normal;
-            Vector3 hitTangentVectorY = Vector3.Cross(hitNormalVectorZ, cameraTransform.up).normalized; //not normalised unless both inputs are normalised & orthogonal
-            Vector3 hitBitangentVectorX = Vector3.Cross(hitNormalVectorZ, hitTangentVectorY);
+            Vector3 poseHitNormalVectorZ = poseHit.normal;
+            Vector3 poseHitTangentVectorY = Vector3.Cross(poseHitNormalVectorZ, cameraTransform.up).normalized; //not normalised unless both inputs are normalised & orthogonal
+            Vector3 poseHitBitangentVectorX = Vector3.Cross(poseHitNormalVectorZ, poseHitTangentVectorY);
 
             //create ray for this point given its 2d position
             Ray GetTangentRay(Vector2 tangentSpacePos)
             {
-                Vector3 ptWorldPosRayOrigin = hit.point + (hitTangentVectorY * tangentSpacePos.x + hitBitangentVectorX * tangentSpacePos.y) * radius; //scale the position to the radius
-                ptWorldPosRayOrigin += hitNormalVectorZ * 2; //offset margin distance for the upper projection disc so points move up along a curved surface
-                Vector3 rayDirection = -hitNormalVectorZ; //negated version of the normal: point in the opposite direction
+                Vector3 ptWorldPosRayOrigin = poseHit.point + (poseHitTangentVectorY * tangentSpacePos.x + poseHitBitangentVectorX * tangentSpacePos.y) * radius; //scale the position to the radius
+                ptWorldPosRayOrigin += poseHitNormalVectorZ * 2; //offset margin distance for the upper projection disc so points move up along a curved surface
+                Vector3 rayDirection = -poseHitNormalVectorZ; //negated version of the normal: point in the opposite direction
                 return new Ray(ptWorldPosRayOrigin, rayDirection);
             }
 
-            List<RaycastHit> hitPts = new List<RaycastHit>();
+            List<Pose> poseHitPts = new List<Pose>();
 
             //drawing random points: needs to be transformed into a world space position for DrawSphere() as it's in its own tangent space coordinate system
             foreach (Vector2 pt in randomPoints)
             {
                 Ray ptRay = GetTangentRay(pt);
                 //raycast to find points to surface
-                if (Physics.Raycast(ptRay, out RaycastHit ptHit))
+                if (Physics.Raycast(ptRay, out RaycastHit ptposeHit))
                 {
-                    hitPts.Add(ptHit);
-                    DrawSphere(ptHit.point); //draw sphere and normal on surface, disc is around the blue vector on the xy plane. set up the points to draw
-                    Handles.DrawAAPolyLine(ptHit.point, ptHit.point + ptHit.normal);
+                    //calculate rotation & assign to pose together with position
+                    float randomAngleDeg = Random.value * 360;
+                    Quaternion randomRotation = Quaternion.Euler(0f, 0f, randomAngleDeg); //random rotation around the z axis
+                    Quaternion rot = Quaternion.LookRotation(poseHit.normal) * (randomRotation * Quaternion.Euler(90f, 0f, 0f)); //rotate pf +90 degree around x so it has z up - point at the right direction
+                    Pose pose = new Pose(ptposeHit.point, rot);
+                    poseHitPts.Add(pose);
+
+                    DrawSphere(ptposeHit.point); //draw sphere and normal on surface, disc is around the blue vector on the xy plane. set up the points to draw
+                    Handles.DrawAAPolyLine(ptposeHit.point, ptposeHit.point + ptposeHit.normal);
 
                     //mesh asset
                     Mesh mesh = spawnPrefab.GetComponent<MeshFilter>().sharedMesh;
                     Material mat = spawnPrefab.GetComponent<MeshRenderer>().sharedMaterial;
                     mat.SetPass(0);
-                    Graphics.DrawMeshNow(mesh, ptHit.point, Quaternion.LookRotation(ptHit.normal));
+                    Graphics.DrawMeshNow(mesh, pose.position, pose.rotation);
                 }
             }
 
             //spawn prefabs on press
             if (Event.current.type == EventType.KeyDown && Event.current.keyCode == KeyCode.Space)
             {
-                TrySpawnObjects(hitPts);
+                TrySpawnObjects(poseHitPts);
                 //Debug.Log(Event.current.type);
             }
 
-            //mark the area hit: draw normal, tangent, bitangent according to their colour convention
+            //mark the area poseHit: draw normal, tangent, bitangent according to their colour convention
             Handles.color = Color.red;
-            Handles.DrawAAPolyLine(5, hit.point, hit.point + hitTangentVectorY);
+            Handles.DrawAAPolyLine(5, poseHit.point, poseHit.point + poseHitTangentVectorY);
             Handles.color = Color.blue;
-            Handles.DrawAAPolyLine(5, hit.point, hit.point + hitNormalVectorZ);
+            Handles.DrawAAPolyLine(5, poseHit.point, poseHit.point + poseHitNormalVectorZ);
             Handles.color = Color.green;
-            Handles.DrawAAPolyLine(5, hit.point, hit.point + hitBitangentVectorX);
+            Handles.DrawAAPolyLine(5, poseHit.point, poseHit.point + poseHitBitangentVectorX);
 
             //visualise the radius to scatter objects in
             Handles.color = Color.white;
-            //Handles.DrawWireDisc(hit.point, hit.normal, radius);
+            //Handles.DrawWireDisc(poseHit.point, poseHit.normal, radius);
 
             //draw points on the circle adapted to the terrain
             const int circleDetail = 64;
@@ -172,9 +173,9 @@ public class PropPlacementScatterer : EditorWindow
                 float angRad = t * TAU;
                 Vector3 dir = new Vector2(Mathf.Cos(angRad), Mathf.Sin(angRad)); //radius is automatically added by GetTangentRay(Vector2 tangentSpacePos)
                 Ray rayCircle = GetTangentRay(dir);
-                if (Physics.Raycast(rayCircle, out RaycastHit circleHit))
+                if (Physics.Raycast(rayCircle, out RaycastHit circleposeHit))
                 {
-                    rayCirclePoints[i] = circleHit.point + circleHit.normal * 0.02f; //set to hit position and add margin to avoid intersecting with objects
+                    rayCirclePoints[i] = circleposeHit.point + circleposeHit.normal * 0.02f; //set to poseHit position and add margin to avoid intersecting with objects
                 }
                 else //if the ray cast misses, set it to the origin of the ray rather than the previous point - as previous point could actually fail
                 {
