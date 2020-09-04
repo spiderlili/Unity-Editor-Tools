@@ -134,11 +134,21 @@ public class PropPlacementScatterer : EditorWindow
                     DrawSphere(ptposeHit.point); //draw sphere and normal on surface, disc is around the blue vector on the xy plane. set up the points to draw
                     Handles.DrawAAPolyLine(ptposeHit.point, ptposeHit.point + ptposeHit.normal);
 
-                    //mesh asset
-                    Mesh mesh = spawnPrefab.GetComponent<MeshFilter>().sharedMesh;
+                    //get all mesh in the hierarchy that contains a mesh filter, iterate through mesh filter
+                    MeshFilter[] filters = spawnPrefab.GetComponentsInChildren<MeshFilter>();
+                    foreach (var filter in filters)
+                    {
+                        Mesh meshShared = filter.sharedMesh; //TODO: Add safety check to see if mesh is null
+                        Material materialShared = spawnPrefab.GetComponent<MeshRenderer>().sharedMaterial;
+                        materialShared.SetPass(0);
+                        Graphics.DrawMeshNow(meshShared, pose.position, pose.rotation);
+                    }
+
+                    //mesh asset if the prefab is made of a single mesh
+                    /* Mesh mesh = spawnPrefab.GetComponent<MeshFilter>().sharedMesh;
                     Material mat = spawnPrefab.GetComponent<MeshRenderer>().sharedMaterial;
                     mat.SetPass(0);
-                    Graphics.DrawMeshNow(mesh, pose.position, pose.rotation);
+                    Graphics.DrawMeshNow(mesh, pose.position, pose.rotation); */
                 }
             }
 
