@@ -135,13 +135,16 @@ public class PropPlacementScatterer : EditorWindow
                     Handles.DrawAAPolyLine(ptposeHit.point, ptposeHit.point + ptposeHit.normal);
 
                     //get all mesh in the hierarchy that contains a mesh filter, iterate through mesh filter
+                    Matrix4x4 poseToWorldMatrix = Matrix4x4.TRS(pose.position, pose.rotation, Vector3.one);
                     MeshFilter[] filters = spawnPrefab.GetComponentsInChildren<MeshFilter>();
                     foreach (var filter in filters)
                     {
+                        Matrix4x4 childToPose = filter.transform.localToWorldMatrix;
+                        Matrix4x4 childToWorldMatrix = poseToWorldMatrix * childToPose; //transform from child to world space
                         Mesh meshShared = filter.sharedMesh; //TODO: Add safety check to see if mesh is null
                         Material materialShared = spawnPrefab.GetComponent<MeshRenderer>().sharedMaterial;
                         materialShared.SetPass(0);
-                        Graphics.DrawMeshNow(meshShared, pose.position, pose.rotation);
+                        Graphics.DrawMeshNow(meshShared, childToWorldMatrix);
                     }
 
                     //mesh asset if the prefab is made of a single mesh
