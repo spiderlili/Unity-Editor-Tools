@@ -2,6 +2,19 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
+using Random = UnityEngine.Random;
+
+public struct RandomPtAngleInstData
+{
+    public Vector2 pointInDisc;
+    public float randomAngleDeg;
+
+    public void SetRandomValues()
+    {
+        pointInDisc = Random.insideUnitCircle;
+        randomAngleDeg = Random.value * 360;
+    }
+}
 
 public class PropPlacementScatterer : EditorWindow
 {
@@ -11,8 +24,12 @@ public class PropPlacementScatterer : EditorWindow
     public float radius = 2f;
     public float radiusIncrementer = 0.1f;
     public int spawnCount = 10;
-    public GameObject spawnPrefab = null;
-    public Material previewMaterial = null;
+
+    public GameObject spawnPrefab;
+    public Material previewMaterial;
+    RandomPtAngleInstData[] randomPoints;
+    //generate random points in disc
+    //Vector2[] randomPoints; //just want 2D coordinates within the disk's coordinate system
 
     //boilerplate for undo/redo system
     SerializedObject serializedObject;
@@ -22,8 +39,14 @@ public class PropPlacementScatterer : EditorWindow
     SerializedProperty propSpawnPrefab;
     SerializedProperty propPreviewMaterial;
 
-    //generate random points in disc
-    Vector2[] randomPoints; //just want 2D coordinates within the disk's coordinate system
+    void GenerateRandomPoints()
+    {
+        randomPoints = new RandomPtAngleInstData[spawnCount];
+        for (int i = 0; i < spawnCount; i++)
+        {
+            randomPoints[i].SetRandomValues(); //random points of spawnCount inside a unit circle
+        }
+    }
 
     private void OnEnable()
     {
@@ -33,6 +56,7 @@ public class PropPlacementScatterer : EditorWindow
         propSpawnCount = serializedObject.FindProperty("spawnCount");
         propSpawnPrefab = serializedObject.FindProperty("spawnPrefab");
         propPreviewMaterial = serializedObject.FindProperty("propPreviewMaterial");
+        GenerateRandomPoints();
 
         //sign up to an event called in every scene's onGUI event when the window is opened
         SceneView.duringSceneGui += DuringSceneGUI;
@@ -41,7 +65,6 @@ public class PropPlacementScatterer : EditorWindow
     private void OnDisable()
     {
         SceneView.duringSceneGui -= DuringSceneGUI; //unsubscribe from event
-        GenerateRandomPoints();
     }
 
     private void DrawSphere(Vector3 pos) //requries a world space position but
@@ -118,15 +141,15 @@ public class PropPlacementScatterer : EditorWindow
             List<Pose> poseHitPts = new List<Pose>();
 
             //drawing random points: needs to be transformed into a world space position for DrawSphere() as it's in its own tangent space coordinate system
-            foreach (Vector2 pt in randomPoints)
+            foreach (RandomPtAngleInstData pt in randomPoints)
             {
-                Ray ptRay = GetTangentRay(pt);
+                Ray ptRay = GetTangentRay(pt.pointInDisc);
                 //raycast to find points to surface
                 if (Physics.Raycast(ptRay, out RaycastHit ptposeHit))
                 {
                     //calculate rotation & assign to pose together with position
                     float randomAngleDeg = Random.value * 360;
-                    Quaternion randomRotation = Quaternion.Euler(0f, 0f, randomAngleDeg); //random rotation around the z axis
+                    Quaternion randomRotation = Quaternion.Euler(0f, 0f, pt.randomAngleDeg); //random rotation around the z axis
                     Quaternion rot = Quaternion.LookRotation(poseHit.normal) * (randomRotation * Quaternion.Euler(90f, 0f, 0f)); //rotate pf +90 degree around x so it has z up - point at the right direction
                     Pose pose = new Pose(ptposeHit.point, rot);
                     poseHitPts.Add(pose);
@@ -135,23 +158,25 @@ public class PropPlacementScatterer : EditorWindow
                     Handles.DrawAAPolyLine(ptposeHit.point, ptposeHit.point + ptposeHit.normal);
 
                     //get all mesh in the hierarchy that contains a mesh filter, iterate through mesh filter
-                    Matrix4x4 poseToWorldMatrix = Matrix4x4.TRS(pose.position, pose.rotation, Vector3.one);
-                    MeshFilter[] filters = spawnPrefab.GetComponentsInChildren<MeshFilter>();
-                    foreach (var filter in filters)
+                    if (spawnPrefab != null)
                     {
-                        Matrix4x4 childToPose = filter.transform.localToWorldMatrix;
-                        Matrix4x4 childToWorldMatrix = poseToWorldMatrix * childToPose; //transform from child to world space
-                        Mesh meshShared = filter.sharedMesh; //TODO: Add safety check to see if mesh is null
-                        Material materialShared = spawnPrefab.GetComponent<MeshRenderer>().sharedMaterial;
-                        materialShared.SetPass(0);
-                        Graphics.DrawMeshNow(meshShared, childToWorldMatrix);
+                        Matrix4x4 poseToWorldMatrix = Matrix4x4.TRS(pose.position, pose.rotation, Vector3.one);
+                        MeshFilter[] filters = spawnPrefab.GetComponentsInChildren<MeshFilter>();
+                        foreach (var filter in filters)
+                        {
+                            Matrix4x4 childToPose = filter.transform.localToWorldMatrix;
+                            Matrix4x4 childToWorldMatrix = poseToWorldMatrix * childToPose; //transform from child to world space
+                            Mesh meshShared = filter.sharedMesh; //TODO: Add safety check to see if mesh is null
+                            Material materialShared = spawnPrefab.GetComponent<MeshRenderer>().sharedMaterial;
+                            materialShared.SetPass(0);
+                            Graphics.DrawMeshNow(meshShared, childToWorldMatrix);
+                            //mesh asset if the prefab is made of a single mesh
+                            /* Mesh mesh = spawnPrefab.GetComponent<MeshFilter>().sharedMesh;
+                            Material mat = spawnPrefab.GetComponent<MeshRenderer>().sharedMaterial;
+                            mat.SetPass(0);
+                            Graphics.DrawMeshNow(mesh, pose.position, pose.rotation); */
+                        }
                     }
-
-                    //mesh asset if the prefab is made of a single mesh
-                    /* Mesh mesh = spawnPrefab.GetComponent<MeshFilter>().sharedMesh;
-                    Material mat = spawnPrefab.GetComponent<MeshRenderer>().sharedMaterial;
-                    mat.SetPass(0);
-                    Graphics.DrawMeshNow(mesh, pose.position, pose.rotation); */
                 }
             }
 
@@ -234,15 +259,6 @@ public class PropPlacementScatterer : EditorWindow
         {
             GUI.FocusControl(null); //remove focus from ui
             Repaint(); //removes delay on the editorwindow ui
-        }
-    }
-
-    void GenerateRandomPoints()
-    {
-        randomPoints = new Vector2[spawnCount];
-        for (int i = 0; i < spawnCount; i++)
-        {
-            randomPoints[i] = Random.insideUnitCircle; //random points of spawnCount inside a unit circle
         }
     }
 }
