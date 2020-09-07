@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEditor;
 using UnityEngine;
 using Random = UnityEngine.Random;
@@ -48,6 +49,9 @@ public class PropPlacementScatterer : EditorWindow
         }
     }
 
+    //populate available prefabs to spawn into scene prefab select button
+    GameObject[] spawnablePrefabs;
+
     private void OnEnable()
     {
         serializedObject = new SerializedObject(this);
@@ -60,6 +64,15 @@ public class PropPlacementScatterer : EditorWindow
 
         //sign up to an event called in every scene's onGUI event when the window is opened
         SceneView.duringSceneGui += DuringSceneGUI;
+
+        //load prefabs
+        string[] guids = AssetDatabase.FindAssets("t:prefabs", new []("Assets/Prefabs"));
+        IEnumerable<string> paths = guids.Select(AssetDatabase.GUIDToAssetPath);
+        //spawnablePrefabs = paths.Select(AssetDatabase.LoadAllAssetsAtPath<GameObject>).ToArray();
+        foreach (string path in paths)
+        {
+
+        }
     }
 
     private void OnDisable()
@@ -91,6 +104,10 @@ public class PropPlacementScatterer : EditorWindow
 
     private void DuringSceneGUI(SceneView sceneView) //gui for sceneview window: called per scene view you have open: can have multiple scenes open
     {
+        Handles.BeginGUI();
+        GUI.Button(new Rect(10, 10, 100, 20), "Select Prefab");
+        Handles.EndGUI();
+
         //Handles.zTest = UnityEngine.Rendering.CompareFunction.LessEqual;
 
         //scene view raycasting: assumes camera centre = where to place things, cache camera: place objects to where the camera is pointing
