@@ -110,7 +110,7 @@ public class PropPlacementScatterer : EditorWindow
         {
             Texture icon = AssetPreview.GetAssetPreview(pf); //get reference texture for the preview icon
             //check whether the prefab is selected
-            if (GUI.Toggle(rect, spawnPrefab == pf, new GUIContent(pf.name, icon)))
+            if (GUI.Toggle(rect, spawnPrefab == pf, new GUIContent(icon))) // new GUIContent(pf.name, icon) to display name
             {
                 spawnPrefab = pf;
             }
