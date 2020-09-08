@@ -40,6 +40,9 @@ public class PropPlacementScatterer : EditorWindow
     SerializedProperty propSpawnPrefab;
     SerializedProperty propPreviewMaterial;
 
+    //populate available prefabs to spawn into scene prefab select button
+    GameObject[] spawnablePrefabs;
+
     void GenerateRandomPoints()
     {
         randomPoints = new RandomPtAngleInstData[spawnCount];
@@ -48,9 +51,6 @@ public class PropPlacementScatterer : EditorWindow
             randomPoints[i].SetRandomValues(); //random points of spawnCount inside a unit circle
         }
     }
-
-    //populate available prefabs to spawn into scene prefab select button
-    GameObject[] spawnablePrefabs;
 
     private void OnEnable()
     {
@@ -66,13 +66,12 @@ public class PropPlacementScatterer : EditorWindow
         SceneView.duringSceneGui += DuringSceneGUI;
 
         //load prefabs
-        string[] guids = AssetDatabase.FindAssets("t:prefabs", new []("Assets/Prefabs"));
-        IEnumerable<string> paths = guids.Select(AssetDatabase.GUIDToAssetPath);
-        //spawnablePrefabs = paths.Select(AssetDatabase.LoadAllAssetsAtPath<GameObject>).ToArray();
-        foreach (string path in paths)
+        string[] guids = AssetDatabase.FindAssets("t:prefabs", new []
         {
-
-        }
+            "Assets/Prefabs"
+        });
+        IEnumerable<string> paths = guids.Select(AssetDatabase.GUIDToAssetPath);
+        spawnablePrefabs = paths.Select(AssetDatabase.LoadAssetAtPath<GameObject>).ToArray();
     }
 
     private void OnDisable()
@@ -105,10 +104,22 @@ public class PropPlacementScatterer : EditorWindow
     private void DuringSceneGUI(SceneView sceneView) //gui for sceneview window: called per scene view you have open: can have multiple scenes open
     {
         Handles.BeginGUI();
-        GUI.Button(new Rect(10, 10, 100, 20), "Select Prefab");
+        Rect rect = new Rect(8, 8, 64, 64);
+
+        foreach (var pf in spawnablePrefabs) //try GameObject
+        {
+            Texture icon = AssetPreview.GetAssetPreview(pf); //get reference texture for the preview icon
+            //check whether the prefab is selected
+            if (GUI.Toggle(rect, spawnPrefab == pf, new GUIContent(pf.name, icon)))
+            {
+                spawnPrefab = pf;
+            }
+            rect.y += rect.height + 2; //add margin between the buttons
+        }
+
         Handles.EndGUI();
 
-        //Handles.zTest = UnityEngine.Rendering.CompareFunction.LessEqual;
+        Handles.zTest = UnityEngine.Rendering.CompareFunction.LessEqual;
 
         //scene view raycasting: assumes camera centre = where to place things, cache camera: place objects to where the camera is pointing
         Transform cameraTransform = sceneView.camera.transform;
