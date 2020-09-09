@@ -52,6 +52,43 @@ public class PropPlacementScatterer : EditorWindow
         }
     }
 
+    void OnGUI() //gui loop for editor window
+    {
+        serializedObject.Update(); //make serialized property update when parameters changed
+
+        EditorGUILayout.HelpBox("Use scroll wheel to decrease / increase radius, hold Alt + scroll to zoom in the scene view, press Space to spawn prefab objects", MessageType.Info); //helper text
+
+        EditorGUILayout.PropertyField(propRadius);
+        propRadius.floatValue = Mathf.Max(1f, propRadius.floatValue); //limit range and prevent negative value
+
+        EditorGUILayout.PropertyField(propRadiusIncrementer);
+        propRadiusIncrementer.floatValue = Mathf.Max(0.1f, propRadiusIncrementer.floatValue);
+
+        EditorGUI.BeginChangeCheck();
+        EditorGUILayout.PropertyField(propSpawnCount);
+        propSpawnCount.intValue = propSpawnCount.intValue.AtLeast(1);
+        if (EditorGUI.EndChangeCheck())
+        {
+            GenerateRandomPoints(); //update all points every time you change spawncount
+        }
+
+        EditorGUILayout.PropertyField(propSpawnPrefab);
+
+        //EditorGUILayout.PropertyField(propPreviewMaterial);
+
+        //serializedObject.ApplyModifiedProperties();
+        if (serializedObject.ApplyModifiedProperties()) //force repaint of the sceneview to make framerate smoother
+        {
+            SceneView.RepaintAll();
+        }
+
+        if (Event.current.type == EventType.MouseDown && Event.current.button == 0) //if left clicked in the editor window
+        {
+            GUI.FocusControl(null); //remove focus from ui
+            Repaint(); //removes delay on the editorwindow ui
+        }
+    }
+
     private void OnEnable()
     {
         serializedObject = new SerializedObject(this);
@@ -251,42 +288,5 @@ public class PropPlacementScatterer : EditorWindow
             Handles.DrawAAPolyLine(rayCirclePoints);
         }
         Handles.DrawAAPolyLine(Vector3.zero, Vector3.one);
-    }
-
-    void OnGUI() //gui loop for editor window
-    {
-        serializedObject.Update(); //make serialized property update when parameters changed
-
-        EditorGUILayout.HelpBox("Use scroll wheel to decrease / increase radius, hold Alt + scroll to zoom in the scene view, press Space to spawn prefab objects", MessageType.Info); //helper text
-
-        EditorGUILayout.PropertyField(propRadius);
-        propRadius.floatValue = Mathf.Max(1f, propRadius.floatValue); //limit range and prevent negative value
-
-        EditorGUILayout.PropertyField(propRadiusIncrementer);
-        propRadiusIncrementer.floatValue = Mathf.Max(0.1f, propRadiusIncrementer.floatValue);
-
-        EditorGUI.BeginChangeCheck();
-        EditorGUILayout.PropertyField(propSpawnCount);
-        propSpawnCount.intValue = propSpawnCount.intValue.AtLeast(1);
-        if (EditorGUI.EndChangeCheck())
-        {
-            GenerateRandomPoints(); //update all points every time you change spawncount
-        }
-
-        EditorGUILayout.PropertyField(propSpawnPrefab);
-
-        //EditorGUILayout.PropertyField(propPreviewMaterial);
-
-        //serializedObject.ApplyModifiedProperties();
-        if (serializedObject.ApplyModifiedProperties()) //force repaint of the sceneview to make framerate smoother
-        {
-            SceneView.RepaintAll();
-        }
-
-        if (Event.current.type == EventType.MouseDown && Event.current.button == 0) //if left clicked in the editor window
-        {
-            GUI.FocusControl(null); //remove focus from ui
-            Repaint(); //removes delay on the editorwindow ui
-        }
     }
 }
