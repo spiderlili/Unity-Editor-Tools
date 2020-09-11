@@ -1,18 +1,11 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using EnemyTypes; //derive ability enums
 using UnityEngine;
 
-public class WarriorData : MonoBehaviour
+[CreateAssetMenuAttribute(fileName = "New Warrior Data", menuName = "Enemy Character/Warrior")]
+public class WarriorData : EnemyCharacterData
 {
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
+    public WarriorClassType classType;
+    public WarriorWeaponType weaponType;
 }

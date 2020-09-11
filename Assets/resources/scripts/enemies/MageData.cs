@@ -1,18 +1,11 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using EnemyTypes; //derive ability enums
 using UnityEngine;
 
-public class MageData : MonoBehaviour
+[CreateAssetMenuAttribute(fileName = "New Mage Data", menuName = "Enemy Character/Mage")]
+public class MageData : EnemyCharacterData
 {
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
+    public MageDamageType damageType;
+    public MageWeaponType weaponType;
 }

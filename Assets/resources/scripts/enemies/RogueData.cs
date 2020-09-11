@@ -1,18 +1,11 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using EnemyTypes; //derive ability enums
 using UnityEngine;
 
-public class RogueData : MonoBehaviour
+[CreateAssetMenuAttribute(fileName = "New Rogue Data", menuName = "Enemy Character/Rogue")]
+public class RogueData : EnemyCharacterData
 {
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
+    public RogueWeaponType weaponType;
+    public RogueStrategyType strategyType;
 }

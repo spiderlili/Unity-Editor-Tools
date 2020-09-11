@@ -2,17 +2,13 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class EnemyCharacterData : MonoBehaviour
+//generic attributes shared among all enemy characters
+public class EnemyCharacterData : ScriptableObject
 {
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
+    public GameObject prefab;
+    public float maxHealth;
+    public float maxEnergy;
+    public float criticalChance;
+    public float power;
+    public string characterName;
 }
