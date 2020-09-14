@@ -32,7 +32,7 @@ public class EnemyDesignerWindow : EditorWindow
 
     void InitTextures() //init Texture2D values
     {
-        headerSectionTexture = new Texture2D(1, 1); //define texture2d as 1 color, 1px wide x 1px high
+        headerSectionTexture = new Texture2D(1, 1); //define texture2d as 1 color, 1px wide x 1px high without using any image
         headerSectionTexture.SetPixel(0, 0, headerSectionColor);
         headerSectionTexture.Apply();
     }
