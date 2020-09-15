@@ -35,6 +35,10 @@ public class EnemyDesignerWindow : EditorWindow
         headerSectionTexture = new Texture2D(1, 1); //define texture2d as 1 color, 1px wide x 1px high without using any image
         headerSectionTexture.SetPixel(0, 0, headerSectionColor);
         headerSectionTexture.Apply();
+
+        mageSectionTexture = Resources.Load<Texture2D>("icons/enemyDesignerIcons/mage-gradient-bg");
+        warriorSectionTexture = Resources.Load<Texture2D>("icons/enemyDesignerIcons/warrior-gradient-bg");
+        rogueSectionTexture = Resources.Load<Texture2D>("icons/enemyDesignerIcons/rogue-gradient-bg");
     }
 
     private void OnGUI() //similar to update() in game scripting BUT called >=1 times per interaction - anytime mouse goes over the window/interaction
@@ -54,7 +58,25 @@ public class EnemyDesignerWindow : EditorWindow
         headerSection.width = Screen.width;
         headerSection.height = 50;
 
+        mageSection.x = 0;
+        mageSection.y = 50;
+        mageSection.width = Screen.width / 3f;
+        mageSection.height = Screen.width - 50; //below the header section height
+
+        warriorSection.x = Screen.width / 3f;
+        warriorSection.y = 50;
+        warriorSection.width = Screen.width / 3f;
+        warriorSection.height = Screen.width - 50; //below the header section height
+
+        rogueSection.x = (Screen.width / 3f) * 2;
+        rogueSection.y = 50;
+        rogueSection.width = Screen.width / 3f;
+        rogueSection.height = Screen.width - 50; //below the header section height
+
         GUI.DrawTexture(headerSection, headerSectionTexture);
+        GUI.DrawTexture(mageSection, mageSectionTexture);
+        GUI.DrawTexture(warriorSection, warriorSectionTexture);
+        GUI.DrawTexture(rogueSection, rogueSectionTexture);
     }
 
     void DrawHeader()
