@@ -236,10 +236,10 @@ public class PropPlacementScatterer : EditorWindow
                             materialShared.SetPass(0);
                             Graphics.DrawMeshNow(meshShared, childToWorldMatrix);
                             //mesh asset if the prefab is made of a single mesh
-                            /* Mesh mesh = spawnPrefab.GetComponent<MeshFilter>().sharedMesh;
+                            Mesh mesh = spawnPrefab.GetComponent<MeshFilter>().sharedMesh;
                             Material mat = spawnPrefab.GetComponent<MeshRenderer>().sharedMaterial;
                             mat.SetPass(0);
-                            Graphics.DrawMeshNow(mesh, pose.position, pose.rotation); */
+                            Graphics.DrawMeshNow(mesh, pose.position, pose.rotation);
                         }
                     }
                 }
