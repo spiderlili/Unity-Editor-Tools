@@ -13,7 +13,7 @@ public class ObjectReplacer : ScriptableWizard
     [MenuItem("Tools/Replace Selected Objects", false, 1000)]
     static void CreateWizard()
     {
-        //type of wizard = ObjectReplacer class, when Ynity instantiates a new ScriptableWizard it should be of this type
+        //type of wizard = ObjectReplacer class, when Unity instantiates a new ScriptableWizard it should be of this type
         ScriptableWizard.DisplayWizard("Object Replacer", typeof(ObjectReplacer), "Replace and close", "Replace");
     }
 
@@ -24,7 +24,7 @@ public class ObjectReplacer : ScriptableWizard
 
     private void OnWizardCreate() //check if the error string contains any errors before it continues. 
     {
-        if(errorString != "")
+        if (errorString != "")
         {
             return;
         }
@@ -40,14 +40,14 @@ public class ObjectReplacer : ScriptableWizard
                 return;
             }
         }
-          
+
         //iterate all objects selected. prevent selection from project / assets
         Transform[] transforms = Selection.GetTransforms(SelectionMode.TopLevel | SelectionMode.ExcludePrefab);
 
         int countReplacedObjects = 0;
-        foreach(Transform t in transforms)
+        foreach (Transform t in transforms)
         {
-           if(EditorUtility.DisplayCancelableProgressBar("working..", "replacing " + t.name, countReplacedObjects / (float)transforms.Length))
+            if (EditorUtility.DisplayCancelableProgressBar("working..", "replacing " + t.name, countReplacedObjects / (float)transforms.Length))
             {
                 break;
             }
@@ -95,7 +95,7 @@ public class ObjectReplacer : ScriptableWizard
         helpString = transforms.Length + " objects selected for replacement";
         isValid = true;
 
-        if(replacementPrefab == null)
+        if (replacementPrefab == null)
         {
             errorString += "No replacement object is selected\n"; //add a new error msg on the next line
             isValid = false;
