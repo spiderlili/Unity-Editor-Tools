@@ -22,7 +22,7 @@ public class ObjectReplacer : ScriptableWizard
         EditorPrefs.GetBool(strShowDialogsKey, ShowHelperDialogs);
     }
 
-    private void OnWizardCreate() //called when the user clicks on the Create button: check if the error string contains any errors before it continues. 
+    private void OnWizardCreate() //called when the user clicks on the Create button: check if the error string contains any errors before it continues to execute. 
     {
         if (errorString != "")
         {
@@ -41,7 +41,7 @@ public class ObjectReplacer : ScriptableWizard
             }
         }
 
-        //iterate all objects selected. prevent selection from project / assets
+        //iterate all objects selected. prevent selection from project / assets by selecting topmost selected transform in the scene
         Transform[] transforms = Selection.GetTransforms(SelectionMode.TopLevel | SelectionMode.ExcludePrefab);
 
         int countReplacedObjects = 0;
@@ -56,8 +56,8 @@ public class ObjectReplacer : ScriptableWizard
             countReplacedObjects++;
         }
 
-        EditorUtility.ClearProgressBar();
-        ShowNotification(new GUIContent("Done"));
+        EditorUtility.ClearProgressBar(); //removes the progress bar
+        ShowNotification(new GUIContent("Done")); //notification will fade out automatically after some time. TODO: use GUIStyle to define its render style
 
         if (ShowHelperDialogs)
         {
@@ -74,11 +74,13 @@ public class ObjectReplacer : ScriptableWizard
         newCopy.transform.localScale = transform.localScale;
         newCopy.transform.parent = transform.parent;
 
-        Undo.RegisterCreatedObjectUndo(newCopy, "Replaced Object"); //registers undo action for the newly created object & label
-        Undo.DestroyObjectImmediate(transform.gameObject); //need to pass in gameobject - can't delete based on transform
+        //Register an undo operations for the newly created object & label
+        Undo.RegisterCreatedObjectUndo(newCopy, "Replaced Object"); 
+        //When the undo is performed the object will be destroyed: need to pass in gameobject - can't delete based on transform
+        Undo.DestroyObjectImmediate(transform.gameObject);     
     }
 
-    private void OnWizardOtherButton()
+    private void OnWizardOtherButton() //provide an action when the user clicks on the other button defined in CreateWizard("Replace")
     {
         if (errorString != "")
         {
@@ -88,7 +90,7 @@ public class ObjectReplacer : ScriptableWizard
 
     }
 
-    private void OnWizardUpdate()
+    private void OnWizardUpdate() //called when the wizard is opened or whenever the user changes something in the wizard
     {
         Transform[] transforms = Selection.GetTransforms(SelectionMode.TopLevel | SelectionMode.ExcludePrefab);
         errorString = "";
@@ -109,7 +111,7 @@ public class ObjectReplacer : ScriptableWizard
         EditorPrefs.SetBool(strShowDialogsKey, ShowHelperDialogs);
     }
 
-    private void OnSelectionChange()
+    private void OnSelectionChange() //Called whenever the selection has changed
     {
         OnWizardUpdate();
     }
