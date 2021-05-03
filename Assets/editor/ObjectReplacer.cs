@@ -22,7 +22,7 @@ public class ObjectReplacer : ScriptableWizard
         EditorPrefs.GetBool(strShowDialogsKey, ShowHelperDialogs);
     }
 
-    private void OnWizardCreate() //check if the error string contains any errors before it continues. 
+    private void OnWizardCreate() //called when the user clicks on the Create button: check if the error string contains any errors before it continues. 
     {
         if (errorString != "")
         {
