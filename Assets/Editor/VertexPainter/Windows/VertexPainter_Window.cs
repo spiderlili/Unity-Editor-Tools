@@ -27,7 +27,7 @@ public class VertexPainter_Window : EditorWindow
         EditorGUILayout.EndHorizontal();
 
         //body: styled using default box GUI skin to create box layout
-        EditorGUILayout.BeginVertical(GUI.skin.box);
+        EditorGUILayout.BeginVertical(boxStyle);
         EditorGUILayout.Space(10);
 
         //50/50 divide horizontally for 2 buttons
@@ -54,7 +54,7 @@ public class VertexPainter_Window : EditorWindow
 
         //footer
         //EditorGUILayout.LabelField("Title");
-        GUILayout.Box("Title", GUILayout.Height(60), GUILayout.ExpandWidth(true));
+        GUILayout.Box("Title", boxStyle, GUILayout.Height(60), GUILayout.ExpandWidth(true));
 
         //update & repaint the UI in real time
         Repaint();
@@ -65,7 +65,14 @@ public class VertexPainter_Window : EditorWindow
     private void GenerateStyles()
     {
         boxStyle = new GUIStyle();
-        boxStyle.margin = new RectOffset(100, 10, 10, 10);
+        boxStyle.normal.background = (Texture2D)Resources.Load("UIBackgrounds/Bg_BlueWhiteGradient");
+        boxStyle.font = (Font)Resources.Load("Fonts/NotoSansCJKkr-Black");
+        boxStyle.normal.textColor = Color.white;
+        boxStyle.fontSize = 25;
+        boxStyle.fontStyle = FontStyle.Bold;
+        boxStyle.alignment = TextAnchor.MiddleCenter;
+        boxStyle.border = new RectOffset(3, 3, 3, 3); //define in pixels the width of the border in the bg 
+        boxStyle.margin = new RectOffset(5, 5, 5, 5);
     }
 
     #endregion
