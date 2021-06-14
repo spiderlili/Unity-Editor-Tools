@@ -43,8 +43,8 @@ public class CharacterSelect : EditorWindow
     private Color _midValueColor = Color.yellow;
     private Color _lowValueColor = Color.red;
 
-    [MenuItem("Window/DnD Character Select")] //link window to window tab
-    private static void OpenWindow() 
+    [MenuItem("Tools/Design Prefab Creator/DnD Character Select")] //link window to window tab
+    private static void OpenWindow()
     {
         CharacterSelect window = (CharacterSelect)GetWindow(typeof(CharacterSelect));
         window.minSize = new Vector2(600f, 600f);
@@ -95,10 +95,10 @@ public class CharacterSelect : EditorWindow
         {
             case CharacterClass.FIGHTER:
                 _currentCharacterImage = Resources.Load<Texture2D>("icons/DnDCharacters/icon_fighter");
-            if(_gender == Gender.MALE)
-            {
+                if (_gender == Gender.MALE)
+                {
 
-            }
+                }
                 break;
             case CharacterClass.BARD:
                 _currentCharacterImage = Resources.Load<Texture2D>("icons/DnDCharacters/icon_bard");
@@ -107,15 +107,15 @@ public class CharacterSelect : EditorWindow
             case CharacterClass.ROGUE:
                 _currentCharacterImage = Resources.Load<Texture2D>("icons/DnDCharacters/icon_rogue");
                 break;
-            
+
             case CharacterClass.CLERIC:
                 _currentCharacterImage = Resources.Load<Texture2D>("icons/DnDCharacters/icon_cleric");
                 break;
-            
+
             case CharacterClass.RANGER:
                 _currentCharacterImage = Resources.Load<Texture2D>("icons/DnDCharacters/icon_ranger");
                 break;
-            
+
             case CharacterClass.WIZARD:
                 _currentCharacterImage = Resources.Load<Texture2D>("icons/DnDCharacters/icon_wizard");
                 break;
@@ -181,15 +181,15 @@ public class CharacterSelect : EditorWindow
     private Color GetVariableColor(int value)
     {
         Color currentColor = Color.white;
-        if(value >= 66)
+        if (value >= 66)
         {
             currentColor = _characterWindowSettings.HighValueColor;
         }
-        else if(value < 66 && value > 33)
+        else if (value < 66 && value > 33)
         {
             currentColor = _characterWindowSettings.MidValueColor;
         }
-        else if(value <= 33)
+        else if (value <= 33)
         {
             currentColor = _characterWindowSettings.LowValueColor;
         }
@@ -257,43 +257,43 @@ public class CharacterSelect : EditorWindow
         EditorGUILayout.BeginHorizontal();
         GUILayout.Label("Magic Points");
         GUI.color = GetVariableColor(_magicPoints);
-        _magicPoints = EditorGUILayout.IntSlider(_magicPoints, 0, 100); 
+        _magicPoints = EditorGUILayout.IntSlider(_magicPoints, 0, 100);
         EditorGUILayout.EndHorizontal();
 
         EditorGUILayout.BeginHorizontal();
         GUILayout.Label("Strength");
         GUI.color = GetVariableColor(_strength);
-        _strength = EditorGUILayout.IntSlider(_strength, 0, 100); 
+        _strength = EditorGUILayout.IntSlider(_strength, 0, 100);
         EditorGUILayout.EndHorizontal();
 
         EditorGUILayout.BeginHorizontal();
         GUILayout.Label("Dexterity");
         GUI.color = GetVariableColor(_dexterity);
-        _dexterity = EditorGUILayout.IntSlider(_dexterity, 0, 100); 
+        _dexterity = EditorGUILayout.IntSlider(_dexterity, 0, 100);
         EditorGUILayout.EndHorizontal();
 
         EditorGUILayout.BeginHorizontal();
         GUILayout.Label("Constitution");
         GUI.color = GetVariableColor(_constitution);
-        _constitution = EditorGUILayout.IntSlider(_constitution, 0, 100); 
+        _constitution = EditorGUILayout.IntSlider(_constitution, 0, 100);
         EditorGUILayout.EndHorizontal();
 
         EditorGUILayout.BeginHorizontal();
         GUILayout.Label("Intelligence");
         GUI.color = GetVariableColor(_intelligence);
-        _intelligence = EditorGUILayout.IntSlider(_intelligence, 0, 100); 
+        _intelligence = EditorGUILayout.IntSlider(_intelligence, 0, 100);
         EditorGUILayout.EndHorizontal();
 
         EditorGUILayout.BeginHorizontal();
         GUILayout.Label("Wisdom");
         GUI.color = GetVariableColor(_wisdom);
-        _wisdom = EditorGUILayout.IntSlider(_wisdom, 0, 100); 
+        _wisdom = EditorGUILayout.IntSlider(_wisdom, 0, 100);
         EditorGUILayout.EndHorizontal();
 
         EditorGUILayout.BeginHorizontal();
         GUILayout.Label("Charisma");
         GUI.color = GetVariableColor(_charisma);
-        _charisma = EditorGUILayout.IntSlider(_charisma, 0, 100); 
+        _charisma = EditorGUILayout.IntSlider(_charisma, 0, 100);
         EditorGUILayout.EndHorizontal();
 
         EditorGUILayout.BeginHorizontal();

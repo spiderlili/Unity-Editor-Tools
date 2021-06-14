@@ -17,10 +17,10 @@ public class EnemyDesignerWindow : EditorWindow
     Rect warriorSection;
     Rect rogueSection;
 
-    [MenuItem("Tools/Enemy Designer")]
+    [MenuItem("Tools/Design Prefab Creator/Enemy Designer")]
     static void OpenWindow()
     {
-        EnemyDesignerWindow window = (EnemyDesignerWindow) GetWindow(typeof(EnemyDesignerWindow));
+        EnemyDesignerWindow window = (EnemyDesignerWindow)GetWindow(typeof(EnemyDesignerWindow));
         window.minSize = new Vector2(600, 300); //make sure the window is not too small
         window.Show();
     }
