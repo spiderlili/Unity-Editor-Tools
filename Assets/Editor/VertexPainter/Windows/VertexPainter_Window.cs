@@ -75,16 +75,7 @@ public class VertexPainter_Window : EditorWindow
     // Draw or do input/handle overriding in the scene view
     void OnSceneGUI(SceneView sceneView)
     {
-
-        DrawBrushGUI();
-
-        Ray worldRay = HandleUtility.GUIPointToWorldRay(mousePos); //Uses the current camera to convert 2D GUI position to a world space ray.
-        if (Physics.Raycast(worldRay, out currentHit, 500f)) //500f = maxDistance the ray should check for collisions. try float.MaxValue
-        {
-            //BeginVertexPainting
-            Debug.Log(currentHit.transform.name);
-        }
-
+        DrawBrushGUIOnMouseOver();
         ProcessInputs();//Get user inputs
         //Debug.Log(mousePos);
         sceneView.Repaint(); //update & repaint sceneView GUI
@@ -93,7 +84,7 @@ public class VertexPainter_Window : EditorWindow
     #endregion
 
     #region UtilityMethods
-    private void DrawBrushGUI()
+    private void DrawBrushGUIOnMouseOver()
     {
         //debug 3D UI in the sceneview
         Handles.BeginGUI();
@@ -103,12 +94,21 @@ public class VertexPainter_Window : EditorWindow
         GUILayout.EndArea();
         Handles.EndGUI();
 
-        Handles.Label(Vector3.zero, "Label at World Centre");
-        Handles.color = new Color(1.0f, 0.0f, 1.0f, 1.0f);
-        Handles.DrawSolidDisc(Vector3.zero, Vector3.up, 2f);
-        Handles.color = new Color(1.0f, 1.0f, 1.0f, 1.0f); ;
-        Handles.DrawWireDisc(Vector3.zero, Vector3.up, 2f);
-        Handles.DrawSolidDisc(Vector3.zero, Vector3.up, 0.5f);
+        if (currentHit.transform != null) //only show the brush GUI if it has hit something
+        {
+            Handles.color = new Color(1.0f, 0.0f, 0.0f, 1.0f);
+            Handles.DrawSolidDisc(currentHit.point, Vector3.up, 1.0f);
+            Handles.color = new Color(1.0f, 1.0f, 1.0f, 1.0f); ;
+            Handles.DrawWireDisc(currentHit.point, Vector3.up, 0.5f);
+        }
+
+        Ray worldRay = HandleUtility.GUIPointToWorldRay(mousePos); //Uses the current camera to convert 2D GUI position to a world space ray.
+        if (Physics.Raycast(worldRay, out currentHit, 500f)) //500f = maxDistance the ray should check for collisions. try float.MaxValue
+        {
+            //BeginVertexPainting
+            Debug.Log(currentHit.transform.name);
+        }
+        //Handles.Label(Vector3.zero, "Label at World Centre");
     }
     private void ProcessInputs() //controlled via OnSceneGUI()
     {
