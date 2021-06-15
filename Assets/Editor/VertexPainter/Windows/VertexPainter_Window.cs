@@ -6,6 +6,7 @@ public class VertexPainter_Window : EditorWindow
 {
     #region Variables
     GUIStyle boxStyle;
+    public bool allowPainting = false;
     public Vector2 mousePos = Vector2.zero;
     public RaycastHit currentHit; //store the obj hit by ray
     #endregion
@@ -44,15 +45,8 @@ public class VertexPainter_Window : EditorWindow
 
         //50/50 divide horizontally for 2 buttons
         EditorGUILayout.BeginHorizontal();
-        if (GUILayout.Button("Button1", GUILayout.Height(30)))
-        {
+        allowPainting = GUILayout.Toggle(allowPainting, "Allow Vertex Painting", GUI.skin.toggle, GUILayout.Height(60));
 
-        }
-
-        if (GUILayout.Button("Button2", GUILayout.Height(30)))
-        {
-
-        }
         EditorGUILayout.EndHorizontal();
 
         //100% width for 3rd button
@@ -94,19 +88,22 @@ public class VertexPainter_Window : EditorWindow
         GUILayout.EndArea();
         Handles.EndGUI();
 
-        if (currentHit.transform != null) //only show the brush GUI if it has hit something
+        if (allowPainting)
         {
-            Handles.color = new Color(1.0f, 0.0f, 0.0f, 1.0f);
-            Handles.DrawSolidDisc(currentHit.point, Vector3.up, 1.0f);
-            Handles.color = new Color(1.0f, 1.0f, 1.0f, 1.0f); ;
-            Handles.DrawWireDisc(currentHit.point, Vector3.up, 0.5f);
-        }
+            if (currentHit.transform != null) //only get the brush GUI to follow the mouse if raycast from mouse has hit something
+            {
+                Handles.color = new Color(1.0f, 0.0f, 0.0f, 1.0f);
+                Handles.DrawSolidDisc(currentHit.point, currentHit.normal, 1.0f);
+                Handles.color = new Color(1.0f, 1.0f, 1.0f, 1.0f); ;
+                Handles.DrawWireDisc(currentHit.point, currentHit.normal, 0.5f);
+            }
 
-        Ray worldRay = HandleUtility.GUIPointToWorldRay(mousePos); //Uses the current camera to convert 2D GUI position to a world space ray.
-        if (Physics.Raycast(worldRay, out currentHit, 500f)) //500f = maxDistance the ray should check for collisions. try float.MaxValue
-        {
-            //BeginVertexPainting
-            Debug.Log(currentHit.transform.name);
+            Ray worldRay = HandleUtility.GUIPointToWorldRay(mousePos); //Uses the current camera to convert 2D GUI position to a world space ray.
+            if (Physics.Raycast(worldRay, out currentHit, 500f)) //500f = maxDistance the ray should check for collisions. try float.MaxValue
+            {
+                //BeginVertexPainting
+                Debug.Log(currentHit.transform.name);
+            }
         }
         //Handles.Label(Vector3.zero, "Label at World Centre");
     }
@@ -119,9 +116,9 @@ public class VertexPainter_Window : EditorWindow
 
         if (currentEvt.type == EventType.KeyDown)
         {
-            if (currentEvt.isKey && currentEvt.keyCode == KeyCode.T)
+            if (currentEvt.isKey && currentEvt.keyCode == KeyCode.V) //shortcut to toggle vertex painting
             {
-
+                allowPainting = !allowPainting;
             }
         }
 
