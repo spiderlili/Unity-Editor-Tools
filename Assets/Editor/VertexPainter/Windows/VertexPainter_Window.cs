@@ -7,6 +7,7 @@ public class VertexPainter_Window : EditorWindow
     #region Variables
     GUIStyle boxStyle;
     public Vector2 mousePos = Vector2.zero;
+    public RaycastHit currentHit; //store the obj hit by ray
     #endregion
 
     #region MainMethod
@@ -74,6 +75,26 @@ public class VertexPainter_Window : EditorWindow
     // Draw or do input/handle overriding in the scene view
     void OnSceneGUI(SceneView sceneView)
     {
+
+        DrawBrushGUI();
+
+        Ray worldRay = HandleUtility.GUIPointToWorldRay(mousePos); //Uses the current camera to convert 2D GUI position to a world space ray.
+        if (Physics.Raycast(worldRay, out currentHit, 500f)) //500f = maxDistance the ray should check for collisions. try float.MaxValue
+        {
+            //BeginVertexPainting
+            Debug.Log(currentHit.transform.name);
+        }
+
+        ProcessInputs();//Get user inputs
+        //Debug.Log(mousePos);
+        sceneView.Repaint(); //update & repaint sceneView GUI
+    }
+
+    #endregion
+
+    #region UtilityMethods
+    private void DrawBrushGUI()
+    {
         //debug 3D UI in the sceneview
         Handles.BeginGUI();
         GUILayout.BeginArea(new Rect(10, 10, 200, 150), boxStyle); // block of GUI controls in a fixed screen area
@@ -88,16 +109,7 @@ public class VertexPainter_Window : EditorWindow
         Handles.color = new Color(1.0f, 1.0f, 1.0f, 1.0f); ;
         Handles.DrawWireDisc(Vector3.zero, Vector3.up, 2f);
         Handles.DrawSolidDisc(Vector3.zero, Vector3.up, 0.5f);
-
-        //Get user inputs
-        ProcessInputs();
-        //        Debug.Log(mousePos);
-        sceneView.Repaint(); //update & repaint sceneView GUI
     }
-
-    #endregion
-
-    #region UtilityMethods
     private void ProcessInputs() //controlled via OnSceneGUI()
     {
         // Event.current houses information on scene view input this cycle being processed right now
@@ -109,7 +121,7 @@ public class VertexPainter_Window : EditorWindow
         {
             if (currentEvt.isKey && currentEvt.keyCode == KeyCode.T)
             {
-                Debug.Log("Pressed the T Key");
+
             }
         }
 
@@ -117,7 +129,7 @@ public class VertexPainter_Window : EditorWindow
         {
             if (currentEvt.button == 0)
             {
-                Debug.Log("Pressed the Left Mouse Button");
+
             }
         }
     }
