@@ -28,6 +28,14 @@ public class VertexPainter_Window : EditorWindow
         SceneView.duringSceneGui -= this.OnSceneGUI;
     }
 
+    private void Update()
+    {
+        if (allowPainting) //Deselect everything when in painting mode, prevent wireframe view of paintable mesh
+        {
+            Selection.activeGameObject = null;
+        }
+    }
+
     #endregion
 
     #region GUIMethods
@@ -98,12 +106,19 @@ public class VertexPainter_Window : EditorWindow
                 Handles.DrawWireDisc(currentHit.point, currentHit.normal, 0.5f);
             }
 
+            HandleUtility.AddDefaultControl(GUIUtility.GetControlID(FocusType.Passive)); //turns everything off in passive mode
+
             Ray worldRay = HandleUtility.GUIPointToWorldRay(mousePos); //Uses the current camera to convert 2D GUI position to a world space ray.
             if (Physics.Raycast(worldRay, out currentHit, 500f)) //500f = maxDistance the ray should check for collisions. try float.MaxValue
             {
                 //BeginVertexPainting
                 Debug.Log(currentHit.transform.name);
             }
+        }
+        else
+        {
+            //TODO: Try deleting this else block - may not be necessary to have this statement
+            HandleUtility.AddDefaultControl(GUIUtility.GetControlID(FocusType.Keyboard)); //turns everything back on when not in painting mode
         }
         //Handles.Label(Vector3.zero, "Label at World Centre");
     }
@@ -119,6 +134,14 @@ public class VertexPainter_Window : EditorWindow
             if (currentEvt.isKey && currentEvt.keyCode == KeyCode.V) //shortcut to toggle vertex painting
             {
                 allowPainting = !allowPainting;
+                if (!allowPainting)
+                {
+                    Tools.current = Tool.View;
+                }
+                else
+                {
+                    Tools.current = Tool.None;
+                }
             }
         }
 
