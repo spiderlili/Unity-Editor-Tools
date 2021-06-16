@@ -7,8 +7,17 @@ public class VertexPainter_Window : EditorWindow
     #region Variables
     GUIStyle boxStyle;
     public bool allowPainting = false;
+    public bool changingBrushValue = false;
     public Vector2 mousePos = Vector2.zero;
     public RaycastHit currentHit; //store the obj hit by ray
+
+    public float brushSize = 1.0f;
+    private float brushMultiplier = 0.005f;
+    private float minBrushSize = 0.1f;
+    private float maxBrushSize = 10.0f;
+    public float brushOpacity = 1.0f;
+    public float brushFalloff = 1.0f;
+
     #endregion
 
     #region MainMethod
@@ -68,7 +77,7 @@ public class VertexPainter_Window : EditorWindow
 
         //footer
         //EditorGUILayout.LabelField("Title");
-        GUILayout.Box("Title", boxStyle, GUILayout.Height(60), GUILayout.ExpandWidth(true));
+        GUILayout.Box("Ctrl + Left Mouse Click to Change brush size", boxStyle, GUILayout.Height(60), GUILayout.ExpandWidth(true));
 
         //update & repaint the UI in real time
         Repaint();
@@ -100,19 +109,23 @@ public class VertexPainter_Window : EditorWindow
         {
             if (currentHit.transform != null) //only get the brush GUI to follow the mouse if raycast from mouse has hit something
             {
-                Handles.color = new Color(1.0f, 0.0f, 0.0f, 1.0f);
-                Handles.DrawSolidDisc(currentHit.point, currentHit.normal, 1.0f);
-                Handles.color = new Color(1.0f, 1.0f, 1.0f, 1.0f); ;
-                Handles.DrawWireDisc(currentHit.point, currentHit.normal, 0.5f);
+                Handles.color = new Color(1.0f, 0.0f, 0.0f, brushOpacity);
+                Handles.DrawSolidDisc(currentHit.point, currentHit.normal, brushSize);
+                Handles.color = new Color(1.0f, 0.0f, 0.0f, 1.0f); //brush outline color
+                Handles.DrawWireDisc(currentHit.point, currentHit.normal, brushSize);
+                Handles.DrawWireDisc(currentHit.point, currentHit.normal, brushFalloff);
             }
 
             HandleUtility.AddDefaultControl(GUIUtility.GetControlID(FocusType.Passive)); //turns everything off in passive mode
 
             Ray worldRay = HandleUtility.GUIPointToWorldRay(mousePos); //Uses the current camera to convert 2D GUI position to a world space ray.
-            if (Physics.Raycast(worldRay, out currentHit, 500f)) //500f = maxDistance the ray should check for collisions. try float.MaxValue
+            if (!changingBrushValue)
             {
-                //BeginVertexPainting
-                Debug.Log(currentHit.transform.name);
+                if (Physics.Raycast(worldRay, out currentHit, 500f)) //500f = maxDistance the ray should check for collisions. try float.MaxValue
+                {
+                    //BeginVertexPainting
+                    Debug.Log(currentHit.transform.name);
+                }
             }
         }
         else
@@ -131,18 +144,59 @@ public class VertexPainter_Window : EditorWindow
 
         if (currentEvt.type == EventType.KeyDown)
         {
-            if (currentEvt.isKey && currentEvt.keyCode == KeyCode.V) //shortcut to toggle vertex painting
+            if (currentEvt.isKey)
             {
-                allowPainting = !allowPainting;
-                if (!allowPainting)
+                if (currentEvt.keyCode == KeyCode.V) //shortcut to toggle vertex painting
                 {
-                    Tools.current = Tool.View;
-                }
-                else
-                {
-                    Tools.current = Tool.None;
+                    allowPainting = !allowPainting;
+                    if (!allowPainting)
+                    {
+                        Tools.current = Tool.View;
+                    }
+                    else
+                    {
+                        Tools.current = Tool.None;
+                    }
                 }
             }
+        }
+
+        //brush key combination
+        if (allowPainting)
+        {
+            if (currentEvt.type == EventType.MouseDrag)
+            {
+                if (currentEvt.control && currentEvt.button == 0 && !currentEvt.shift) //if holding down ctrl & left mouse button &  not shift (contrls opacity)
+                {
+                    //single float value: relative side-to-side movement of the mouse compared to last event. 0.005f modifies brush change speed
+                    brushSize += currentEvt.delta.x * brushMultiplier;
+                    brushSize = Mathf.Clamp(brushSize, minBrushSize, maxBrushSize);
+                    if (brushFalloff > brushSize) //make sure brush fall off is never bigger than brush size
+                    {
+                        brushFalloff = brushSize;
+                    }
+                    changingBrushValue = true;
+                }
+
+                if (currentEvt.shift && currentEvt.button == 0 && !currentEvt.control) //shift controls opacity
+                {
+                    brushOpacity += currentEvt.delta.x * brushMultiplier;
+                    brushOpacity = Mathf.Clamp01(brushOpacity);
+                    changingBrushValue = true;
+                }
+
+                if (currentEvt.shift && currentEvt.button == 0 && currentEvt.control) //shift + ctrl + left mouse controls falloff
+                {
+                    brushFalloff += currentEvt.delta.x * brushMultiplier;
+                    brushFalloff = Mathf.Clamp(brushSize, minBrushSize, brushSize);
+                    changingBrushValue = true;
+                }
+            }
+        }
+
+        if (currentEvt.type == EventType.MouseUp)
+        {
+            changingBrushValue = false;
         }
 
         if (currentEvt.type == EventType.MouseDown)
@@ -152,6 +206,8 @@ public class VertexPainter_Window : EditorWindow
 
             }
         }
+
+
     }
 
     private void GenerateStyles()
