@@ -18,6 +18,9 @@ public class VertexPainter_Window : EditorWindow
     public float brushOpacity = 1.0f;
     public float brushFalloff = 1.0f;
 
+    public GameObject currentGO; //current gameObject on mouse hover
+    public Mesh currentMesh; //current mesh being painted
+    public GameObject lastGO; //the last gameObject on mouse hover
     #endregion
 
     #region MainMethod
@@ -42,6 +45,27 @@ public class VertexPainter_Window : EditorWindow
         if (allowPainting) //Deselect everything when in painting mode, prevent wireframe view of paintable mesh
         {
             Selection.activeGameObject = null;
+        }
+        else
+        {
+            currentGO = null;
+            currentMesh = null;
+            lastGO = null;
+        }
+
+        if (currentHit.transform != null) //if mouse is hovering over a piece of geometry
+        {
+            if (currentHit.transform.gameObject != lastGO) //don't need to keep running this if you've already got the obj (lastObj hasn't changed)
+            {
+                currentGO = currentHit.transform.gameObject;
+                currentMesh = VertexPainter_Utils.GetMesh(currentGO);
+                lastGO = currentGO;
+
+                if (currentGO != null & currentMesh != null)
+                {
+                    Debug.Log(currentGO.name + ": " + currentMesh.name);
+                }
+            }
         }
     }
 
