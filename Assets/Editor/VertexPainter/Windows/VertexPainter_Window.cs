@@ -126,6 +126,17 @@ public class VertexPainter_Window : EditorWindow
 
     #endregion
 
+    #region TempVertexPainterMethods
+    private void PaintVertexColor()
+    {
+        if (currentMesh != null) { }
+        else
+        {
+            Debug.LogWarning("Can't paint vertex colors because there is no mesh available!");
+        }
+    }
+    #endregion
+
     #region UtilityMethods
     private void DrawBrushGUIOnMouseOver()
     {
@@ -155,8 +166,8 @@ public class VertexPainter_Window : EditorWindow
             {
                 if (Physics.Raycast(worldRay, out currentHit, 500f)) //500f = maxDistance the ray should check for collisions. try float.MaxValue
                 {
-                    //BeginVertexPainting
-                    Debug.Log(currentHit.transform.name);
+                    PaintVertexColor();
+                    //Debug.Log(currentHit.transform.name);
                 }
             }
         }
