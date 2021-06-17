@@ -17,6 +17,7 @@ public class VertexPainter_Window : EditorWindow
     private float maxBrushSize = 10.0f;
     public float brushOpacity = 1.0f;
     public float brushFalloff = 1.0f;
+    public Color foregroundColor = Color.white;
 
     public GameObject currentGO; //current gameObject on mouse hover
     public Mesh currentMesh; //current mesh being painted
@@ -95,6 +96,13 @@ public class VertexPainter_Window : EditorWindow
         {
             GenerateStyles();
         }
+
+        GUILayout.Space(10);
+        brushSize = GUILayout.HorizontalSlider(brushSize, minBrushSize, maxBrushSize);
+        GUILayout.Label("Brush Size");
+
+        GUILayout.Space(10);
+        foregroundColor = EditorGUILayout.ColorField("Foreground Color: ", foregroundColor);
 
         GUILayout.FlexibleSpace(); //make the content after FlexibleSpace() always stay at the bottom - great for footer
         EditorGUILayout.EndVertical();
