@@ -1,18 +1,31 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEditor;
 
-public class VertexPainter_Utils : MonoBehaviour
+public static class VertexPainter_Utils
 {
-    // Start is called before the first frame update
-    void Start()
+    //Retrieve mesh filter or a skinnedmeshrenderer & return the mesh attached to the geometry the user's mouse is hovering over currently
+    public static Mesh GetMesh(GameObject objGeo)
     {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
+        Mesh currentMesh = null;
+        if (objGeo != null)
+        {
+            MeshFilter currentFilter = objGeo.GetComponent<MeshFilter>();
+            SkinnedMeshRenderer currentSkinnedMesh = objGeo.GetComponent<SkinnedMeshRenderer>();
+            if (currentFilter && !currentSkinnedMesh)
+            {
+                currentMesh = currentFilter.sharedMesh;
+            }
+            else if (!currentFilter && currentSkinnedMesh)
+            {
+                currentMesh = currentSkinnedMesh.sharedMesh;
+            }
+            else
+            {
+                return null;
+            }
+        }
+        return currentMesh;
     }
 }
