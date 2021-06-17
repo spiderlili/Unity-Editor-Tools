@@ -185,7 +185,7 @@ public class VertexPainter_Window : EditorWindow
                     changingBrushValue = true;
                 }
 
-                if (currentEvt.shift && currentEvt.button == 0 && currentEvt.control) //shift + ctrl + left mouse controls falloff
+                if (currentEvt.control && currentEvt.button == 0 && currentEvt.shift) //shift + ctrl + left mouse controls falloff
                 {
                     brushFalloff += currentEvt.delta.x * brushMultiplier;
                     brushFalloff = Mathf.Clamp(brushSize, minBrushSize, brushSize);
