@@ -148,15 +148,15 @@ public class VertexPainter_Window : EditorWindow
             for (int i = 0; i < verts.Length; i++)
             {
                 Vector3 vertPos = currentGO.transform.TransformPoint(verts[i]);//transform vertex position from local to world space
-                //get the squared magnitude = distance to the centre of the brush
-                float sqrMag = (vertPos - currentHit.point).sqrMagnitude;
+                //get the squared magnitude(radius) = distance of the vertex to the centre of the brush
+                float sqrMag = (vertPos - currentHit.point).sqrMagnitude; //currentHit.point = brush centre, sqrMag = radius
                 if (sqrMag > brushSize)
                 {
                     continue;
                 }
-                colors[i] = foregroundColor * brushOpacity;
+                colors[i] = foregroundColor * brushOpacity; //set the vertex color if brush is within vertex's radius to brush centre
             }
-            currentMesh.colors = colors;
+            currentMesh.colors = colors;  //reassign the mesh's vertex colors with painted vertex colors
         }
         else
         {
