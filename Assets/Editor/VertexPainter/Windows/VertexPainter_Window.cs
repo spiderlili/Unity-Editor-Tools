@@ -7,6 +7,7 @@ public class VertexPainter_Window : EditorWindow
     #region Variables
     GUIStyle boxStyle;
     public bool allowPainting = false;
+    public bool isPaintingWithBrush = false; //only paint vertex color when the left mouse button is held down
     public bool changingBrushValue = false;
     public Vector2 mousePos = Vector2.zero;
     public RaycastHit currentHit; //store the obj hit by ray
@@ -153,7 +154,7 @@ public class VertexPainter_Window : EditorWindow
                 {
                     continue;
                 }
-                colors[i] = foregroundColor;
+                colors[i] = foregroundColor * brushOpacity;
             }
             currentMesh.colors = colors;
         }
@@ -165,7 +166,7 @@ public class VertexPainter_Window : EditorWindow
     #endregion
 
     #region UtilityMethods
-    private void DrawBrushGUIOnMouseOver()
+    private void ShowDebug3DUI()
     {
         //debug 3D UI in the sceneview
         Handles.BeginGUI();
@@ -174,14 +175,18 @@ public class VertexPainter_Window : EditorWindow
         GUILayout.Button("Button", GUILayout.Height(25));
         GUILayout.EndArea();
         Handles.EndGUI();
+    }
+    private void DrawBrushGUIOnMouseOver()
+    {
+        ShowDebug3DUI();
 
         if (allowPainting)
         {
             if (currentHit.transform != null) //only get the brush GUI to follow the mouse if raycast from mouse has hit something
             {
-                Handles.color = new Color(1.0f, 0.0f, 0.0f, brushOpacity);
+                Handles.color = new Color(foregroundColor.r, foregroundColor.g, foregroundColor.b, brushOpacity);
                 Handles.DrawSolidDisc(currentHit.point, currentHit.normal, brushSize);
-                Handles.color = new Color(1.0f, 0.0f, 0.0f, 1.0f); //brush outline color
+                Handles.color = new Color(foregroundColor.r, foregroundColor.g, foregroundColor.b, 1.0f); //opaque brush outline color
                 Handles.DrawWireDisc(currentHit.point, currentHit.normal, brushSize);
                 Handles.DrawWireDisc(currentHit.point, currentHit.normal, brushFalloff);
             }
@@ -193,7 +198,10 @@ public class VertexPainter_Window : EditorWindow
             {
                 if (Physics.Raycast(worldRay, out currentHit, 500f)) //500f = maxDistance the ray should check for collisions. try float.MaxValue
                 {
-                    PaintVertexColor();
+                    if (isPaintingWithBrush) //only paint vertex color when the left mouse is held down
+                    {
+                        PaintVertexColor();
+                    }
                     //Debug.Log(currentHit.transform.name);
                 }
             }
@@ -261,12 +269,18 @@ public class VertexPainter_Window : EditorWindow
                     brushFalloff = Mathf.Clamp(brushSize, minBrushSize, brushSize);
                     changingBrushValue = true;
                 }
+
+                if (currentEvt.button == 0 && !currentEvt.control && !currentEvt.shift && !currentEvt.alt) //don't paint & navigate at once (alt)
+                {
+                    isPaintingWithBrush = true;
+                }
             }
         }
 
         if (currentEvt.type == EventType.MouseUp)
         {
             changingBrushValue = false;
+            isPaintingWithBrush = false; //only paint vertex color when the left mouse is held down
         }
 
         if (currentEvt.type == EventType.MouseDown)
@@ -276,8 +290,6 @@ public class VertexPainter_Window : EditorWindow
 
             }
         }
-
-
     }
 
     private void GenerateStyles()
