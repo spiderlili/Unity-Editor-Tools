@@ -168,7 +168,7 @@ public class VertexPainter_Window : EditorWindow
     #region UtilityMethods
     private void ShowDebug3DUI()
     {
-        //debug 3D UI in the sceneview
+        //debug 3D UI in the sceneview. TODO: create utility button to show help
         Handles.BeginGUI();
         GUILayout.BeginArea(new Rect(10, 10, 200, 150), boxStyle); // block of GUI controls in a fixed screen area
         GUILayout.Button("Button", GUILayout.Height(25));
@@ -178,7 +178,7 @@ public class VertexPainter_Window : EditorWindow
     }
     private void DrawBrushGUIOnMouseOver()
     {
-        ShowDebug3DUI();
+        //ShowDebug3DUI();
 
         if (allowPainting)
         {
