@@ -129,7 +129,34 @@ public class VertexPainter_Window : EditorWindow
     #region TempVertexPainterMethods
     private void PaintVertexColor()
     {
-        if (currentMesh != null) { }
+        if (currentMesh != null)
+        {
+            Vector3[] verts = currentMesh.vertices; //capture all vertices of the current mesh
+            Color[] colors = new Color[0];
+
+            if (currentMesh.colors.Length > 0)  //overwrite existing vertex colors of the mesh if it already has vertex colors
+            {
+                colors = currentMesh.colors;
+            }
+            else
+            {
+                colors = new Color[verts.Length]; //init vertex colors if the mesh does not have any
+            }
+
+            //determine which vertices are underneath the brush: detect each vertices' distance away from the centre of the brush(currentHit).
+            for (int i = 0; i < verts.Length; i++)
+            {
+                Vector3 vertPos = currentGO.transform.TransformPoint(verts[i]);//transform vertex position from local to world space
+                //get the squared magnitude = distance to the centre of the brush
+                float sqrMag = (vertPos - currentHit.point).sqrMagnitude;
+                if (sqrMag > brushSize)
+                {
+                    continue;
+                }
+                colors[i] = foregroundColor;
+            }
+            currentMesh.colors = colors;
+        }
         else
         {
             Debug.LogWarning("Can't paint vertex colors because there is no mesh available!");
