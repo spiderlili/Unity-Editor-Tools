@@ -93,14 +93,16 @@ public class VertexPainter_Window : EditorWindow
         EditorGUILayout.EndHorizontal();
 
         //100% width for 3rd button
-        if (GUILayout.Button("Update Styles", GUILayout.Height(30)))
+        /* if (GUILayout.Button("Update Styles", GUILayout.Height(30)))
         {
             GenerateStyles();
-        }
+        } */
 
         GUILayout.Space(10);
-        brushSize = GUILayout.HorizontalSlider(brushSize, minBrushSize, maxBrushSize);
+        EditorGUILayout.BeginHorizontal();
         GUILayout.Label("Brush Size");
+        brushSize = GUILayout.HorizontalSlider(brushSize, minBrushSize, maxBrushSize);
+        EditorGUILayout.EndHorizontal();
 
         GUILayout.Space(10);
         foregroundColor = EditorGUILayout.ColorField("Foreground Color: ", foregroundColor);
@@ -295,7 +297,8 @@ public class VertexPainter_Window : EditorWindow
     private void GenerateStyles()
     {
         boxStyle = new GUIStyle();
-        boxStyle.normal.background = (Texture2D)Resources.Load("UIBackgrounds/Bg_BlueWhiteGradient");
+        //TODO: make bg for box background which is readable 
+        //boxStyle.normal.background = (Texture2D)Resources.Load("UIBackgrounds/Bg_BlueWhiteGradient");
         boxStyle.font = (Font)Resources.Load("Fonts/NotoSansCJKkr-Black");
         boxStyle.normal.textColor = Color.white;
         boxStyle.fontSize = 25;
