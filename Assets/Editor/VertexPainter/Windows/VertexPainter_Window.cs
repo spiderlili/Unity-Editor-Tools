@@ -117,10 +117,10 @@ public class VertexPainter_Window : EditorWindow
         GUILayout.FlexibleSpace(); //make the content after FlexibleSpace() always stay at the bottom - great for footer
         EditorGUILayout.EndVertical();
 
-        EditorGUILayout.LabelField("How to Use the Vertex Painter:");
+        EditorGUILayout.LabelField("Vertex Painter Shortcuts");
         EditorGUILayout.HelpBox("Ctrl + Left Mouse Click to Change brush size, Shift + Left Mouse Click to change brush opacity", MessageType.Info);
-        //update & repaint the UI in real time
-        Repaint();
+
+        Repaint();//update & repaint the UI in real time
     }
 
     // Draw or do input/handle overriding in the scene view
