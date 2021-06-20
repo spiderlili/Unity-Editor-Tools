@@ -100,7 +100,7 @@ public class VertexPainter_Window : EditorWindow
 
         GUILayout.Space(10);
         EditorGUILayout.BeginHorizontal();
-        GUILayout.Label("Brush Size");
+        GUILayout.Label("Brush Size", GUILayout.ExpandWidth(false));
         brushSize = GUILayout.HorizontalSlider(brushSize, minBrushSize, maxBrushSize);
         EditorGUILayout.EndHorizontal();
 
