@@ -6,7 +6,7 @@ public class VertexPainter_Window : EditorWindow
 {
     #region Variables
     GUIStyle boxStyle;
-    public bool allowPainting = false;
+    public bool allowPainting = true;
     public bool isPaintingWithBrush = false; //only paint vertex color when the left mouse button is held down
     public bool changingBrushValue = false;
     public Vector2 mousePos = Vector2.zero;
@@ -100,13 +100,15 @@ public class VertexPainter_Window : EditorWindow
 
         GUILayout.Space(10);
         EditorGUILayout.BeginHorizontal();
-        GUILayout.Label("Brush Size", GUILayout.ExpandWidth(false));
+        GUILayout.Label("Brush Size: ", GUILayout.ExpandWidth(false));
         brushSize = GUILayout.HorizontalSlider(brushSize, minBrushSize, maxBrushSize);
+        GUILayout.Label("" + brushSize, GUILayout.ExpandWidth(false)); //TODO: add the ability to define value by textfield
         EditorGUILayout.EndHorizontal();
 
         EditorGUILayout.BeginHorizontal();
-        GUILayout.Label("Brush Opacity", GUILayout.ExpandWidth(false));
-        brushOpacity = GUILayout.HorizontalSlider(brushOpacity, 0.0f, 1.0f);
+        GUILayout.Label("Brush Opacity: ", GUILayout.ExpandWidth(false));
+        brushOpacity = GUILayout.HorizontalSlider(brushOpacity, 0.0f, 1.0f); //TODO: add the ability to define value by textfield
+        GUILayout.Label("" + brushOpacity, GUILayout.ExpandWidth(false));
         EditorGUILayout.EndHorizontal();
 
         GUILayout.Space(10);
@@ -115,10 +117,8 @@ public class VertexPainter_Window : EditorWindow
         GUILayout.FlexibleSpace(); //make the content after FlexibleSpace() always stay at the bottom - great for footer
         EditorGUILayout.EndVertical();
 
-        //footer: TODO - change this to info icon
-        //EditorGUILayout.LabelField("Title");
-        GUILayout.Box("Ctrl + Left Mouse Click to Change brush size, Shift + Left Mouse Click to change brush opacity", GUILayout.Height(60), GUILayout.ExpandWidth(true));
-
+        EditorGUILayout.LabelField("How to Use the Vertex Painter:");
+        EditorGUILayout.HelpBox("Ctrl + Left Mouse Click to Change brush size, Shift + Left Mouse Click to change brush opacity", MessageType.Info);
         //update & repaint the UI in real time
         Repaint();
     }
