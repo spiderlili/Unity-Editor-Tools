@@ -104,15 +104,20 @@ public class VertexPainter_Window : EditorWindow
         brushSize = GUILayout.HorizontalSlider(brushSize, minBrushSize, maxBrushSize);
         EditorGUILayout.EndHorizontal();
 
+        EditorGUILayout.BeginHorizontal();
+        GUILayout.Label("Brush Opacity", GUILayout.ExpandWidth(false));
+        brushOpacity = GUILayout.HorizontalSlider(brushOpacity, 0.0f, 1.0f);
+        EditorGUILayout.EndHorizontal();
+
         GUILayout.Space(10);
         foregroundColor = EditorGUILayout.ColorField("Foreground Color: ", foregroundColor);
 
         GUILayout.FlexibleSpace(); //make the content after FlexibleSpace() always stay at the bottom - great for footer
         EditorGUILayout.EndVertical();
 
-        //footer
+        //footer: TODO - change this to info icon
         //EditorGUILayout.LabelField("Title");
-        GUILayout.Box("Ctrl + Left Mouse Click to Change brush size", boxStyle, GUILayout.Height(60), GUILayout.ExpandWidth(true));
+        GUILayout.Box("Ctrl + Left Mouse Click to Change brush size, Shift + Left Mouse Click to change brush opacity", GUILayout.Height(60), GUILayout.ExpandWidth(true));
 
         //update & repaint the UI in real time
         Repaint();
