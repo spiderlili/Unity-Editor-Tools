@@ -307,14 +307,6 @@ public class VertexPainter_Window : EditorWindow
             changingBrushValue = false;
             isPaintingWithBrush = false; //only paint vertex color when the left mouse is held down
         }
-
-        if (currentEvt.type == EventType.MouseDown)
-        {
-            if (currentEvt.button == 0)
-            {
-
-            }
-        }
     }
 
     private void GenerateStyles()
