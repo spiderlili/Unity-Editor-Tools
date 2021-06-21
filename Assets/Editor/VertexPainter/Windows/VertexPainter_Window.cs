@@ -113,6 +113,12 @@ public class VertexPainter_Window : EditorWindow
         EditorGUILayout.EndHorizontal();
 
         EditorGUILayout.BeginHorizontal();
+        GUILayout.Label("Brush Falloff: ", GUILayout.ExpandWidth(false));
+        brushFalloff = GUILayout.HorizontalSlider(brushFalloff, minBrushSize, brushSize); //TODO: add the ability to define value by textfield
+        GUILayout.Label("" + brushFalloff, GUILayout.ExpandWidth(false));
+        EditorGUILayout.EndHorizontal();
+
+        EditorGUILayout.BeginHorizontal();
         GUILayout.Label("Falloff Power: ", GUILayout.ExpandWidth(false));
         fallOffPowerMultiplier = GUILayout.HorizontalSlider(fallOffPowerMultiplier, 1.0f, 5.0f); //TODO: add the ability to define value by textfield
         GUILayout.Label("" + fallOffPowerMultiplier, GUILayout.ExpandWidth(false));
@@ -125,7 +131,8 @@ public class VertexPainter_Window : EditorWindow
         EditorGUILayout.EndVertical();
 
         EditorGUILayout.LabelField("Vertex Painter Shortcuts");
-        EditorGUILayout.HelpBox("Ctrl + Left Mouse Click to Change brush size, Shift + Left Mouse Click to change brush opacity", MessageType.Info);
+        EditorGUILayout.HelpBox("Ctrl + Left Mouse Drag to Change brush size, Shift + Left Mouse Drag to change brush opacity, Ctrl + Shift + Left Mouse Drag to change brush falloff",
+        MessageType.Info);
 
         Repaint();//update & repaint the UI in real time
     }
