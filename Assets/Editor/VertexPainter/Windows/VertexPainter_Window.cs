@@ -17,7 +17,7 @@ public class VertexPainter_Window : EditorWindow
     private float minBrushSize = 0.1f;
     private float maxBrushSize = 10.0f;
     public float brushOpacity = 1.0f;
-    public float brushFalloff = 1.0f;
+    public float brushFalloff = 2.0f;
     public Color foregroundColor = Color.white;
 
     public GameObject currentGO; //current gameObject on mouse hover
@@ -161,7 +161,9 @@ public class VertexPainter_Window : EditorWindow
                 {
                     continue;
                 }
-                colors[i] = foregroundColor * brushOpacity; //set the vertex color if brush is within vertex's radius to brush centre
+                float falloff = VertexPainter_Utils.LinearFallOff(sqrMag, brushSize);
+                //colors[i] = foregroundColor * brushOpacity; //set the vertex color if brush is within vertex's radius to brush centre
+                colors[i] = foregroundColor * brushFalloff;
             }
             currentMesh.colors = colors;  //reassign the mesh's vertex colors with painted vertex colors
         }
@@ -273,7 +275,7 @@ public class VertexPainter_Window : EditorWindow
                 if (currentEvt.control && currentEvt.button == 0 && currentEvt.shift) //shift + ctrl + left mouse controls falloff
                 {
                     brushFalloff += currentEvt.delta.x * brushMultiplier;
-                    brushFalloff = Mathf.Clamp(brushSize, minBrushSize, brushSize);
+                    brushFalloff = Mathf.Clamp(brushFalloff, minBrushSize, brushSize);
                     changingBrushValue = true;
                 }
 

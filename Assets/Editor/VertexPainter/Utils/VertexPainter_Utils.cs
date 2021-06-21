@@ -28,4 +28,10 @@ public static class VertexPainter_Utils
         }
         return currentMesh;
     }
+
+    //linear falloff based off the centre of the brush to the outer portions of the brush
+    public static float LinearFallOff(float distance, float brushRadius)
+    {
+        return Mathf.Clamp01((1 - distance) / brushRadius);
+    }
 }
