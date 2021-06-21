@@ -127,6 +127,7 @@ public class VertexPainter_Window : EditorWindow
         GUILayout.Space(10);
         foregroundColor = EditorGUILayout.ColorField("Foreground Color: ", foregroundColor);
 
+        //TODO: add vertexcolor.r/g/b/a separate channel controls
         GUILayout.FlexibleSpace(); //make the content after FlexibleSpace() always stay at the bottom - great for footer
         EditorGUILayout.EndVertical();
 
