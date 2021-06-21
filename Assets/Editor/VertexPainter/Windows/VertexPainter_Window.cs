@@ -13,6 +13,7 @@ public class VertexPainter_Window : EditorWindow
     public RaycastHit currentHit; //store the obj hit by ray
 
     public float brushSize = 1.0f;
+    public float fallOffPowerMultiplier = 3.0f;
     private float brushMultiplier = 0.005f;
     private float minBrushSize = 0.1f;
     private float maxBrushSize = 10.0f;
@@ -111,6 +112,12 @@ public class VertexPainter_Window : EditorWindow
         GUILayout.Label("" + brushOpacity, GUILayout.ExpandWidth(false));
         EditorGUILayout.EndHorizontal();
 
+        EditorGUILayout.BeginHorizontal();
+        GUILayout.Label("Falloff Power: ", GUILayout.ExpandWidth(false));
+        fallOffPowerMultiplier = GUILayout.HorizontalSlider(fallOffPowerMultiplier, 1.0f, 5.0f); //TODO: add the ability to define value by textfield
+        GUILayout.Label("" + fallOffPowerMultiplier, GUILayout.ExpandWidth(false));
+        EditorGUILayout.EndHorizontal();
+
         GUILayout.Space(10);
         foregroundColor = EditorGUILayout.ColorField("Foreground Color: ", foregroundColor);
 
@@ -162,8 +169,9 @@ public class VertexPainter_Window : EditorWindow
                     continue;
                 }
                 float falloff = VertexPainter_Utils.LinearFallOff(sqrMag, brushSize);
-                //colors[i] = foregroundColor * brushOpacity; //set the vertex color if brush is within vertex's radius to brush centre
-                colors[i] = foregroundColor * brushFalloff;
+                falloff = Mathf.Pow(falloff, brushFalloff * fallOffPowerMultiplier) * brushOpacity;
+                //set the vertex color if brush is within vertex's radius to brush centre, lerp between colours' edges
+                colors[i] = VertexPainter_Utils.LerpVertexColor(colors[i], foregroundColor, falloff);
             }
             currentMesh.colors = colors;  //reassign the mesh's vertex colors with painted vertex colors
         }
@@ -195,7 +203,7 @@ public class VertexPainter_Window : EditorWindow
             {
                 Handles.color = new Color(foregroundColor.r, foregroundColor.g, foregroundColor.b, brushOpacity);
                 Handles.DrawSolidDisc(currentHit.point, currentHit.normal, brushSize);
-                Handles.color = new Color(foregroundColor.r, foregroundColor.g, foregroundColor.b, 1.0f); //opaque brush outline color
+                Handles.color = new Color(foregroundColor.r + 0.5f, foregroundColor.g + 0.5f, foregroundColor.b + 0.5f, 1.0f); //opaque brush outline color
                 Handles.DrawWireDisc(currentHit.point, currentHit.normal, brushSize);
                 Handles.DrawWireDisc(currentHit.point, currentHit.normal, brushFalloff);
             }
