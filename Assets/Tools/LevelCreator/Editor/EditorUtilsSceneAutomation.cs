@@ -1,27 +1,27 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
-using UnityEngine;
 using UnityEditor;
 using UnityEditor.SceneManagement;
+using UnityEngine;
 
 namespace LevelCreator
 {
-    public class EditorUtilsSceneAutomation 
+    public class EditorUtilsSceneAutomation
     {
-        //create a new scene
+        //create a new scene, asks whether you want to save the scene that is currently open using EditorApplication
         public static void NewScene()
         {
             EditorSceneManager.SaveCurrentModifiedScenesIfUserWantsTo();
             EditorSceneManager.NewScene(NewSceneSetup.DefaultGameObjects);
         }
 
-        //remove all the elements of the scene
+        //remove all the elements of the scene 
         public static void CleanScene()
         {
             GameObject[] allObjects = Object.FindObjectsOfType<GameObject>();
-            foreach(GameObject go in allObjects)
+            foreach (GameObject go in allObjects)
             {
-                GameObject.DestroyImmediate(go);
+                GameObject.DestroyImmediate(go); //similar to the common Destroy method but this works in an Editor context
             }
         }
 
@@ -47,13 +47,16 @@ namespace LevelCreator
 
             List<T> assetList = new List<T>(); //list with all the script instances
             //search the asset database using a search filter string, returns a list of GUIDs. 
-            string[] guids = AssetDatabase.FindAssets("t:prefab", new string[] { path }); //focus the search to 1 path (can do array of paths)
+            string[] guids = AssetDatabase.FindAssets("t:prefab", new string[]
+            {
+                path
+            }); //focus the search to 1 path (can do array of paths)
             for (int i = 0; i < guids.Length; i++)
             {
                 assetPath = AssetDatabase.GUIDToAssetPath(guids[i]);
                 asset = AssetDatabase.LoadAssetAtPath(assetPath, typeof(GameObject)) as GameObject;
                 temp = asset.GetComponent<T>(); //check whether the game object has the script attached
-                if(temp != null)
+                if (temp != null)
                 {
                     assetList.Add(temp); //if yes: add this to the list and returned by the method
                 }
@@ -66,7 +69,7 @@ namespace LevelCreator
         {
             List<T> enumList = new List<T>();
             System.Array enums = System.Enum.GetValues(typeof(T));
-            foreach(T e in enums)
+            foreach (T e in enums)
             {
                 enumList.Add(e);
             }
@@ -74,4 +77,3 @@ namespace LevelCreator
         }
     }
 }
-
