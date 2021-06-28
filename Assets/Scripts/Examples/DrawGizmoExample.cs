@@ -29,13 +29,27 @@ public class DrawGizmoExample : MonoBehaviour
 
     //Draws a solid box with center and size
     // Method signature: public static void DrawCube(Vector3 center, Vector3 size);
-    public Vector3 cubeCenter = Vector3.zero;
-    public Vector3 cubeSize = Vector3.one;
+    public Vector3 center = Vector3.zero;
+    public Vector3 size = Vector3.one;
+    public float radius = 1.0f;
+    public Vector3 from = Vector3.zero;
+    public Vector3 direction = Vector3.up;
+    public Vector3 to = new Vector3(0, 0, 1);
+    public float fov = 60;
+    public float maxRange = 1; public float minRange = 3; public float aspect = 1.3f;
+
+    //draw gizmos are pickable and always drawn: not used when using CustomOnDrawGizmos
     private void OnDrawGizmos()
     {
-        Gizmos.DrawCube(cubeCenter, cubeSize);
+        Gizmos.DrawCube(center, size);
         // Method signature: public static void DrawWireCube(Vector3 center, Vector3 size);
-        Gizmos.DrawWireCube(cubeCenter, cubeCenter);
+        Gizmos.DrawWireCube(center, center);
+        Gizmos.DrawSphere(center, radius);
+        Gizmos.DrawWireSphere(center, radius);
+        Gizmos.DrawRay(from, direction); //good for visualize ray casting algorithms when unsure what the length or direction of a ray is
+        Gizmos.DrawLine(from, to);
+        //draws a camera frustum using the currently set Gizmos.matrix for its location and rotation
+        Gizmos.DrawFrustum(center, fov, maxRange, minRange, aspect);
     }
 
 }

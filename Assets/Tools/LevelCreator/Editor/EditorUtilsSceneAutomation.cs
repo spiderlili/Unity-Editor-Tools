@@ -33,7 +33,7 @@ namespace LevelCreator
             GameObject levelG0 = new GameObject("Level");
             levelG0.transform.position = Vector3.zero;
             //create game object Level containing the Level script component
-            //levelG0.AddComponent<Level>();
+            levelG0.AddComponent<Level>();
 
         }
 
