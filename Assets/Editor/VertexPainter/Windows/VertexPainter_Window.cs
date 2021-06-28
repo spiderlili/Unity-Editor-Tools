@@ -6,7 +6,7 @@ public class VertexPainter_Window : EditorWindow
 {
     #region Variables
     GUIStyle boxStyle;
-    public bool allowPainting = true;
+    public bool allowPainting = false;
     public bool isPaintingWithBrush = false; //only paint vertex color when the left mouse button is held down
     public bool changingBrushValue = false;
     public Vector2 mousePos = Vector2.zero;
@@ -37,6 +37,7 @@ public class VertexPainter_Window : EditorWindow
     {
         SceneView.duringSceneGui -= this.OnSceneGUI;
         SceneView.duringSceneGui += this.OnSceneGUI;
+        allowPainting = true;
     }
     private void OnDestroy()
     {
