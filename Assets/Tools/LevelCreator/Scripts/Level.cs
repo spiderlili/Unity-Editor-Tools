@@ -94,21 +94,37 @@ public partial class Level : MonoBehaviour
         }
     }
 
+    /*
+    If you select the Level game object and change its position: the grid remains in the same place. 
+    This is because the points passed to the Gizmo's class methods are actually transformed using the Gizmo's matrix 
+    before the grid is painted on the Scene View, but now the identity matrix is used by default.
+    solution: change the value of the Gizmos.matrix variable to make the gizmo transform with the game object
+    */
     private void OnDrawGizmos()
     {
         Color oldColor = Gizmos.color;
+        Matrix4x4 oldMatrix = Gizmos.matrix;
+
+        //Gizmos.matrix is a static variable part of the Gizmos class: 
+        //as good practice, always save the original matrix and restore it when you're done using it.
+        Gizmos.matrix = transform.localToWorldMatrix;
+
         Gizmos.color = _normalColor;
         GridGizmo(totalColumns, totalRows);
         GridFrameGizmo(totalColumns, totalRows);
         Gizmos.color = oldColor;
+        Gizmos.matrix = oldMatrix; //replaced the default identity matrix 
     }
 
     //add a visual feedback when the Level game object is selected: changing the color of the grid frame when that happens
     private void OnDrawGizmosSelected()
     {
         Color oldColor = Gizmos.color;
+        Matrix4x4 oldMatrix = Gizmos.matrix;
+        Gizmos.matrix = transform.localToWorldMatrix;
         Gizmos.color = _selectedColor;
         GridFrameGizmo(totalColumns, totalRows);
         Gizmos.color = oldColor;
+        Gizmos.matrix = oldMatrix;
     }
 }
