@@ -6,6 +6,7 @@ public class VertexPainter_Window : EditorWindow
 {
     #region Variables
     GUIStyle boxStyle;
+    //TODO: set allowPainting to false on scene change
     public bool allowPainting = false;
     public bool isPaintingWithBrush = false; //only paint vertex color when the left mouse button is held down
     public bool changingBrushValue = false;
