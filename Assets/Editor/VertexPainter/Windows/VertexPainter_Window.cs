@@ -42,6 +42,7 @@ public class VertexPainter_Window : EditorWindow
     private void OnDestroy()
     {
         SceneView.duringSceneGui -= this.OnSceneGUI;
+        allowPainting = false;
     }
 
     private void Update()
