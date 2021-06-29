@@ -11,7 +11,7 @@ This is just to make its manipulation easier
 */
 public partial class Level : MonoBehaviour
 {
-    // Start is called before the first frame update
+    private static Level instance; //implement singleton
     [SerializeField] private Sprite background;
     [SerializeField] private AudioClip bgm;
     [SerializeField] private float gravity;
@@ -126,5 +126,59 @@ public partial class Level : MonoBehaviour
         GridFrameGizmo(totalColumns, totalRows);
         Gizmos.color = oldColor;
         Gizmos.matrix = oldMatrix;
+    }
+
+    //snap to grid behaviour: convert 3D coordinates to 2D grid coordinates and vice versa 
+    public Vector3 WorldToGridCoordinates(Vector3 point)
+    {
+        Vector3 gridPoint = new Vector3
+        (
+            (int)((point.x - transform.position.x) / GridSize),
+            (int)((point.y - transform.position.y) / GridSize),
+            0.0f
+        );
+        return gridPoint;
+    }
+
+    public Vector3 GridToWorldCoordinates(int col, int row)
+    {
+        Vector3 worldPoint = new Vector3
+        (
+            transform.position.x + (col * GridSize + GridSize / 2.0f),
+            transform.position.y + (row * GridSize + GridSize / 2.0f),
+            0.0f
+        );
+        return worldPoint; //returns a Vector3 corresponding to the world coordinates (assuming z = 0)
+    }
+
+    //a way to know when if the coordinates are outside the boundaries of the grid
+    public bool IsInsideGridBounds(Vector3 point)
+    {
+        float minX = transform.position.x;
+        float maxX = minX + totalColumns * GridSize;
+        float minY = transform.position.y;
+        float maxY = minY + totalRows * GridSize;
+        bool isInsideGridBounds = (point.x >= minX && point.x <= maxX && point.y >= minY && point.y <= maxY);
+        return isInsideGridBounds;
+    }
+
+    //alternative way: instead of a vector, receives a grid coordinate (col, row)
+    public bool IsInsideGridBounds(int col, int row)
+    {
+        return (col >= 0 && col < totalColumns && row >= 0 && row < totalRows);
+    }
+
+    //implement singleton Instance
+    public static Level Instance
+    {
+        get
+        {
+            if (instance == null)
+            {
+                instance = FindObjectOfType<Level>();
+            }
+
+            return instance;
+        }
     }
 }
