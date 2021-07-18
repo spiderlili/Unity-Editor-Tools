@@ -7,6 +7,7 @@ using System;
 namespace LevelCreator
 {
     [CustomEditor(typeof(Level))] //overwrite the inspector of all the Level class instances
+    // Responsible for the initialization of the Pieces array in an editor context
     public class LevelInspector : Editor
     {
         private Level _TargetLevel;
@@ -52,8 +53,9 @@ namespace LevelCreator
 
         private void ResizeLevel()
         {
+            /*
             Debug.Log("Level Resized");
-            /*LevelPiece[] newPieces = new LevelPiece[_newTotalColumns * _newTotalRows];
+            LevelPiece[] newPieces = new LevelPiece[_newTotalColumns * _newTotalRows];
             for(int col = 0; col < _TargetLevel.TotalColumns; col++)
             {
                 for(int row = 0; row < _TargetLevel.TotalRows; row++)
@@ -65,7 +67,7 @@ namespace LevelCreator
                     else
                     {
                         LevelPiece piece = _TargetLevel.Pieces[col + row * _TargetLevel.TotalColumns];
-                        if (newPieces! = null)
+                        if (newPieces != null)
                         {
                             //must use DestroyImmediate in a Editor context
                             Object.DestroyImmediate(newPieces.gameobject);
@@ -95,7 +97,7 @@ namespace LevelCreator
         {
             //base.OnInspectorGUI();
             EditorGUILayout.LabelField("The GUI of this inspector was modified.");
-            //DrawDefaultInspector();
+            //DrawDefaultInspector(); //display the default GUI on the inspector - good for debugging
             DrawLevelDataGUI();
             DrawLevelSizeGUI();
 
@@ -156,6 +158,8 @@ namespace LevelCreator
             _TargetLevel.Bgm = (AudioClip)EditorGUILayout.ObjectField("BGM", _TargetLevel.Bgm, typeof(AudioClip), false);
             _TargetLevel.Background = (Sprite)EditorGUILayout.ObjectField("Background", _TargetLevel.Background, typeof(Sprite), false);
             _TargetLevel.Gravity = EditorGUILayout.FloatField("Gravity", _TargetLevel.Gravity);
+
+            // Validation: do not allow negative value
             _TargetLevel.TotalTime = EditorGUILayout.IntField("Total Time", Mathf.Max(0, _TargetLevel.TotalTime));
             EditorGUILayout.EndVertical();
 
