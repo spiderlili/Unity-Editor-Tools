@@ -2,7 +2,13 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class LevelPiece : MonoBehaviour
+namespace LevelCreator
 {
+    public class LevelPiece : MonoBehaviour
+    {
+        public LevelPiece()
+        {
 
+        }
+    }
 }

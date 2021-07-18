@@ -53,7 +53,7 @@ namespace LevelCreator
 
         private void ResizeLevel()
         {
-            /*
+         /*   
             Debug.Log("Level Resized");
             LevelPiece[] newPieces = new LevelPiece[_newTotalColumns * _newTotalRows];
             for(int col = 0; col < _TargetLevel.TotalColumns; col++)
@@ -70,7 +70,7 @@ namespace LevelCreator
                         if (newPieces != null)
                         {
                             //must use DestroyImmediate in a Editor context
-                            Object.DestroyImmediate(newPieces.gameobject);
+                            UnityEngine.Object.DestroyImmediate(newPieces.gameobject);
                         }
                     }
                 }
