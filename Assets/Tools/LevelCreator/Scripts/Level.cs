@@ -12,6 +12,13 @@ This is just to make its manipulation easier
 public partial class Level : MonoBehaviour
 {
     private static Level instance; //implement singleton
+    // an array to handle a 2D matrix of LevelPieces: base class of the level piece prefabs
+    [SerializeField] private LevelPiece[] levelPieces; 
+    public LevelPiece[] LevelPieces
+    {
+        get { return levelPieces; }
+        set { levelPieces = value; }
+    }
     [SerializeField] private Sprite background;
     [SerializeField] private AudioClip bgm;
     [SerializeField] private float gravity;
