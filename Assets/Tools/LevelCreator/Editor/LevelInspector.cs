@@ -70,7 +70,7 @@ namespace LevelCreator
                         if (newPieces != null)
                         {
                             //must use DestroyImmediate in a Editor context
-                            UnityEngine.Object.DestroyImmediate(newPieces.gameobject);
+                            UnityEngine.Object.DestroyImmediate(newPieces.gameObject);
                         }
                     }
                 }
