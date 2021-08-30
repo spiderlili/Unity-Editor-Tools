@@ -19,7 +19,7 @@ public class StripShaderVariants : IPreprocessShaders
             // Check if a certain local keyword is enabled on this particular shader variants in the loop
             var shaderLocalKeyword = new ShaderKeyword(shader,"_NORMALMAP");
             if (shaderCompilerDataEntries[i].shaderKeywordSet.IsEnabled(shaderLocalKeyword)) {
-                Debug.Log("Shader keyword: _NORMALMAP is removed!");
+                Debug.Log("Shader keyword: _NORMALMAP is removed from Shader: " + shader);
                 shaderCompilerDataEntries.RemoveAt(i);
             }
         }
