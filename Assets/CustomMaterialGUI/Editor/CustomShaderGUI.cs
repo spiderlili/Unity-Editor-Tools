@@ -10,7 +10,8 @@ public class CustomShaderGUI : ShaderGUI
     private float debugVectorToFloatPropY;
     private float debugVectorToFloatPropZ;
     private float debugVectorToFloatPropW;
-    private MaterialProperty baseColorProp;
+    private MaterialProperty debugColorProp;
+    private MaterialProperty mainTexProp;
     
     public override void OnGUI(MaterialEditor materialEditor, MaterialProperty[] properties)
     {
@@ -33,5 +34,16 @@ public class CustomShaderGUI : ShaderGUI
         EditorGUILayout.MinMaxSlider("Vector4.zw To MinMax Slider", ref debugVectorToFloatPropZ, ref debugVectorToFloatPropW, -10, 10);
         Vector4 newVector = new Vector4(debugVectorToIntPorpX,debugVectorToFloatPropY,debugVectorToFloatPropZ,debugVectorToFloatPropW);
         debugVectorProp.vectorValue = newVector;
-    }
+        
+        // Color & Texture: wider color field & narrower texture field by default
+        debugColorProp = FindProperty("_DebugColor", properties);
+        materialEditor.ColorProperty(debugColorProp, "Color");
+        mainTexProp = FindProperty("_MainTex", properties);
+        materialEditor.TextureProperty(mainTexProp, "Main Texture (Default Tiling Offset)");
+        materialEditor.TexturePropertySingleLine(new GUIContent("Single Line Texture (No Tiling Offset)"), mainTexProp);
+        materialEditor.TexturePropertyTwoLines(new GUIContent("Main Texture 2 Lines"), mainTexProp, debugColorProp, 
+            new GUIContent("Line 2 Test (Vetor4 Debug)"), debugVectorProp);
+        materialEditor.TexturePropertyWithHDRColor(new GUIContent("HDR + Texture"), mainTexProp, debugColorProp, true);
+        materialEditor.TextureScaleOffsetProperty(mainTexProp);
+    } 
 }
