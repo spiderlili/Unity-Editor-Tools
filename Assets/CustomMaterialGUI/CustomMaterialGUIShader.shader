@@ -4,6 +4,8 @@
     {
         _DebugRange("Debug Range", Range(0, 10)) = 1
         _MainTex ("Texture", 2D) = "white" {}
+        _DebugVector("Vector", Vector) = (0, 0, 0, 0)
+        _DebugColor("Color", Color) = (1, 1, 1, 1)
     }
     SubShader
     {
@@ -36,6 +38,8 @@
             sampler2D _MainTex;
             float4 _MainTex_ST;
             float _DebugRange;
+            half4 _DebugVector;
+            half4 _DebugColor;
 
             v2f vert (appdata v)
             {
@@ -52,7 +56,7 @@
                 fixed4 col = tex2D(_MainTex, i.uv);
                 // apply fog
                 UNITY_APPLY_FOG(i.fogCoord, col);
-                return _DebugRange;
+                return _DebugRange * _DebugColor;
                 return col;
             }
             ENDCG
