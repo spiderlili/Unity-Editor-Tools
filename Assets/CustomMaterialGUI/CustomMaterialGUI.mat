@@ -9,7 +9,7 @@ Material:
   m_PrefabAsset: {fileID: 0}
   m_Name: CustomMaterialGUI
   m_Shader: {fileID: 4800000, guid: e3712d1dcd71e49aba59d37761f44d48, type: 3}
-  m_ShaderKeywords: 
+  m_ShaderKeywords: _VECTOR_ENABLED_ON
   m_LightmapFlags: 4
   m_EnableInstancingVariants: 0
   m_DoubleSidedGI: 0

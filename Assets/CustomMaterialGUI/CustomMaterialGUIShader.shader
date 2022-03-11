@@ -17,6 +17,7 @@
             CGPROGRAM
             #pragma vertex vert
             #pragma fragment frag
+            #pragma multi_compile _ _VECTOR_ENABLED_ON
             // make fog work
             #pragma multi_compile_fog
 
