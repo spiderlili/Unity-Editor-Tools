@@ -46,16 +46,15 @@ public class CustomShaderGUI : ShaderGUI
         }
         // Vector4 to IntField for readability, group them into a Toggle Group to manage shader variants & control parameter interactibility.
         EditorGUILayout.Space();
-        isVectorEnabled =  EditorGUILayout.BeginToggleGroup("Vector Toggle Group", isVectorEnabled);
         if (mat != null) {
             isVectorEnabled = mat.IsKeywordEnabled("_VECTOR_ENABLED_ON");
+            isVectorEnabled =  EditorGUILayout.BeginToggleGroup("Vector Toggle Group", isVectorEnabled);
             if (isVectorEnabled) {
                 mat.EnableKeyword("_VECTOR_ENABLED_ON");
             } else {
                 mat.DisableKeyword("_VECTOR_ENABLED_ON");
             }
         }
-        
         EditorGUILayout.LabelField("Vector Header Label", EditorStyles.boldLabel);
         debugVectorProp = FindProperty("_DebugVector", properties);
         materialEditor.VectorProperty(debugVectorProp, "Vector4");
@@ -77,6 +76,7 @@ public class CustomShaderGUI : ShaderGUI
         
         // Add Animation to foldout (Target to tween towards)
         EditorGUILayout.Space();
+        animBool01.target = _saveFoldoutProp01.vectorValue.y != 0;
         animBool01.target = EditorGUILayout.Foldout(animBool01.target, "Foldout Group with Animation (Texture & Color)", EditorStyles.boldFont);
         if (EditorGUILayout.BeginFadeGroup(animBool01.faded)) {
             // Color & Texture: wider color field & narrower texture field by default
@@ -95,7 +95,8 @@ public class CustomShaderGUI : ShaderGUI
         
         // Save the foldout enabled value so it stays consistent in MaterialProperties & remembers the user's choice of foldout rather than switching to default value
         float _saveValue01XFloatEnabled = isFloatEnabled ? 1 : 0;
-        Vector4 _saveValue01 = new Vector4(_saveValue01XFloatEnabled,0,0,0);
+        float _saveValue01YAnimBool = animBool01.target ? 1 : 0;
+        Vector4 _saveValue01 = new Vector4(_saveValue01XFloatEnabled,_saveValue01YAnimBool,0,0);
         _saveFoldoutProp01.vectorValue = _saveValue01;
     } 
 }
