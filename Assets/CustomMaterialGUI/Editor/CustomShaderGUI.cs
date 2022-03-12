@@ -14,21 +14,21 @@ public class CustomShaderGUI : ShaderGUI
     private float debugVectorToFloatPropW;
     private MaterialProperty debugColorProp;
     private MaterialProperty mainTexProp;
-    private MaterialProperty _saveDebugFoldoutVal01;
+    private MaterialProperty _saveFoldoutProp01;
     private Material mat;
     
     public override void OnGUI(MaterialEditor materialEditor, MaterialProperty[] properties)
     {
         mat = materialEditor.target as Material; // Get current material
         
-        // Save the foldout enabled value so it stays consistent in MaterialProperties & remembers the user's choice rather than keep switching to default value
-        _saveDebugFoldoutVal01 = FindProperty("_SaveDebugVectorFoldoutVal01", properties);
-        if (_saveDebugFoldoutVal01.vectorValue.x != 0) {
+        // Save the foldout enabled value so it stays consistent in MaterialProperties & remembers the user's choice of foldout rather than switching to default value
+        _saveFoldoutProp01 = FindProperty("_SaveDebugVectorFoldoutVal01", properties);
+        if (_saveFoldoutProp01.vectorValue.x != 0) {
             isFloatEnabled = true;
         } else {
             isFloatEnabled = false;
         }
-        
+
         // Float & Range
         isFloatEnabled = EditorGUILayout.Foldout(isFloatEnabled, "Foldout Label");
         if (isFloatEnabled) {
@@ -87,5 +87,10 @@ public class CustomShaderGUI : ShaderGUI
             new GUIContent("Line 2 Test (Vetor4 Debug)"), debugVectorProp);
         materialEditor.TexturePropertyWithHDRColor(new GUIContent("HDR + Texture"), mainTexProp, debugColorProp, true);
         materialEditor.TextureScaleOffsetProperty(mainTexProp);
+        
+        // Save the foldout enabled value so it stays consistent in MaterialProperties & remembers the user's choice of foldout rather than switching to default value
+        float _saveValue01XFloatEnabled = isFloatEnabled ? 1 : 0;
+        Vector4 _saveValue01 = new Vector4(_saveValue01XFloatEnabled,0,0,0);
+        _saveFoldoutProp01.vectorValue = _saveValue01;
     } 
 }
