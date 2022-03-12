@@ -2,6 +2,8 @@
 {
     Properties
     {
+        _SrcBlend("SrcBlend", float) = 1
+        _DstBlend("DstBlend", float) = 1
         _DebugRange("Debug Range", Range(0, 10)) = 1
         _MainTex ("Texture", 2D) = "white" {}
         _DebugVector("Vector", Vector) = (0, 0, 0, 0)
@@ -12,6 +14,7 @@
     {
         Tags { "RenderType"="Opaque" }
         LOD 100
+        Blend [_SrcBlend][_DstBlend]
 
         Pass
         {

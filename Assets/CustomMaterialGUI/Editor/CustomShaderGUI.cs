@@ -1,6 +1,8 @@
 ﻿using UnityEditor;
 using UnityEngine;
 using UnityEditor.AnimatedValues; // For fold out animations
+using System;
+using UnityEngine.Rendering;
 
 public class CustomShaderGUI : ShaderGUI
 {
@@ -17,6 +19,13 @@ public class CustomShaderGUI : ShaderGUI
     private MaterialProperty mainTexProp;
     private MaterialProperty _saveFoldoutProp01;
     private Material mat;
+    private MaterialProperty srcBlendProp, dstBlendProp;
+    private enum BlendMode
+    {
+        Additive,
+        AlphaBlend
+    }
+    private BlendMode blendMode = BlendMode.Additive;
     
     // Animation
     private AnimBool animBool01 = new AnimBool(true);
@@ -24,7 +33,10 @@ public class CustomShaderGUI : ShaderGUI
     public override void OnGUI(MaterialEditor materialEditor, MaterialProperty[] properties)
     {
         mat = materialEditor.target as Material; // Get current material
-        
+        srcBlendProp = FindProperty("_SrcBlend", properties);
+        dstBlendProp = FindProperty("_DstBlend", properties);
+        EditorGUILayout.EnumPopup("Blend Mode", blendMode);
+            
         // Save the foldout enabled value so it stays consistent in MaterialProperties & remembers the user's choice of foldout rather than switching to default value
         _saveFoldoutProp01 = FindProperty("_SaveDebugVectorFoldoutVal01", properties);
         isFloatEnabled = _saveFoldoutProp01.vectorValue.x != 0;
