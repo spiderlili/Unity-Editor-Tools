@@ -14,26 +14,36 @@ public class CustomShaderGUI : ShaderGUI
     private float debugVectorToFloatPropW;
     private MaterialProperty debugColorProp;
     private MaterialProperty mainTexProp;
+    private MaterialProperty _saveDebugFoldoutVal01;
     private Material mat;
     
     public override void OnGUI(MaterialEditor materialEditor, MaterialProperty[] properties)
     {
         mat = materialEditor.target as Material; // Get current material
         
+        // Save the foldout enabled value so it stays consistent in MaterialProperties & remembers the user's choice rather than keep switching to default value
+        _saveDebugFoldoutVal01 = FindProperty("_SaveDebugVectorFoldoutVal01", properties);
+        if (_saveDebugFoldoutVal01.vectorValue.x != 0) {
+            isFloatEnabled = true;
+        } else {
+            isFloatEnabled = false;
+        }
+        
         // Float & Range
         isFloatEnabled = EditorGUILayout.Foldout(isFloatEnabled, "Foldout Label");
-        EditorGUILayout.LabelField("Float Header Label", EditorStyles.boldLabel);
-        EditorGUILayout.BeginVertical(EditorStyles.helpBox);
-        debugRangeProp = FindProperty("_DebugRange", properties);
-        materialEditor.RangeProperty(debugRangeProp, "Debug Float Custom Slider");
-        materialEditor.FloatProperty(debugRangeProp, "Debug Float Custom Label");
-        
-        // Warning if user exceeds the recommended value range in the slider
+        if (isFloatEnabled) {
+            EditorGUILayout.LabelField("Float Header Label", EditorStyles.boldLabel);
+            EditorGUILayout.BeginVertical(EditorStyles.helpBox);
+            debugRangeProp = FindProperty("_DebugRange", properties);
+            materialEditor.RangeProperty(debugRangeProp, "Debug Float Custom Slider");
+            materialEditor.FloatProperty(debugRangeProp, "Debug Float Custom Label");
+
+            // Warning if user exceeds the recommended value range in the slider
         if (debugRangeProp.floatValue > 1 || debugRangeProp.floatValue < 0) {
             EditorGUILayout.HelpBox("Warning: It's best to use a float value in range of [0,1]", MessageType.Warning);
         }
         EditorGUILayout.EndVertical();
-        
+        }
         // Vector4 to IntField for readability, group them into a Toggle Group to manage shader variants & control parameter interactibility.
         EditorGUILayout.Space();
         isVectorEnabled =  EditorGUILayout.BeginToggleGroup("Toggle Group", isVectorEnabled);
