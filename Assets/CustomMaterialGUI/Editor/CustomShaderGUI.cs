@@ -1,5 +1,6 @@
 ﻿using UnityEditor;
 using UnityEngine;
+using UnityEditor.AnimatedValues; // For fold out animations
 
 public class CustomShaderGUI : ShaderGUI
 {
@@ -17,17 +18,16 @@ public class CustomShaderGUI : ShaderGUI
     private MaterialProperty _saveFoldoutProp01;
     private Material mat;
     
+    // Animation
+    private AnimBool animBool01 = new AnimBool(true);
+    
     public override void OnGUI(MaterialEditor materialEditor, MaterialProperty[] properties)
     {
         mat = materialEditor.target as Material; // Get current material
         
         // Save the foldout enabled value so it stays consistent in MaterialProperties & remembers the user's choice of foldout rather than switching to default value
         _saveFoldoutProp01 = FindProperty("_SaveDebugVectorFoldoutVal01", properties);
-        if (_saveFoldoutProp01.vectorValue.x != 0) {
-            isFloatEnabled = true;
-        } else {
-            isFloatEnabled = false;
-        }
+        isFloatEnabled = _saveFoldoutProp01.vectorValue.x != 0;
 
         // Float & Range
         isFloatEnabled = EditorGUILayout.Foldout(isFloatEnabled, "Foldout Label");
@@ -46,7 +46,7 @@ public class CustomShaderGUI : ShaderGUI
         }
         // Vector4 to IntField for readability, group them into a Toggle Group to manage shader variants & control parameter interactibility.
         EditorGUILayout.Space();
-        isVectorEnabled =  EditorGUILayout.BeginToggleGroup("Toggle Group", isVectorEnabled);
+        isVectorEnabled =  EditorGUILayout.BeginToggleGroup("Vector Toggle Group", isVectorEnabled);
         if (mat != null) {
             isVectorEnabled = mat.IsKeywordEnabled("_VECTOR_ENABLED_ON");
             if (isVectorEnabled) {
@@ -75,18 +75,23 @@ public class CustomShaderGUI : ShaderGUI
         debugVectorProp.vectorValue = newVector;
         EditorGUILayout.EndToggleGroup();
         
-        // Color & Texture: wider color field & narrower texture field by default
+        // Add Animation to foldout (Target to tween towards)
         EditorGUILayout.Space();
-        EditorGUILayout.LabelField("Color & Texture Header Label", EditorStyles.boldLabel);
-        debugColorProp = FindProperty("_DebugColor", properties);
-        materialEditor.ColorProperty(debugColorProp, "Color");
-        mainTexProp = FindProperty("_MainTex", properties);
-        materialEditor.TextureProperty(mainTexProp, "Main Texture (Default Tiling Offset)");
-        materialEditor.TexturePropertySingleLine(new GUIContent("Single Line Texture (No Tiling Offset)"), mainTexProp);
-        materialEditor.TexturePropertyTwoLines(new GUIContent("Main Texture 2 Lines"), mainTexProp, debugColorProp, 
-            new GUIContent("Line 2 Test (Vetor4 Debug)"), debugVectorProp);
-        materialEditor.TexturePropertyWithHDRColor(new GUIContent("HDR + Texture"), mainTexProp, debugColorProp, true);
-        materialEditor.TextureScaleOffsetProperty(mainTexProp);
+        animBool01.target = EditorGUILayout.Foldout(animBool01.target, "Foldout Group with Animation (Texture & Color)", EditorStyles.boldFont);
+        if (EditorGUILayout.BeginFadeGroup(animBool01.faded)) {
+            // Color & Texture: wider color field & narrower texture field by default
+            EditorGUILayout.LabelField("Color & Texture Header Label", EditorStyles.boldLabel);
+            debugColorProp = FindProperty("_DebugColor", properties); 
+            materialEditor.ColorProperty(debugColorProp, "Color");
+            mainTexProp = FindProperty("_MainTex", properties);
+            materialEditor.TextureProperty(mainTexProp, "Main Texture (Default Tiling Offset)");
+            materialEditor.TexturePropertySingleLine(new GUIContent("Single Line Texture (No Tiling Offset)"), mainTexProp);
+            materialEditor.TexturePropertyTwoLines(new GUIContent("Main Texture 2 Lines"), mainTexProp, debugColorProp, 
+                new GUIContent("Line 2 Test (Vetor4 Debug)"), debugVectorProp);
+            materialEditor.TexturePropertyWithHDRColor(new GUIContent("HDR + Texture"), mainTexProp, debugColorProp, true);
+            materialEditor.TextureScaleOffsetProperty(mainTexProp);
+        }
+        EditorGUILayout.EndFadeGroup();
         
         // Save the foldout enabled value so it stays consistent in MaterialProperties & remembers the user's choice of foldout rather than switching to default value
         float _saveValue01XFloatEnabled = isFloatEnabled ? 1 : 0;
