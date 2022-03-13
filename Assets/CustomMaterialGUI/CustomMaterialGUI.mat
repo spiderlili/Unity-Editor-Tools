@@ -26,8 +26,10 @@ Material:
     m_Floats:
     - _DebugFloat: 0.79
     - _DebugRange: 1
+    - _DstBlend: 1
+    - _SrcBlend: 1
     m_Colors:
     - _DebugColor: {r: 1, g: 1, b: 1, a: 1}
     - _DebugVector: {r: 0, g: 0, b: -1, a: 6}
     - _SaveDebugVectorFoldoutVal: {r: 0, g: 0, b: 0, a: 0}
-    - _SaveDebugVectorFoldoutVal01: {r: 1, g: 0, b: 0, a: 0}
+    - _SaveDebugVectorFoldoutVal01: {r: 1, g: 1, b: 0, a: 0}
