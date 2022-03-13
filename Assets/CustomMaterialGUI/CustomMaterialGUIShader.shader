@@ -8,6 +8,7 @@
         _MainTex ("Texture", 2D) = "white" {}
         _DebugVector("Vector", Vector) = (0, 0, 0, 0)
         _SaveDebugVectorFoldoutVal01("", Vector) = (0, 0, 0, 0)
+        _SaveBlendState("Blend State", float) = 0
         _DebugColor("Color", Color) = (1, 1, 1, 1)
     }
     SubShader

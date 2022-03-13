@@ -6,6 +6,7 @@ using UnityEngine.Rendering;
 
 public class CustomShaderGUI : ShaderGUI
 {
+    #region [Properties]
     private MaterialProperty debugFloatProp;
     private MaterialProperty debugRangeProp;
     private MaterialProperty debugVectorProp;
@@ -19,36 +20,41 @@ public class CustomShaderGUI : ShaderGUI
     private MaterialProperty mainTexProp;
     private MaterialProperty _saveFoldoutProp01;
     private Material mat;
-    private MaterialProperty srcBlendProp, dstBlendProp;
+    private MaterialProperty saveBlendProp, srcBlendProp, dstBlendProp;
     private enum BlendMode
     {
         Additive,
         AlphaBlend
     }
-    private BlendMode blendMode = BlendMode.Additive;
-    
+    private string[] blendModeNames = System.Enum.GetNames(typeof(BlendMode));
+
     // Animation
     private AnimBool animBool01 = new AnimBool(true);
-    
+    #endregion
+
+    #region [Redraw Custom UI]
     public override void OnGUI(MaterialEditor materialEditor, MaterialProperty[] properties)
     {
         mat = materialEditor.target as Material; // Get current material
         
         // Custom Blend Modes
+        #region [BlendModes]
+        saveBlendProp = FindProperty("_SaveBlendState", properties);
         srcBlendProp = FindProperty("_SrcBlend", properties);
         dstBlendProp = FindProperty("_DstBlend", properties);
-        blendMode = (BlendMode)EditorGUILayout.EnumPopup("Blend Mode", blendMode);
-        switch (blendMode) {
-            case BlendMode.Additive:
+        saveBlendProp.floatValue = EditorGUILayout.Popup("Blend Mode", (int)saveBlendProp.floatValue, blendModeNames);
+        
+        switch (saveBlendProp.floatValue) {
+            case 0: // Additive
                 srcBlendProp.floatValue = (int)UnityEngine.Rendering.BlendMode.One;
                 dstBlendProp.floatValue = (int)UnityEngine.Rendering.BlendMode.One;
-                break;
-            case BlendMode.AlphaBlend:
+                break; 
+            case 1: // Alpha Blend
                 srcBlendProp.floatValue = (int)UnityEngine.Rendering.BlendMode.SrcAlpha;
                 dstBlendProp.floatValue = (int)UnityEngine.Rendering.BlendMode.OneMinusSrcAlpha;
                 break;
         }
-            
+        #endregion
         // Save the foldout enabled value so it stays consistent in MaterialProperties & remembers the user's choice of foldout rather than switching to default value
         _saveFoldoutProp01 = FindProperty("_SaveDebugVectorFoldoutVal01", properties);
         isFloatEnabled = _saveFoldoutProp01.vectorValue.x != 0;
@@ -122,5 +128,17 @@ public class CustomShaderGUI : ShaderGUI
         float _saveValue01YAnimBool = animBool01.target ? 1 : 0;
         Vector4 _saveValue01 = new Vector4(_saveValue01XFloatEnabled,_saveValue01YAnimBool,0,0);
         _saveFoldoutProp01.vectorValue = _saveValue01;
+        
+        // Extra options: Queue, GPU Instancing, Double Sided GI
+        EditorGUILayout.Space();
+        EditorGUILayout.BeginVertical(EditorStyles.helpBox);
+        // Alternative: Custom appearance using GUIStyle
+        // EditorGUILayout.BeginVertical(new GUIStyle("window"));
+        EditorGUILayout.LabelField("Advanced Extra Options", EditorStyles.boldLabel);
+        materialEditor.RenderQueueField();
+        materialEditor.EnableInstancingField();
+        materialEditor.DoubleSidedGIField();
+        EditorGUILayout.EndVertical();
     } 
+    #endregion
 }
