@@ -33,9 +33,21 @@ public class CustomShaderGUI : ShaderGUI
     public override void OnGUI(MaterialEditor materialEditor, MaterialProperty[] properties)
     {
         mat = materialEditor.target as Material; // Get current material
+        
+        // Custom Blend Modes
         srcBlendProp = FindProperty("_SrcBlend", properties);
         dstBlendProp = FindProperty("_DstBlend", properties);
-        EditorGUILayout.EnumPopup("Blend Mode", blendMode);
+        blendMode = (BlendMode)EditorGUILayout.EnumPopup("Blend Mode", blendMode);
+        switch (blendMode) {
+            case BlendMode.Additive:
+                srcBlendProp.floatValue = (int)UnityEngine.Rendering.BlendMode.One;
+                dstBlendProp.floatValue = (int)UnityEngine.Rendering.BlendMode.One;
+                break;
+            case BlendMode.AlphaBlend:
+                srcBlendProp.floatValue = (int)UnityEngine.Rendering.BlendMode.SrcAlpha;
+                dstBlendProp.floatValue = (int)UnityEngine.Rendering.BlendMode.OneMinusSrcAlpha;
+                break;
+        }
             
         // Save the foldout enabled value so it stays consistent in MaterialProperties & remembers the user's choice of foldout rather than switching to default value
         _saveFoldoutProp01 = FindProperty("_SaveDebugVectorFoldoutVal01", properties);
