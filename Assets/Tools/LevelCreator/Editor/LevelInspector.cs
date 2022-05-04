@@ -97,13 +97,14 @@ namespace LevelCreator
         {
             //base.OnInspectorGUI();
             EditorGUILayout.LabelField("The GUI of this inspector was modified.");
-            //DrawDefaultInspector(); //display the default GUI on the inspector - good for debugging
+            //DrawDefaultInspector(); // Display the default GUI on the inspector - good for debugging
             DrawLevelDataGUI();
             DrawLevelSizeGUI();
 
             if (GUI.changed) //true if there is any change to the inspector GUI
             {
-                EditorUtility.SetDirty(_TargetLevel); //marks the target object as dirty and force Level class to redraw
+                // Marks the target object as dirty, force Level class to redraw to make Resize functionality look correct
+                EditorUtility.SetDirty(_TargetLevel); 
             }
         }
 
@@ -117,7 +118,7 @@ namespace LevelCreator
             bool oldGUIEnabled = GUI.enabled;
             GUI.enabled = (_newTotalColumns != _TargetLevel.TotalColumns || _newTotalRows != _TargetLevel.TotalRows);
 
-            //resize button will display a popup if clicked on
+            // Resize button will display a popup if clicked on - return true when clicked
             bool buttonResize = GUILayout.Button("Resize", GUILayout.Height(2 * EditorGUIUtility.singleLineHeight));
             if (buttonResize)
             {
@@ -135,15 +136,15 @@ namespace LevelCreator
                 }
             }
 
-            //restores the variables: _newTotalColumns and _newTotalRows to match the TotalColumns and TotalRows values
+            // Restores the variables: _newTotalColumns and _newTotalRows to match the TotalColumns and TotalRows values
             bool buttonReset = GUILayout.Button("Reset");
             if (buttonReset)
             {
                 ResetResizeValues();
             }
 
-            //it makes no sense to press Resize / Reset if the values for the columns / rows don't differ: disable these buttons
-            GUI.enabled = oldGUIEnabled; //all the interactive GUI components like buttons will be disabled if GUI.enabled = false
+            // It makes no sense to press Resize / Reset if the values for the columns / rows don't differ: disable these buttons
+            GUI.enabled = oldGUIEnabled; // All the interactive GUI components like buttons will be disabled if GUI.enabled = false
         }
 
         private void DrawLevelDataGUI()
