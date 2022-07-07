@@ -192,6 +192,7 @@ namespace AssetImportPipeline.Editor
         /// <summary>
         /// This method loads all Presets in each of the given folder paths
         /// and updates the CustomDependency hash based on the Presets currently in that folder.
+        /// https://docs.unity3d.com/Packages/com.unity.quicksearch@2.1/manual/search-syntax.html
         /// </summary>
         static void DelayedDependencyRegistration(HashSet<string> folders)
         {
