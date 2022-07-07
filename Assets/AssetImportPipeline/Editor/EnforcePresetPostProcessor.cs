@@ -9,8 +9,10 @@ using UnityEngine;
 namespace AssetImportPipeline.Editor
 {
     /// <summary>
-   /// This sample class applies Presets automatically to Assets in the folder containing the Preset and any subfolders.
-   /// The code is divided into three parts that set up importer dependencies to make sure the importers of all Assets stay deterministic.
+   /// This class applies Presets automatically to Assets in the folder containing the Preset and any subfolders.
+   /// It chooses the Preset that is in the same folder as the Asset. If there is no Preset in the folder, this script searches parent folders.
+   /// If there are no Presets in parent folders, Unity uses the default Preset that the Preset window specifies.
+   /// The code is divided into 3 parts that set up importer dependencies to make sure the importers of all Assets stay deterministic.
    ///
    /// OnPreprocessAsset:
    /// This method goes from the root folder down to the Asset folder for each imported asset
@@ -128,6 +130,7 @@ namespace AssetImportPipeline.Editor
     /// This makes the InitPresetDependencies and OnPostprocessAllAssets methods too complex for the purpose of this example.
     /// Unity suggests having the CustomDependency follow the form "Preset_{presetType}_{folder}",
     /// and the hash containing only Presets of the given presetType in that folder.
+    /// TODO: Generate warning message when preventing user error when they try to modify an asset with the wrong settings
     /// </summary>
     public class UpdateFolderPresetDependency : AssetsModifiedProcessor
     {
