@@ -111,9 +111,13 @@ namespace LevelCreator
         private void DrawLevelSizeGUI() //modify OnInspectorGUI: use buttons to trigger actions
         {
             EditorGUILayout.LabelField("Size", EditorStyles.boldLabel);
+            EditorGUILayout.BeginHorizontal ("box"); 
+            EditorGUILayout.BeginVertical();
             _newTotalColumns = EditorGUILayout.IntField("Columns", Mathf.Max(1, _newTotalColumns));
             _newTotalRows = EditorGUILayout.IntField("Rows", Mathf.Max(1, _newTotalRows));
-
+            EditorGUILayout.EndVertical();
+            EditorGUILayout.BeginVertical();
+            
             //disable / enable GUI
             bool oldGUIEnabled = GUI.enabled;
             GUI.enabled = (_newTotalColumns != _TargetLevel.TotalColumns || _newTotalRows != _TargetLevel.TotalRows);
@@ -145,6 +149,8 @@ namespace LevelCreator
 
             // It makes no sense to press Resize / Reset if the values for the columns / rows don't differ: disable these buttons
             GUI.enabled = oldGUIEnabled; // All the interactive GUI components like buttons will be disabled if GUI.enabled = false
+            EditorGUILayout.EndVertical();
+            EditorGUILayout.EndHorizontal();
         }
 
         private void DrawLevelDataGUI()
