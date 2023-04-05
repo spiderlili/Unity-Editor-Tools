@@ -243,7 +243,7 @@ TextureImporter:
       213: 6266117755197126414
     second: crates_32x_isometric_79
   externalObjects: {}
-  serializedVersion: 11
+  serializedVersion: 12
   mipmaps:
     mipMapMode: 0
     enableMipMap: 0
@@ -263,6 +263,8 @@ TextureImporter:
   isReadable: 0
   streamingMipmaps: 0
   streamingMipmapsPriority: 0
+  vTOnly: 0
+  ignoreMasterTextureLimit: 0
   grayScaleToAlpha: 0
   generateCubemap: 6
   cubemapConvolution: 0
@@ -271,12 +273,12 @@ TextureImporter:
   maxTextureSize: 2048
   textureSettings:
     serializedVersion: 2
-    filterMode: -1
-    aniso: -1
-    mipBias: -100
+    filterMode: 1
+    aniso: 1
+    mipBias: 0
     wrapU: 1
     wrapV: 1
-    wrapW: -1
+    wrapW: 0
   nPOTScale: 0
   lightmap: 0
   compressionQuality: 50
@@ -294,10 +296,14 @@ TextureImporter:
   textureType: 8
   textureShape: 1
   singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
   maxTextureSizeSet: 0
   compressionQualitySet: 0
   textureFormatSet: 0
+  ignorePngGamma: 0
   applyGammaDecoding: 0
+  cookieLightType: 1
   platformSettings:
   - serializedVersion: 3
     buildTarget: DefaultTexturePlatform
@@ -313,6 +319,42 @@ TextureImporter:
     forceMaximumCompressionQuality_BC6H_BC7: 0
   - serializedVersion: 3
     buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 3
+    buildTarget: Server
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 3
+    buildTarget: Android
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 3
+    buildTarget: iPhone
     maxTextureSize: 2048
     resizeAlgorithm: 0
     textureFormat: -1
@@ -2016,6 +2058,87 @@ TextureImporter:
     edges: []
     weights: []
     secondaryTextures: []
+    nameFileIdTable:
+      crates_32x_isometric_0: -1893787384870279126
+      crates_32x_isometric_1: 4895544538738707684
+      crates_32x_isometric_10: -1155683754423227492
+      crates_32x_isometric_11: -9070480695504010839
+      crates_32x_isometric_12: -8529243093875772039
+      crates_32x_isometric_13: 5760100014667050086
+      crates_32x_isometric_14: -4652483949798273748
+      crates_32x_isometric_15: -4631402529530788724
+      crates_32x_isometric_16: -2803722520427971575
+      crates_32x_isometric_17: 5952585278759533998
+      crates_32x_isometric_18: 5072100642443176135
+      crates_32x_isometric_19: 250790154532503676
+      crates_32x_isometric_2: -292824961079133056
+      crates_32x_isometric_20: -673378848068937475
+      crates_32x_isometric_21: 6741228624415346790
+      crates_32x_isometric_22: -3738395182692592979
+      crates_32x_isometric_23: -5466683922425050060
+      crates_32x_isometric_24: -2341772614282118431
+      crates_32x_isometric_25: -8352073268933889970
+      crates_32x_isometric_26: 8449141833014371503
+      crates_32x_isometric_27: 587671246314493897
+      crates_32x_isometric_28: 1446160669953553584
+      crates_32x_isometric_29: 142178232145420388
+      crates_32x_isometric_3: -3740810711734532399
+      crates_32x_isometric_30: 7716083205419542799
+      crates_32x_isometric_31: -1366947382167691714
+      crates_32x_isometric_32: 4528163015856889971
+      crates_32x_isometric_33: 1628331498452155707
+      crates_32x_isometric_34: 3998984449582906077
+      crates_32x_isometric_35: 5548657624596026232
+      crates_32x_isometric_36: -482977438558949467
+      crates_32x_isometric_37: -1447582223781473644
+      crates_32x_isometric_38: -1913820090831201864
+      crates_32x_isometric_39: 8584015532445760356
+      crates_32x_isometric_4: 6839365756437385910
+      crates_32x_isometric_40: 8231830418921543336
+      crates_32x_isometric_41: 3835169759154229013
+      crates_32x_isometric_42: -8281953034027130404
+      crates_32x_isometric_43: 7821678219533022270
+      crates_32x_isometric_44: 7044833586576776458
+      crates_32x_isometric_45: -1588815065630480031
+      crates_32x_isometric_46: -4672966182813527986
+      crates_32x_isometric_47: 1947971884137965275
+      crates_32x_isometric_48: -4863774660219828613
+      crates_32x_isometric_49: -6765786523188897380
+      crates_32x_isometric_5: 3029334717752130541
+      crates_32x_isometric_50: 3719743336650914009
+      crates_32x_isometric_51: 8036020270527400990
+      crates_32x_isometric_52: 7721853233730812563
+      crates_32x_isometric_53: -2140844669603828090
+      crates_32x_isometric_54: -5177646108649655435
+      crates_32x_isometric_55: -8682227404819043907
+      crates_32x_isometric_56: 3523840476069538070
+      crates_32x_isometric_57: -9036892333260257816
+      crates_32x_isometric_58: 7094063611521588912
+      crates_32x_isometric_59: 8017956889040100678
+      crates_32x_isometric_6: 2374675002638298928
+      crates_32x_isometric_60: 8014807459124856011
+      crates_32x_isometric_61: -6834439538623994321
+      crates_32x_isometric_62: 9201448490344759548
+      crates_32x_isometric_63: 3107486082352057762
+      crates_32x_isometric_64: 6705635879293500087
+      crates_32x_isometric_65: -1730554360645658305
+      crates_32x_isometric_66: -8044260479405397165
+      crates_32x_isometric_67: 6647380504749105255
+      crates_32x_isometric_68: 646136267232745552
+      crates_32x_isometric_69: 3503369606578035759
+      crates_32x_isometric_7: -2546214180503055054
+      crates_32x_isometric_70: -8176288796742776252
+      crates_32x_isometric_71: 2361887307238794538
+      crates_32x_isometric_72: -5917922755283956096
+      crates_32x_isometric_73: 4782977841773303681
+      crates_32x_isometric_74: 8346050161658971415
+      crates_32x_isometric_75: 320935825313897080
+      crates_32x_isometric_76: 6524232778490009059
+      crates_32x_isometric_77: 4142937266311129744
+      crates_32x_isometric_78: -7909574668141977876
+      crates_32x_isometric_79: 6266117755197126414
+      crates_32x_isometric_8: 6957378256621923256
+      crates_32x_isometric_9: -4118857652576676982
   spritePackingTag: 
   pSDRemoveMatte: 0
   pSDShowRemoveMatteOption: 0

@@ -219,7 +219,7 @@ TextureImporter:
       213: -959149123161973046
     second: adventurer-Sheet_71
   externalObjects: {}
-  serializedVersion: 11
+  serializedVersion: 12
   mipmaps:
     mipMapMode: 0
     enableMipMap: 0
@@ -239,6 +239,8 @@ TextureImporter:
   isReadable: 0
   streamingMipmaps: 0
   streamingMipmapsPriority: 0
+  vTOnly: 0
+  ignoreMasterTextureLimit: 0
   grayScaleToAlpha: 0
   generateCubemap: 6
   cubemapConvolution: 0
@@ -248,11 +250,11 @@ TextureImporter:
   textureSettings:
     serializedVersion: 2
     filterMode: 0
-    aniso: -1
-    mipBias: -100
+    aniso: 1
+    mipBias: 0
     wrapU: 1
     wrapV: 1
-    wrapW: -1
+    wrapW: 0
   nPOTScale: 0
   lightmap: 0
   compressionQuality: 50
@@ -270,10 +272,14 @@ TextureImporter:
   textureType: 8
   textureShape: 1
   singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
   maxTextureSizeSet: 0
   compressionQualitySet: 0
   textureFormatSet: 0
+  ignorePngGamma: 0
   applyGammaDecoding: 0
+  cookieLightType: 1
   platformSettings:
   - serializedVersion: 3
     buildTarget: DefaultTexturePlatform
@@ -289,6 +295,42 @@ TextureImporter:
     forceMaximumCompressionQuality_BC6H_BC7: 0
   - serializedVersion: 3
     buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 3
+    buildTarget: Server
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 3
+    buildTarget: Android
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 3
+    buildTarget: iPhone
     maxTextureSize: 2048
     resizeAlgorithm: 0
     textureFormat: -1
@@ -1824,6 +1866,79 @@ TextureImporter:
     edges: []
     weights: []
     secondaryTextures: []
+    nameFileIdTable:
+      adventurer-Sheet_0: -8298335142436343970
+      adventurer-Sheet_1: -743574260923404329
+      adventurer-Sheet_10: -4604984467051681906
+      adventurer-Sheet_11: 8189100351000139943
+      adventurer-Sheet_12: -6692866986946557475
+      adventurer-Sheet_13: -5852505179652196879
+      adventurer-Sheet_14: 2405722623682963679
+      adventurer-Sheet_15: -7991917730644437596
+      adventurer-Sheet_16: 5546546619715928098
+      adventurer-Sheet_17: -4675363991662399564
+      adventurer-Sheet_18: 7123780447028838037
+      adventurer-Sheet_19: -2058269288273896992
+      adventurer-Sheet_2: 7740607249621568444
+      adventurer-Sheet_20: 9039208664650840236
+      adventurer-Sheet_21: 827811162389397856
+      adventurer-Sheet_22: -6529348207798241894
+      adventurer-Sheet_23: -8052795731847107983
+      adventurer-Sheet_24: 8222897756744210032
+      adventurer-Sheet_25: -1870133701402837009
+      adventurer-Sheet_26: -5559146640247301975
+      adventurer-Sheet_27: -8381167593095594553
+      adventurer-Sheet_28: 5812651386001056028
+      adventurer-Sheet_29: -7516204376657526121
+      adventurer-Sheet_3: 7408749945275818682
+      adventurer-Sheet_30: -8453819866301387369
+      adventurer-Sheet_31: 7475914677474725688
+      adventurer-Sheet_32: 3072006075454103488
+      adventurer-Sheet_33: 3263298011188648719
+      adventurer-Sheet_34: -2313268147859496231
+      adventurer-Sheet_35: -4235098747027845679
+      adventurer-Sheet_36: 6786391497225868855
+      adventurer-Sheet_37: 2333719886634136160
+      adventurer-Sheet_38: -1587111403576685995
+      adventurer-Sheet_39: -751702463649770895
+      adventurer-Sheet_4: -1703503134494083185
+      adventurer-Sheet_40: -3572150522789669182
+      adventurer-Sheet_41: 7390780548477453306
+      adventurer-Sheet_42: -7788531668074343583
+      adventurer-Sheet_43: 2396510735316617832
+      adventurer-Sheet_44: 969971699180811158
+      adventurer-Sheet_45: -1294214679968634226
+      adventurer-Sheet_46: 7759410105619364045
+      adventurer-Sheet_47: 4832856430916926167
+      adventurer-Sheet_48: 6402137628355386769
+      adventurer-Sheet_49: 3684988079611829706
+      adventurer-Sheet_5: 4011903944418225170
+      adventurer-Sheet_50: 8861830721830389235
+      adventurer-Sheet_51: 1520558021292090289
+      adventurer-Sheet_52: -3957365507521314166
+      adventurer-Sheet_53: 7877244222421145784
+      adventurer-Sheet_54: -9090754285384806103
+      adventurer-Sheet_55: -3513742163621345000
+      adventurer-Sheet_56: 1602537094343532810
+      adventurer-Sheet_57: 8970591240777210737
+      adventurer-Sheet_58: -2563319291687175751
+      adventurer-Sheet_59: -1482246009198321619
+      adventurer-Sheet_6: -4980462888639763117
+      adventurer-Sheet_60: 2525105423355198953
+      adventurer-Sheet_61: 272472793923341029
+      adventurer-Sheet_62: 7116844122142724833
+      adventurer-Sheet_63: -7352640534987222063
+      adventurer-Sheet_64: 1422935986188544498
+      adventurer-Sheet_65: 7916334444075441938
+      adventurer-Sheet_66: 7005773408560985019
+      adventurer-Sheet_67: -632161902351492241
+      adventurer-Sheet_68: 6570915518496267797
+      adventurer-Sheet_69: 4705856455261463092
+      adventurer-Sheet_7: 1574406424878940178
+      adventurer-Sheet_70: -4013564657986398608
+      adventurer-Sheet_71: -959149123161973046
+      adventurer-Sheet_8: -6751727042719553574
+      adventurer-Sheet_9: 8253001654063652594
   spritePackingTag: 
   pSDRemoveMatte: 0
   pSDShowRemoveMatteOption: 0
