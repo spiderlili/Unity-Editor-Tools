@@ -16,6 +16,11 @@ public class CustomPipelineAssetsProcessor : AssetPostprocessor
 
 #region ModelImporters
 
+    private void OnPreprocessModel()
+    {
+        ModelImporter modelImporter = (ModelImporter)assetImporter;
+    }
+
 #endregion
     
 #region TextureImporters
