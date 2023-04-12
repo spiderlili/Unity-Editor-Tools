@@ -19,6 +19,8 @@ public class CustomPipelineAssetsProcessor : AssetPostprocessor
     private void OnPreprocessModel()
     {
         ModelImporter modelImporter = (ModelImporter)assetImporter;
+        modelImporter.globalScale = 1f;
+
     }
 
 #endregion
