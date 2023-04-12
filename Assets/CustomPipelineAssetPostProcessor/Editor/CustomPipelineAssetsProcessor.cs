@@ -11,6 +11,7 @@ public class CustomPipelineAssetsProcessor : AssetPostprocessor
 
     private const string ProjectTexturesPath = "Assets/Textures";
     private const string ProjectCharactersTexturesPath = "Assets/Textures/Characters"; // Special settings for normal maps
+    private const string ProjectEnvironmentsPath = "Assets/Models/Environment";
 
 #endregion
 
@@ -18,6 +19,9 @@ public class CustomPipelineAssetsProcessor : AssetPostprocessor
 
     private void OnPreprocessModel()
     {
+        if (assetPath.Contains(ProjectEnvironmentsPath)) {
+            
+        }
         ModelImporter modelImporter = (ModelImporter)assetImporter;
         modelImporter.globalScale = 1f;
         modelImporter.useFileScale = true;
