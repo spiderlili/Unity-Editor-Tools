@@ -19,6 +19,7 @@ public class CharacterPostProcessor : AssetPostprocessor
         }
         
         ModelImporter modelImporter = (ModelImporter)assetImporter;
+        string fileAssetPathName = Path.GetFileName(assetPath);
         // modelImporter.globalScale = 1f; // Set in DCC
         modelImporter.useFileScale = true;
         modelImporter.importBlendShapes = false;
@@ -50,7 +51,7 @@ public class CharacterPostProcessor : AssetPostprocessor
         modelImporter.skinWeights = ModelImporterSkinWeights.Standard;
         
         // Animation settings
-        if (assetPath.Contains("@")) {
+        if (fileAssetPathName.Contains("@")) {
             modelImporter.importConstraints = false;
             modelImporter.importAnimation = true;
             modelImporter.resampleCurves = true;
