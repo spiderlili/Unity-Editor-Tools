@@ -44,9 +44,22 @@ public class CharacterPostProcessor : AssetPostprocessor
         modelImporter.swapUVChannels = false;
         modelImporter.generateSecondaryUV = false;
 
+        // Rig settings
         modelImporter.animationType = ModelImporterAnimationType.Generic;
         modelImporter.avatarSetup = ModelImporterAvatarSetup.NoAvatar;
         modelImporter.skinWeights = ModelImporterSkinWeights.Standard;
+        
+        // Animation settings
+        if (assetPath.Contains("@")) {
+            modelImporter.importConstraints = false;
+            modelImporter.importAnimation = true;
+            modelImporter.resampleCurves = true;
+            modelImporter.animationCompression = ModelImporterAnimationCompression.Optimal;
+            modelImporter.importAnimatedCustomProperties = false;
+        } else {
+            modelImporter.importConstraints = false;
+            modelImporter.importAnimation = false;
+        }
         
     }
 
