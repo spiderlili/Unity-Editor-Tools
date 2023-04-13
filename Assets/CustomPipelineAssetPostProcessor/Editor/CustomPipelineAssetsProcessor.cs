@@ -1,6 +1,3 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
 using System.IO;
 using UnityEngine;
 using UnityEditor;
@@ -10,7 +7,7 @@ public class CustomPipelineAssetsProcessor : AssetPostprocessor
 #region Paths
 
     private const string ProjectTexturesPath = "Assets/Textures/";
-    private const string ProjectCharactersTexturesPath = "Assets/Models/Characters/"; // Special settings for normal maps
+    private const string ProjectCharactersPath = "Assets/Models/Characters/"; // Special settings for normal maps
     private const string ProjectEnvironmentsPath = "Assets/Models/Environment/";
 
 #endregion
@@ -102,7 +99,7 @@ public class CustomPipelineAssetsProcessor : AssetPostprocessor
 
     private void CharacterTexturesPostProcessor()
     {
-        if (!assetPath.Contains(ProjectCharactersTexturesPath)) {
+        if (!assetPath.Contains(ProjectCharactersPath)) {
             return;
         }
 
