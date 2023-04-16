@@ -1,3 +1,4 @@
+using System;
 using System.IO;
 using UnityEngine;
 using UnityEditor;
@@ -69,6 +70,19 @@ public class CharacterPostProcessor : AssetPostprocessor
             modelImporter.materialName = ModelImporterMaterialName.BasedOnTextureName;
             modelImporter.materialSearch = ModelImporterMaterialSearch.Local;
 
+        }
+    }
+
+#endregion
+    
+#region MaterialImporters
+
+    // OnPostprocessMaterial is only triggered when the material is created for the first time
+    private void OnPostprocessMaterial(Material material)
+    {
+        Shader PBRCharacterShader = Shader.Find("Unlit/PBR");
+        if (PBRCharacterShader != null) {
+            material.shader = PBRCharacterShader;
         }
     }
 
