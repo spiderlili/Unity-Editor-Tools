@@ -57,11 +57,19 @@ public class CharacterPostProcessor : AssetPostprocessor
             modelImporter.resampleCurves = true;
             modelImporter.animationCompression = ModelImporterAnimationCompression.Optimal;
             modelImporter.importAnimatedCustomProperties = false;
+            modelImporter.materialImportMode = ModelImporterMaterialImportMode.None; // Do not import materials for animation
         } else {
             modelImporter.importConstraints = false;
             modelImporter.importAnimation = false;
+            
+            // Material import settings
+            modelImporter.materialImportMode = ModelImporterMaterialImportMode.ImportStandard; // Import materials for normal models
+            modelImporter.useSRGBMaterialColor = true; // In Gamma space
+            modelImporter.materialLocation = ModelImporterMaterialLocation.External; // Create Material folder at the same level as model
+            modelImporter.materialName = ModelImporterMaterialName.BasedOnTextureName;
+            modelImporter.materialSearch = ModelImporterMaterialSearch.Local;
+
         }
-        
     }
 
 #endregion
