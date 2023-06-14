@@ -19,7 +19,7 @@ public class ScreenshotExporterEditorWindow : EditorWindow
 
     private void OnGUI()
     {
-        fileName = EditorGUILayout.TextField("Screenshot File Name: ", DefaultFileName);
+        fileName = EditorGUILayout.TextField("Screenshot File Name: ", fileName);
         
         EditorGUILayout.BeginHorizontal();
         EditorGUILayout.PrefixLabel("Save to Folder: ");
@@ -27,6 +27,7 @@ public class ScreenshotExporterEditorWindow : EditorWindow
             filePath = EditorUtility.OpenFolderPanel("Choose Folder", DefaultFileDirectory, "");
         }
         EditorGUILayout.EndHorizontal();
+        EditorGUILayout.LabelField(filePath); // Visualise file path to save the screenshot
         EditorGUILayout.Space();
 
         if (GUILayout.Button("Take Screenshot")) {
