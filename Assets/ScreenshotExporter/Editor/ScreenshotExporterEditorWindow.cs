@@ -10,7 +10,7 @@ public class ScreenshotExporterEditorWindow : EditorWindow
     private static readonly string DefaultFileDirectory = "Assets/";
     
     [MenuItem("Tools/Screenshot Exporter")]
-    static void ShowWindow()
+    private static void ShowWindow()
     {
         var window = GetWindow<ScreenshotExporterEditorWindow>();
         window.titleContent = new GUIContent("Screenshot Exporter");
@@ -24,12 +24,12 @@ public class ScreenshotExporterEditorWindow : EditorWindow
         EditorGUILayout.BeginHorizontal();
         EditorGUILayout.PrefixLabel("Save to Folder: ");
         if (GUILayout.Button("...")) {
-            filePath = EditorUtility.OpenFilePanel("Choose Folder", DefaultFileDirectory, "");
+            filePath = EditorUtility.OpenFolderPanel("Choose Folder", DefaultFileDirectory, "");
         }
         EditorGUILayout.EndHorizontal();
         EditorGUILayout.Space();
 
-        if (!GUILayout.Button("Take Screenshot")) {
+        if (GUILayout.Button("Take Screenshot")) {
             string path = $"{filePath}/{fileName}.png";
             ScreenCapture.CaptureScreenshot(path);
         }
