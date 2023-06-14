@@ -1,4 +1,5 @@
 using System;
+using NUnit.Framework.Internal;
 using UnityEditor;
 using UnityEngine;
 
@@ -34,6 +35,5 @@ public class ScreenshotExporterEditorWindow : EditorWindow
             string path = $"{filePath}/{fileName}.png";
             ScreenCapture.CaptureScreenshot(path);
         }
-        
     }
 }
